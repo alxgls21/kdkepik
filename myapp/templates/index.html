@@ -1,49 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Project</title>
-    {% load static %}
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Αρχική Σελίδα{% endblock %}
+
+{% block extra_head %}
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
-</head>
-<body>
-    <header>
-        <nav>
-            <ul>
-                <li class="dropdown">
-                    <a href="#">Αξιωματικός Υπηρεσίας</a>
-                    <ul class="dropdown-content">
-                        <li><a href="#">Υπερσύνδεσμος</a></li>
-                        <li><a href="#">Αναφορά Αξιωματικού Υπηρεσίας</a></li>
-                        <li><a href="#">Τηλεφωνικοί Κατάλογοι</a></li>
-                        <li><a href="#">Στοιχεία Διαχειριστών</a></li>
-                        <li><a href="#">Κωδικοί για ΑΞΚΟ ΥΠ</a></li>
-                    </ul>
-                </li>
-                <li><a href="#">Κατάσταση Λειτουργικότητας</a></li>
-                <li><a href="#">Οδηγίες Επικοινωνιακών Συστημάτων</a></li>
-                <li class="dropdown">
-                    <a href="#">Φάκελος Οπλιτών</a>
-                    <ul class="dropdown-content">
-                        <li><a href="#">ΣΔΑ-ΠΥΡΣΕΙΑ</a></li>
-                        <li><a href="#">Σήματα CRONOS</a></li>
-                        <li><a href="#">Σήματα AIFS</a></li>
-                        <li><a href="#">Χρήση Τηλεφωνικού</a></li>
-                        <li><a href="#">ΥΕΣΑ</a></li>
-                        <li><a href="#">Αναφορά Υπηρεσίας</a></li>
-                        <li><a href="#">Καταγραφές Σημάτων</a></li>
-                    </ul>
-                </li>
-                <li><a href="#">Επιλοχίας 1ου Λόχου</a></li>
-            </ul>
-        </nav>
-    </header>
+{% endblock %}
 
-    <main>
-        <h1>Welcome to My Project</h1>
-    </main>
-
-    <script src="{% static 'js/scripts.js' %}"></script>
-</body>
-</html>
+{% block content %}
+<div class="video-background">
+    <video autoplay muted loop>
+        <source src="{% static 'img/index_back.webm' %}" type="video/webm">
+    </video>
+</div>
+<div class="main-content">
+    <h1>Κέντρο Διαχείρισης ΚΕΠΙΚ</h1>
+    <div class="images">
+        <img src="{% static 'img/ges.png' %}" alt="GES">
+        <img src="{% static 'img/tdb.png' %}" alt="TDB">
+    </div>
+</div>
+{% endblock %}

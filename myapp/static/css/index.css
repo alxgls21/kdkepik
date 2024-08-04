@@ -2,56 +2,71 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    background-size: cover;
+    position: relative;
+    height: 100vh; /* Ensure the body takes up the full height */
+    overflow: hidden; /* Prevent scrolling */
+}
+
+.video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+}
+
+video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 header {
-    background-color: #333;
     color: #fff;
     padding: 10px 0;
-}
-
-nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-}
-
-nav ul li {
-    float: left;
-}
-
-nav ul li a {
-    display: block;
-    color: white;
     text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center the nav items horizontally */
+    position: relative;
+    z-index: 1;
 }
 
-nav ul li a:hover, .dropdown:hover .dropbtn {
-    background-color: #111;
-}
-
-.dropdown {
-    float: left;
-    overflow: hidden;
-}
-
-.dropdown .dropbtn {
-    font-size: 16px;  
-    border: none;
-    outline: none;
-    color: white;
-    padding: 14px 16px;
-    background-color: inherit;
-    font-family: inherit;
+header nav ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    justify-content: center; /* Center the nav items horizontally */
+    align-items: center;
     margin: 0;
+    width: 100%;
 }
 
-nav ul li a, .dropdown .dropbtn {
-    color: white;
+header nav ul li {
+    position: relative;
+    margin-right: 20px; /* Adjust the spacing as needed */
+}
+
+header nav ul li a {
+    color: #fff;
     text-decoration: none;
+    padding: 10px 20px;
+    display: block;
+    border-radius: 10px; /* Rounded corners for the menu items */
+}
+
+header nav ul li a:hover {
+    background-color: #575757;
+}
+
+#logo {
+    width: 140px; /* Adjust the size as needed */
+    height: auto;
+    display: block;
+    margin-right: 20px; /* Add space between logo and nav items */
 }
 
 .dropdown-content {
@@ -60,26 +75,219 @@ nav ul li a, .dropdown .dropbtn {
     background-color: #f9f9f9;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
+    z-index: 9999;
+    border-radius: 10px; /* Rounded corners for the dropdown */
+    opacity: 0;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Smooth opening effect */
 }
 
 .dropdown-content a {
-    float: none;
     color: black;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
-    text-align: left;
+    border-radius: 10px; /* Rounded corners for the links */
 }
 
 .dropdown-content a:hover {
-    background-color: #ddd;
+    background-color: #f1f1f1;
+    border-radius: 10px; /* Rounded corners for the hover effect */
 }
 
 .dropdown:hover .dropdown-content {
     display: block;
+    opacity: 1;
+    transform: scaleY(1);
 }
 
-main {
+.main-content {
+    margin: 20px;
+    text-align: center;
+    color: white;
+    position: relative;
+    z-index: 1;
+}
+
+.images {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px; /* Adjust as needed */
+}
+
+.images img {
+    width: 200px; /* Adjust the size as needed */
+    height: auto;
+    margin: 0 20px; /* Adjust the spacing as needed */
+}
+
+footer {
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.5); /* Add background to footer for readability */
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
     padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 1;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #fff;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form section {
+    margin-bottom: 20px;
+}
+
+form p {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+form p label {
+    flex: 1;
+}
+
+form p input[type="text"],
+form p select,
+form p textarea {
+    flex: 2;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+form p span.checkbox-group {
+    display: flex;
+    justify-content: space-between;
+    flex: 2;
+}
+
+form p span.checkbox-group label {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+form button {
+    align-self: center;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #575757;
+}
+
+/* Styles for buttons */
+.button-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.button-container button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.button-container button a {
+    color: white;
+    text-decoration: none;
+}
+
+.button-container button:hover {
+    background-color: #0056b3;
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    background-color: rgba(51, 51, 51, 0.9);
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    color: white;
+}
+
+.popup-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.popup-content h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.popup-content label {
+    margin-bottom: 10px;
+}
+
+.popup-content input {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+.popup-content button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
+
+.popup-content button:hover {
+    background-color: #0056b3;
+}
+
+.popup .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
 }
