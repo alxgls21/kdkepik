@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Αναφορά Αξιωματικού Υπηρεσίας{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/anafora_aks_ipiresias.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="main-content">
+    <h1>Αναφορά Αξιωματικού Υπηρεσίας</h1>
+    <div class="button-container">
+        <button onclick="location.href='#'">Αναφορά Υπηρεσίας</button>
+        <button onclick="location.href='#'">ΕΣΕΕΘΑ Σήμα Βλάβης</button>
+    </div>
+</div>
+{% endblock %}

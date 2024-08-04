@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Υπερσύνδεσμος{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/ypersyndesmos.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="video-background">
+    <video autoplay muted loop>
+        <source src="{% static 'img/background.webm' %}" type="video/webm">
+    </video>
+</div>
+<div class="main-content">
+    <h1>Υπερσύνδεσμος</h1>
+    <ul>
+        <li>
+            <h2 class="category-title">ΔΙΔΕΣ</h2>
+            <ul class="category-content">
+                {% for dides in dides_categories %}
+                    <li>
+                        <a href="http://{{ dides.ip_address }}">{{ dides.name }}</a>
+                        ({{ dides.get_category_display }}, {{ dides.get_application_display }})
+                        <br>
+                        Εποπτικό Μέσο: {{ dides.supervisory_tool }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </li>
+        <li>
+            <h2 class="category-title">HARP</h2>
+            <ul class="category-content">
+                {% for harp in harp_categories %}
+                    <li>
+                        <a href="http://{{ harp.ip_address }}">{{ harp.name }}</a>
+                        <br>
+                        Εποπτικό Μέσο: {{ harp.supervisory_tool }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </li>
+        <li>
+            <h2 class="category-title">ΑΔΜΕ</h2>
+            <ul class="category-content">
+                {% for adme in adme_categories %}
+                    <li>
+                        <a href="http://{{ adme.ip_address }}">{{ adme.name }}</a>
+                        <br>
+                        Εποπτικό Μέσο: {{ adme.supervisory_tool }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </li>
+    </ul>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const titles = document.querySelectorAll('.category-title');
+        titles.forEach(title => {
+            title.addEventListener('click', function () {
+                const content = this.nextElementSibling;
+                content.style.display = content.style.display === 'none' ? 'block' : 'none';
+            });
+        });
+    });
+</script>
+{% endblock %}
