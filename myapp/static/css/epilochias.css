@@ -40,53 +40,29 @@ video {
     margin-bottom: 20px;
 }
 
-/* Στυλ για τη λίστα κατηγοριών και υποκατηγοριών */
-ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    text-align: left;
-    display: inline-block;
-    width: 70%;
+/* Στυλ για τα κουμπιά */
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
 }
 
-.category-title, .subcategory-title {
-    background-color: #333;
-    padding: 15px;
+.button-container button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
     cursor: pointer;
     border-radius: 5px;
-    margin-bottom: 5px;
-    transition: background-color 0.3s ease;
 }
 
-.category-title:hover, .subcategory-title:hover {
-    background-color: #444;
-}
-
-.category-content, .subcategory-content {
-    display: none;
-    padding-left: 0px;
-}
-
-.subcategory-title {
-    background-color: #444;
-    margin-top: 10px;
-}
-
-.subcategory-content li {
-    padding: 10px;
-    background-color: #555;
-    margin-bottom: 5px;
-    border-radius: 5px;
-}
-
-.subcategory-content li a {
-    color: #fff;
-    text-decoration: none;
-}
-
-.subcategory-content li a:hover {
-    text-decoration: underline;
+.button-container button:hover {
+    background-color: #0056b3;
 }
 
 /* Στυλ για το footer */

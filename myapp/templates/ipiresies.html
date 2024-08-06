@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Μηνιαίες Υπηρεσίες{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/ipiresies.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="main-content">
+    <h1>Μηνιαίες Υπηρεσίες</h1>
+    <table id="services-table">
+        <thead>
+            <tr>
+                <th>Ονόματα</th>
+                {% for i in 1|range:31 %}
+                    <th>{{ i }} Αυγούστου</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for service in services %}
+            <tr>
+                <td contenteditable="true" data-id="{{ service.id }}" class="name">{{ service.name }}</td>
+                {% for i in 1|range:31 %}
+                    <td contenteditable="true" data-id="{{ service.id }}" data-day="{{ i }}" class="service">{{ service.day_{{ forloop.counter0 }} }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button id="save-changes">Αποθήκευση Αλλαγών</button>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('#save-changes').click(function(){
+            var services = [];
+            $('#services-table tbody tr').each(function(){
+                var service = {};
+                service.id = $(this).find('.name').data('id');
+                service.name = $(this).find('.name').text();
+                service.days = [];
+                $(this).find('.service').each(function(){
+                    var day = {};
+                    day.id = $(this).data('id');
+                    day.day = $(this).data('day');
+                    day.service = $(this).text();
+                    service.days.push(day);
+                });
+                services.push(service);
+            });
+
+            $.ajax({
+                type: 'POST',
+                url: '{% url "save_changes" %}',
+                data: {
+                    'services': JSON.stringify(services),
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response){
+                    alert('Οι αλλαγές αποθηκεύτηκαν με επιτυχία.');
+                },
+                error: function(response){
+                    alert('Παρουσιάστηκε σφάλμα κατά την αποθήκευση των αλλαγών.');
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Επιλοχίας 1ου Λόχου{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/epilochias.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="video-background">
+    <video autoplay muted loop>
+        <source src="{% static 'img/background.webm' %}" type="video/webm">
+    </video>
+</div>
+<div class="main-content">
+    <h1>Επιλοχίας 1ου Λόχου</h1>
+    <div class="button-container">
+        <button onclick="location.href='{% url 'ipiresies' %}'">Μηνιαίες Υπηρεσίες</button>
+        <button onclick="location.href='#'">Οδηγίες Επιλοχία</button>
+        <button onclick="location.href='#'">Ημερήσια Πόστα</button>
+    </div>
+</div>
+{% endblock %}
