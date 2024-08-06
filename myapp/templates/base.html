@@ -3,54 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}My Project{% endblock %}</title>
-    {% load static %}
+    <title>{% block title %}{% endblock %}</title>
     {% block extra_head %}{% endblock %}
 </head>
 <body>
     <header>
         <nav>
             <ul>
-                <li>
-                    <a href="{% url 'index' %}">
-                        <img src="{% static 'img/base_logo.png' %}" alt="Logo" id="logo">
-                    </a>
-                </li>
+                <li><a href="{% url 'index' %}">Αρχική</a></li>
                 <li class="dropdown">
                     <a href="#">Αξιωματικός Υπηρεσίας</a>
-                    <ul class="dropdown-content">
-                        <li><a href="{% url 'ypersyndesmos' %}">Υπερσύνδεσμος</a></li>
-                        <li><a href="{% url 'anafora_aks_ipiresias' %}">Αναφορά Αξιωματικού Υπηρεσίας</a></li>
-                        <li><a href="#">Τηλεφωνικοί Κατάλογοι</a></li>
-                        <li><a href="#">Στοιχεία Διαχειριστών</a></li>
-                        <li><a href="#">Κωδικοί για ΑΞΚΟ ΥΠ</a></li>
-                    </ul>
+                    <div class="dropdown-content">
+                        <a href="#">Υπερσύνδεσμος</a>
+                        <a href="{% url 'anafora_aks_ipiresias' %}">Αναφορά Αξιωματικού Υπηρεσίας</a>
+                        <a href="#">Τηλεφωνικοί Κατάλογοι</a>
+                        <a href="#">Στοιχεία Διαχειριστών</a>
+                        <a href="#">Κωδικοί ΑΞΥΠ</a>
+                    </div>
                 </li>
                 <li><a href="#">Κατάσταση Λειτουργικότητας</a></li>
                 <li><a href="#">Οδηγίες Επικοινωνιακών Συστημάτων</a></li>
-                <li class="dropdown">
-                    <a href="#">Φάκελος Οπλιτών</a>
-                    <ul class="dropdown-content">
-                        <li><a href="#">ΣΔΑ-ΠΥΡΣΕΙΑ</a></li>
-                        <li><a href="#">Σήματα CRONOS</a></li>
-                        <li><a href="#">Σήματα AIFS</a></li>
-                        <li><a href="#">Χρήση Τηλεφωνικού</a></li>
-                        <li><a href="#">ΥΕΣΑ</a></li>
-                        <li><a href="#">Αναφορά Υπηρεσίας</a></li>
-                        <li><a href="#">Καταγραφές Σημάτων</a></li>
-                    </ul>
-                </li>
+                <li><a href="#">Φάκελος Οπλιτών</a></li>
                 <li><a href="#">Επιλοχίας 1ου Λόχου</a></li>
             </ul>
         </nav>
     </header>
 
-    <main>
-        {% block content %}{% endblock %}
-    </main>
-    
-    <footer>ΣΤΡ(ΔΒ) Γούλας Αλέξανδρος</footer>
+    {% block content %}{% endblock %}
 
-    <script src="{% static 'js/scripts.js' %}"></script>
+    <footer>
+        <p>&copy; 2024 Κέντρο Διαχείρισης ΚΕΠΙΚ</p>
+    </footer>
 </body>
 </html>
