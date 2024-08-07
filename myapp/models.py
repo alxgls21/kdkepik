@@ -123,3 +123,31 @@ class Soldier(models.Model):
     class Meta:
         verbose_name = _('Στρατιώτης')
         verbose_name_plural = _('Στρατιώτες')
+        
+class Report(models.Model):
+    # ΤΙΤΛΟΣ
+    date = models.DateField(verbose_name="Ημερομηνία")
+
+    # ΑΞΥΠ ΚΕΠΙΚ
+    informed_by_commander_kepik = models.BooleanField(default=False, verbose_name="Ενημερώθηκα απο τον Διοικητή ΚΕΠΙΚ")
+    informed_by_company_commander = models.BooleanField(default=False, verbose_name="Ενημερώθηκα από τον Διοικητή Λόχου")
+    informed_by_unit_commander = models.BooleanField(default=False, verbose_name="Ενημερώθηκα από τον Διοικητή Μονάδας")
+    received_keys = models.BooleanField(default=False, verbose_name="Παρελήφθησαν τα κλειδιά της κλειδοθήκης ΑΞΥΠ ΚΕΠΙΚ")
+
+    # ΤΜΗΜΑ ΤΗΛΕΦΩΝΙΚΟΥ ΚΕΝΤΡΟΥ
+    phone_service_soldier = models.ForeignKey(Soldier, related_name='phone_service', on_delete=models.CASCADE, verbose_name="Οπλίτης σε υπηρεσία")
+    phone_check_done = models.BooleanField(default=False, verbose_name="Έγινε τηλεφωνικός έλεγχος τις προβλεπόμενες ώρες")
+    reported_interruptions = models.TextField(blank=True, verbose_name="Διακοπές που αναφέρθηκαν")
+    causes_and_duration = models.TextField(blank=True, verbose_name="Αίτια και διάρκεια διακοπών")
+    restoration_actions = models.TextField(blank=True, verbose_name="Ενέργειες αποκατάστασης διακοπών")
+    restored_interruptions = models.TextField(blank=True, verbose_name="Διακοπές που αποκαταστήθηκαν")
+
+    # ΤΜΗΜΑ ΚΑΤΑΧΩΡΙΣΗΣ/ΤΗΛΕΤΥΠΩΝ
+    teletype_service_soldier = models.ForeignKey(Soldier, related_name='teletype_service', on_delete=models.CASCADE, verbose_name="Οπλίτης σε υπηρεσία")
+    system_operation_sda_pyrseia = models.TextField(blank=True, verbose_name="ΣΔΑ - ΠΥΡΣΕΙΑ")
+    system_operation_aifs = models.TextField(blank=True, verbose_name="AIFS")
+    system_operation_cronos = models.TextField(blank=True, verbose_name="CRONOS")
+    fault_restoration_actions = models.TextField(blank=True, verbose_name="Ενέργειες αποκατάστασης βλαβών (αν υπάρχουν)")
+
+    def __str__(self):
+        return f"Αναφορά για {self.date}"

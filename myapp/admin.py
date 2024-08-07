@@ -1,7 +1,9 @@
 # myapp/admin.py
 
 from django.contrib import admin
-from .models import DidesCategory, HarpCategory, AdmeCategory, OfficerServiceReport, Soldier
+from django.urls import reverse
+from django.utils.html import format_html
+from .models import DidesCategory, HarpCategory, AdmeCategory, OfficerServiceReport, Soldier, Report
 
 class DidesCategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'category', 'application', 'ip_address', 'supervisory_tool')
@@ -26,6 +28,35 @@ class SoldierAdmin(admin.ModelAdmin):
     search_fields = ('rank', 'last_name', 'first_name', 'enlistment_esso')
     list_filter = ('rank', 'enlistment_esso')
 
+class ReportAdmin(admin.ModelAdmin):
+    list_display = (
+        'date', 
+        'informed_by_commander_kepik',
+        'informed_by_company_commander',
+        'informed_by_unit_commander',
+        'received_keys',
+        'phone_service_soldier',
+        'phone_check_done',
+        'reported_interruptions',
+        'causes_and_duration',
+        'restoration_actions',
+        'restored_interruptions',
+        'teletype_service_soldier',
+        'system_operation_sda_pyrseia',
+        'system_operation_aifs',
+        'system_operation_cronos',
+        'fault_restoration_actions',
+        'download_pdf_link'
+    )
+    list_filter = ('date',)
+    search_fields = ('phone_service_soldier__last_name', 'teletype_service_soldier__last_name')
+
+    def download_pdf_link(self, obj):
+        return format_html('<a href="{}">Download PDF</a>', reverse('download_pdf', args=[obj.pk]))
+
+    download_pdf_link.short_description = 'Download PDF'
+
+admin.site.register(Report, ReportAdmin)
 admin.site.register(DidesCategory, DidesCategoryAdmin)
 admin.site.register(HarpCategory, HarpCategoryAdmin)
 admin.site.register(AdmeCategory, AdmeCategoryAdmin)

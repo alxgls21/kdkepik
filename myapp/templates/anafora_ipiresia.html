@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Αναφορά Υπηρεσίας</title>
+</head>
+<body>
+    <h1>Αναφορά Υπηρεσίας</h1>
+    {% if success %}
+        <p>Η αναφορά υποβλήθηκε με επιτυχία!</p>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Υποβολή</button>
+    </form>
+</body>
+</html>
