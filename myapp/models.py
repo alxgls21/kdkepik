@@ -149,5 +149,18 @@ class Report(models.Model):
     system_operation_cronos = models.TextField(blank=True, verbose_name="CRONOS")
     fault_restoration_actions = models.TextField(blank=True, verbose_name="Ενέργειες αποκατάστασης βλαβών (αν υπάρχουν)")
 
+    # ΤΜΗΜΑ ΔΙΚΤΥΩΝ
+    network_check_done = models.BooleanField(default=False, verbose_name="Έγινε έλεγχος του δικτύου (ΔΙΔΕΣ, NS WAN, ΑΔΜΕ) μέσω των εποπτικών εργαλείων ανά τρίωρο")
+    network_problem_found = models.TextField(blank=True, verbose_name="Πρόβλημα που διαπιστώθηκε")
+
+    servers_check_done = models.BooleanField(default=False, verbose_name="Έγινε έλεγχος των εξυπηρετητών του ΚΕΠΙΚ/ΓΕΣ μέσω των εποπτικών εργαλείων ανά τρίωρο")
+    servers_problem_found = models.TextField(blank=True, verbose_name="Πρόβλημα που διαπιστώθηκε")
+
+    applications_check_done = models.BooleanField(default=False, verbose_name="Έγινε έλεγχος των εφαρμογών του ΚΕΠΙΚ/ΓΕΣ μέσω των υπερσυνδέσμων ανά τρίωρο")
+    applications_problem_found = models.TextField(blank=True, verbose_name="Πρόβλημα που διαπιστώθηκε")
+
+    vosip_check_done = models.BooleanField(default=False, verbose_name="Έγινε έλεγχος των τηλεφώνων VOSIP μέσω των εποπτικών εργαλείων ανά τρίωρο")
+    vosip_problem_found = models.TextField(blank=True, verbose_name="Πρόβλημα που διαπιστώθηκε")
+
     def __str__(self):
         return f"Αναφορά για {self.date}"

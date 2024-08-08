@@ -21,6 +21,14 @@ class ReportForm(forms.ModelForm):
             'system_operation_aifs',
             'system_operation_cronos',
             'fault_restoration_actions',
+            'network_check_done',
+            'network_problem_found',
+            'servers_check_done',
+            'servers_problem_found',
+            'applications_check_done',
+            'applications_problem_found',
+            'vosip_check_done',
+            'vosip_problem_found',
         ]
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),

@@ -1,18 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Αναφορά Υπηρεσίας</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Αναφορά Υπηρεσίας{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/anafora_ipiresia.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
     <h1>Αναφορά Υπηρεσίας</h1>
     {% if success %}
-        <p>Η αναφορά υποβλήθηκε με επιτυχία!</p>
+        <p class="success-message">Η αναφορά υποβλήθηκε με επιτυχία!</p>
     {% endif %}
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Υποβολή</button>
+        <div class="form-content">
+            <div class="image-container">
+                <img src="{% static 'img/tdb.png' %}" alt="Logo">
+            </div>
+            <div class="fields-container">
+                {{ form.as_p }}
+            </div>
+        </div>
+        <button type="submit" class="submit-button">Υποβολή</button>
     </form>
-</body>
-</html>
+</div>
+{% endblock %}
