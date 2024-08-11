@@ -1,0 +1,316 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Αναφορά Υπηρεσίας{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/anafora_ipiresia.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="video-background">
+    <video autoplay muted loop>
+        <source src="{% static 'img/background.webm' %}" type="video/webm">
+    </video>
+</div>
+<div class="form-container">
+    <h1>ΑΝΑΦΟΡΑ ΑΞΙΩΜΑΤΙΚΟΥ ΥΠΗΡΕΣΙΑΣ</h1>
+    <form method="post">
+        {% csrf_token %}
+        <p>
+            <label for="report_date">Ημερομηνία Αναφοράς:</label>
+            <input type="date" id="report_date" name="report_date" required>
+        </p>
+        <fieldset>
+            <legend>1. Αξιωματικός υπηρεσίας ΚΕΠΙΚ</legend>
+            <p>
+                <label for="officer">Αξιωματικός Υπηρεσίας ΚΕΠΙΚ:</label>
+                <select name="officer" id="officer">
+                    {% for officer in officers %}
+                    <option value="{{ officer.id }}">{{ officer.rank }} {{ officer.last_name }} {{ officer.first_name }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+            <p>
+                <label for="info_kepik">Ενημερώθηκα από τον Διοικητή του ΚΕΠΙΚ:</label>
+                <select name="info_kepik" id="info_kepik">
+                    <option value="ΝΑΙ">ΝΑΙ</option>
+                    <option value="ΟΧΙ">ΟΧΙ</option>
+                </select>
+            </p>
+            <p>
+                <label for="info_lohos">Ενημερώθηκα από τον Διοικητή του Λόχου:</label>
+                <select name="info_lohos" id="info_lohos">
+                    <option value="ΝΑΙ">ΝΑΙ</option>
+                    <option value="ΟΧΙ">ΟΧΙ</option>
+                </select>
+            </p>
+            <p>
+                <label for="info_monada">Ενημερώθηκα από τον Διοικητή της Μονάδας:</label>
+                <select name="info_monada" id="info_monada">
+                    <option value="ΝΑΙ">ΝΑΙ</option>
+                    <option value="ΟΧΙ">ΟΧΙ</option>
+                </select>
+            </p>
+            <p>
+                <label for="keys">Παρελήφθησαν τα κλειδιά της κλειδοθήκης Αξιωματικού ΚΕΠΙΚ:</label>
+                <select type="text" name="keys" id="keys">
+                <option value="ΝΑΙ">ΝΑΙ</option>
+                <option value="ΟΧΙ">ΟΧΙ</option>
+            </select>
+            </p>
+        </fieldset>
+
+        <fieldset>
+            <legend>2. Τμήμα Τηλεφωνικού Κέντρου</legend>
+            <p>
+                <label for="tele_center">Υπεύθυνος Τηλεφωνικού Κέντρου:</label>
+                <select name="tele_center" id="tele_center">
+                    {% for soldier in soldiers %}
+                        <option value="{{ soldier.id }}">{{ soldier.rank }} {{ soldier.last_name }} {{ soldier.first_name }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+            <p>
+                <label for="phone_check">Έγινε τηλεφωνικός έλεγχος τις προβλεπόμενες ώρες ανα τρίωρο:</label>
+                <select name="phone_check" id="phone_check">
+                    <option value="ΝΑΙ">ΝΑΙ</option>
+                    <option value="ΟΧΙ">ΟΧΙ</option>
+                </select>
+            </p>
+            <p>
+                <label for="interrupts">Διακοπές που αναφέρθηκαν (άκρα, αριθμός κυκλώματος):</label>
+                <textarea name="interrupts" id="interrupts"></textarea>
+            </p>
+            <p>
+                <label for="causes">Αίτια και διάρκεια διακοπών:</label>
+                <textarea name="causes" id="causes"></textarea>
+            </p>
+            <p>
+                <label for="actions">Ενέργειες για την αποκατάσταση των διακοπών:</label>
+                <textarea name="actions" id="actions"></textarea>
+            </p>
+            <p>
+                <label for="restored">Διακοπές που αποκαταστάθηκαν:</label>
+                <textarea name="restored" id="restored"></textarea>
+            </p>
+        </fieldset>
+
+        <fieldset>
+            <legend>3. Τμήμα Καταχώρισης Τηλετύπων</legend>
+            <p>
+                <label for="tele_register">Υπεύθυνος Καταχώρισης Τηλετύπων:</label>
+                <select name="tele_register" id="tele_register">
+                    {% for soldier in soldiers %}
+                        <option value="{{ soldier.id }}">{{ soldier.rank }} {{ soldier.last_name }} {{ soldier.first_name }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+            <p>
+                <label for="system_sda">ΣΔΑ – ΠΥΡΣΕΙΑ:</label>
+                <select name="system_sda" id="system_sda">
+                    <option value="Καλή">Καλή</option>
+                    <option value="Παρουσιάστηκαν προβλήματα">Παρουσιάστηκαν προβλήματα</option>
+                </select>
+            </p>
+            <p>
+                <label for="system_aifs">AIFS:</label>
+                <select name="system_aifs" id="system_aifs">
+                    <option value="Καλή">Καλή</option>
+                    <option value="Παρουσιάστηκαν προβλήματα">Παρουσιάστηκαν προβλήματα</option>
+                </select>
+            </p>
+            <p>
+                <label for="system_cronos">CRONOS:</label>
+                <select name="system_cronos" id="system_cronos">
+                    <option value="Καλή">Καλή</option>
+                    <option value="Παρουσιάστηκαν προβλήματα">Παρουσιάστηκαν προβλήματα</option>
+                </select>
+            </p>
+            <p>
+                <label for="system_faults">Βλάβες συστημάτων:</label>
+                <textarea name="system_faults" id="system_faults"></textarea>
+            </p>
+            <p>
+                <label for="repair_actions">Ενέργειες αποκατάστασης βλαβών:</label>
+                <textarea name="repair_actions" id="repair_actions"></textarea>
+            </p>
+        </fieldset>
+
+        <fieldset>
+            <legend>4. Τμήμα HARP</legend>
+            <p>
+                <label for="harp_phone">Παραλήφθηκε το τηλέφωνο HARP από την διαχείριση του HARP:</label>
+                <select name="harp_phone" id="harp_phone">
+                    <option value="ΝΑΙ">ΝΑΙ</option>
+                    <option value="ΟΧΙ">ΟΧΙ</option>
+                </select>
+            </p>
+            <p>
+                <label for="vpn_check">Έγινε έλεγχος της λειτουργικότητας του VPN και της εφαρμογής:</label>
+                <select name="vpn_check" id="vpn_check">
+                    <option value="ΝΑΙ">ΝΑΙ</option>
+                    <option value="ΟΧΙ">ΟΧΙ</option>
+                </select>
+            </p>
+            <p>
+                <label for="trackharp_check">Έγινε έλεγχος της εφαρμογής TRACKHARP μέσω της διαχειριστικής σελίδας:</label>
+                <select name="trackharp_check" id="trackharp_check">
+                    <option value="ΝΑΙ">ΝΑΙ</option>
+                    <option value="ΟΧΙ">ΟΧΙ</option>
+                </select>
+            </p>
+        </fieldset>
+
+        <fieldset>
+            <legend>5. Τμήμα Δικτύων</legend>
+            <p>
+                <label for="network_check">Έγινε έλεγχος του δικτύου (ΔΙΔΕΣ, NSWAN, ΑΔΜΕ) μέσω των εποπτικών εργαλείων ανα τρίωρο:</label>
+                <select name="network_check" id="network_check">
+                    <option value="ΝΑΙ">ΝΑΙ</option>
+                    <option value="ΟΧΙ">ΟΧΙ</option>
+                </select>
+            </p>
+            <p>
+                <label for="network_problem">Πρόβλημα που διαπιστώθηκε:</label>
+                <textarea name="network_problem" id="network_problem"></textarea>
+            </p>
+            <p>
+                <label for="server_check">Έγινε έλεγχος των εξυπηρετών του ΚΕΠΙΚ/ΓΕΣ μέσω των εποπτικών εργαλείων ανα τρίωρο:</label>
+                <select name="server_check" id="server_check">
+                    <option value="ΝΑΙ">ΝΑΙ</option>
+                    <option value="ΟΧΙ">ΟΧΙ</option>
+                </select>
+            </p>
+            <p>
+                <label for="server_problem">Πρόβλημα που διαπιστώθηκε στους εξυπηρετές:</label>
+                <textarea name="server_problem" id="server_problem"></textarea>
+            </p>
+            <p>
+                <label for="application_check">Έγινε έλεγχος των εφαρμογών του ΚΕΠΙΚ/ΓΕΣ μέσω των υπερσυνδέσμων ανα τρίωρο:</label>
+                <select name="application_check" id="application_check">
+                    <option value="ΝΑΙ">ΝΑΙ</option>
+                    <option value="ΟΧΙ">ΟΧΙ</option>
+                </select>
+            </p>
+            <p>
+                <label for="vosip_check">Έγινε έλεγχος των τηλεφώνων VOSIP μέσω των εποπτικών εργαλείων ανα τρίωρο:</label>
+                <select name="vosip_check" id="vosip_check">
+                    <option value="ΝΑΙ">ΝΑΙ</option>
+                    <option value="ΟΧΙ">ΟΧΙ</option>
+                </select>
+            </p>
+            <p>
+                <label for="vosip_problem">Πρόβλημα που διαπιστώθηκε στα τηλέφωνα VOSIP:</label>
+                <textarea name="vosip_problem" id="vosip_problem"></textarea>
+            </p>
+            <p>
+                <label for="circuit_routing">Δρομολόγηση κυκλώματος (άκρα, αριθμός, χωρητικότητα):</label>
+                <textarea name="circuit_routing" id="circuit_routing"></textarea>
+            </p>
+            <p>
+                <label for="application_served">Εφαρμογή που εξυπηρετούσε:</label>
+                <textarea name="application_served" id="application_served"></textarea>
+            </p>
+            <p>
+                <label for="ote_fault_number">Για διακοπή κυκλώματος του ΟΤΕ, δόθηκε αριθμός βλάβης:</label>
+                <textarea name="ote_fault_number" id="ote_fault_number"></textarea>
+            </p>
+            <p>
+                <label for="outage_duration">Διάρκεια διακοπής:</label>
+                <textarea name="outage_duration" id="outage_duration"></textarea>
+            </p>
+            <p>
+                <label for="alternative_routing">Εναλλακτική δρομολόγηση:</label>
+                <textarea name="alternative_routing" id="alternative_routing"></textarea>
+            </p>
+            <p>
+                <label for="microwave_check">Έλεγχος μικροκυματικών ζεύξεων:</label>
+                <textarea name="microwave_check" id="microwave_check"></textarea>
+            </p>
+            <p>
+                <label for="eseetha_fault_signal">Στάλθηκε σήμα βλάβης προς ΓΕΕΘΑ/Γ ΚΛΑΔΟΣ, εφόσον η βλάβη αφορούσε κύκλωμα ΕΣΕΕΘΑ:</label>
+                <select name="eseetha_fault_signal" id="eseetha_fault_signal">
+                    <option value="ΝΑΙ">ΝΑΙ</option>
+                    <option value="ΟΧΙ">ΟΧΙ</option>
+                </select>
+            </p>
+        </fieldset>
+        
+
+        <fieldset>
+            <legend>6. Κέντρο Ελέγχου – Λειτουργίας Δορυφορικών Επικοινωνιών</legend>
+            <p>
+                <label for="satellite_check">Έγινε έλεγχος των Δορυφορικών Ζεύξεων:</label>
+                <select name="satellite_check" id="satellite_check">
+                    <option value="ΝΑΙ">ΝΑΙ</option>
+                    <option value="ΟΧΙ">ΟΧΙ</option>
+                </select>
+            </p>
+            <p>
+                <label for="satellite_faults">Βλάβες (αίτια – διάρκεια διακοπής):</label>
+                <textarea name="satellite_faults" id="satellite_faults"></textarea>
+            </p>
+            <p>
+                <label for="pyrseia_status">Έγινε αποστολή της κατάστασης λειτουργικότητας μέσω ΠΥΡΣΕΙΑ:</label>
+                <select name="pyrseia_status" id="pyrseia_status">
+                    <option value="ΝΑΙ">ΝΑΙ</option>
+                    <option value="ΟΧΙ">ΟΧΙ</option>
+                </select>
+            </p>
+            <p>
+                <label for="cleaning_done">Πραγματοποιήθηκαν οι καθαριότητες των χώρων:</label>
+                <select name="cleaning_done" id="cleaning_done">
+                    <option value="ΝΑΙ">ΝΑΙ</option>
+                    <option value="ΟΧΙ">ΟΧΙ</option>
+                </select>
+            </p>
+            <p>
+                <label for="commander_informed">Έγινε ενημέρωση του Διοικητή ΚΕΠΙΚ:</label>
+                <select name="commander_informed" id="commander_informed">
+                    <option value="ΝΑΙ">ΝΑΙ</option>
+                    <option value="ΟΧΙ">ΟΧΙ</option>
+                </select>
+            </p>
+        </fieldset>
+        
+        <fieldset>
+            <legend>7. Παρατηρήσεις – Αναφορές - Προτάσεις</legend>
+            <p>
+                <label for="observations">Παρατηρήσεις - Αναφορές - Προτάσεις:</label>
+                <textarea name="observations" id="observations"></textarea>
+            </p>
+        </fieldset>
+        
+        <fieldset>
+            <legend>8. Υπογραφές</legend>
+            <p>
+                <label for="commander_kepik">Δκτης ΚΕΠΙΚ:</label>
+                <select name="commander_kepik" id="commander_kepik">
+                    {% for officer in officers %}
+                        <option value="{{ officer.id }}">{{ officer.rank }} {{ officer.last_name }} {{ officer.first_name }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+            <p>
+                <label for="officer_duty">ΑΞΥΠ ΚΕΠΙΚ:</label>
+                <select name="officer_duty" id="officer_duty">
+                    {% for officer in officers %}
+                        <option value="{{ officer.id }}">{{ officer.rank }} {{ officer.last_name }} {{ officer.first_name }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+            <p>
+                <label for="commander">ΔΚΤΗΣ:</label>
+                <select name="commander" id="commander">
+                    {% for officer in officers %}
+                        <option value="{{ officer.id }}">{{ officer.rank }} {{ officer.last_name }} {{ officer.first_name }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+        </fieldset>
+        
+        <p><button type="submit" class="submit-button">Υποβολή</button></p>
+    </form>
+</div>
+{% endblock %}

@@ -2,6 +2,9 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    background-size: cover;
+    height: 100vh;
+    overflow: auto;
 }
 
 .video-background {
@@ -28,30 +31,32 @@ header {
     align-items: center;
     justify-content: center;
     position: relative;
-    z-index: 2; /* Ensure header is above the video */
+    z-index: 1;
+    background: none;
 }
 
 header nav ul {
     list-style-type: none;
     padding: 0;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     margin: 0;
     width: 100%;
+    background: none;
 }
 
 header nav ul li {
     position: relative;
-    margin-right: 10px;
+    margin-right: 20px;
 }
 
 header nav ul li a {
     color: #fff;
     text-decoration: none;
-    padding: 10px 15px;
+    padding: 10px 20px;
     display: block;
-    border-radius: 5px;
+    border-radius: 10px;
 }
 
 header nav ul li a:hover {
@@ -67,12 +72,12 @@ header nav ul li a:hover {
 
 .dropdown-content {
     display: none;
-    position: absolute;
+    position: absolute; /* ή fixed αν θέλετε να τοποθετείται σε σχέση με το παράθυρο του browser */
     background-color: #f9f9f9;
-    min-width: 200px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 3; /* Ensure dropdown is above the header and video */
-    border-radius: 5px;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 9999; /* Πολύ υψηλό z-index για να εμφανίζεται μπροστά από όλα τα άλλα */
+    border-radius: 10px;
     opacity: 0;
     transform: scaleY(0);
     transform-origin: top;
@@ -84,12 +89,12 @@ header nav ul li a:hover {
     padding: 12px 16px;
     text-decoration: none;
     display: block;
-    border-radius: 5px;
+    border-radius: 10px;
 }
 
 .dropdown-content a:hover {
     background-color: #f1f1f1;
-    border-radius: 5px;
+    border-radius: 10px;
 }
 
 .dropdown:hover .dropdown-content {
@@ -98,24 +103,63 @@ header nav ul li a:hover {
     transform: scaleY(1);
 }
 
-.main-content {
-    margin: 20px;
-    text-align: center;
-    color: white;
+.form-container {
+    background-color: rgba(255, 255, 255, 0.85);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    max-width: 1200px;
+    margin: 100px auto;
+    z-index: 0; /* Διασφαλίζει ότι η φόρμα δεν καλύπτει τα dropdowns */
     position: relative;
-    z-index: 1;
 }
 
-.button-container {
-    display: flex;
-    flex-direction: column; /* Align buttons vertically */
-    justify-content: center;
-    align-items: center;
-    gap: 20px; /* Adjust this value to increase the space between buttons */
+h1 {
+    font-size: 24px;
+    color: #215e99;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-/* Νέο Στυλ Κουμπιών "Button 86" */
-button {
+fieldset {
+    border: 1px solid #215e99;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+legend {
+    font-size: 18px;
+    color: #215e99;
+    font-weight: bold;
+    padding: 0 10px;
+}
+
+label {
+    font-size: 14px;
+    color: #333;
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="date"],
+select,
+textarea {
+    width: 1100px;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+textarea {
+    height: 100px;
+}
+
+.submit-button {
     all: unset;
     font-size: 16px;
     background: transparent;
@@ -125,17 +169,18 @@ button {
     cursor: pointer;
     z-index: 1;
     padding: 10px 20px;
-    display: inline-flex; /* inline-flex για να προσαρμόζεται στο περιεχόμενο */
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     white-space: nowrap;
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
+    border-radius: 10px;
 }
 
-button::after,
-button::before {
+.submit-button::after,
+.submit-button::before {
     content: '';
     position: absolute;
     bottom: 0;
@@ -144,7 +189,7 @@ button::before {
     transition: all .4s;
 }
 
-button::before {
+.submit-button::before {
     transform: translate(0%, 0%);
     width: 100%;
     height: 100%;
@@ -152,7 +197,7 @@ button::before {
     border-radius: 10px;
 }
 
-button::after {
+.submit-button::after {
     transform: translate(10px, 10px);
     width: 35px;
     height: 35px;
@@ -162,20 +207,20 @@ button::after {
     border-radius: 50px;
 }
 
-button:hover::before {
+.submit-button:hover::before {
     transform: translate(5%, 20%);
     width: 110%;
     height: 110%;
 }
 
-button:hover::after {
+.submit-button:hover::after {
     border-radius: 10px;
     transform: translate(0, 0);
     width: 100%;
     height: 100%;
 }
 
-button:active::after {
+.submit-button:active::after {
     transition: 0s;
     transform: translate(0, 5%);
 }
@@ -184,9 +229,9 @@ footer {
     color: #fff;
     text-align: center;
     padding: 10px 0;
-    position: fixed;
+    position: relative;
     bottom: 0;
     width: 100%;
-    z-index: 2; /* Ensure footer is above the video */
+    z-index: 1;
     background: rgba(0, 0, 0, 0.5);
 }

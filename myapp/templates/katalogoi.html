@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Τηλεφωνικοί Κατάλογοι{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/katalogoi.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="video-background">
+    <video autoplay muted loop>
+        <source src="{% static 'img/background.webm' %}" type="video/webm">
+    </video>
+</div>
+<div class="main-content">
+    <h1>Τηλεφωνικοί Κατάλογοι</h1>
+    <div class="button-container">
+        <button class="button-86" role="button" onclick="location.href='{% static 'docs/call_close_ierarxia.pdf' %}'">Κλειστό Τηλεφωνικό</button>
+        <button class="button-86" role="button" onclick="location.href='#'">Τηλεφωνικός Κατάλογος ΕΨΑΔ</button>
+        <button class="button-86" role="button" onclick="location.href='{% static 'docs/call_vosip.pdf' %}'">Τηλεφωνικός Κατάλογος VOSIP</button>
+        <button class="button-86" role="button" onclick="location.href='#'">Τηλεφωνικός Κατάλογος ΕΡΜΗ</button>
+        <button class="button-86" role="button" onclick="location.href='{% static 'docs/call_harp.pdf' %}'">Τηλεφωνικός Κατάλογος HARP</button>
+        <button class="button-86" role="button" onclick="location.href='#'">Τηλεφωνικός Κατάλογος Δρομολογητών</button>
+        <button class="button-86" role="button" onclick="location.href='{% static 'docs/call_bices.pdf' %}'">Τηλεφωνικός Κατάλογος BICES</button>
+    </div>    
+</div>
+{% endblock %}

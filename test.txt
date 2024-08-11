@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <title>Αναφορά Υπηρεσίας</title>
+    <style>
+        body { line-height:116%; font-family: 'Arial', sans-serif; font-size:12pt }
+        h1, h2, h3, h4, h5, h6, p { margin:0pt 0pt 8pt }
+        li, table { margin-top:0pt; margin-bottom:8pt }
+        h1 { margin-top:18pt; margin-bottom:4pt; page-break-inside:avoid; page-break-after:avoid; line-height:116%; font-family:'Arial, sans-serif'; font-size:20pt; font-weight:normal; color:#0f4761 }
+        h2 { margin-top:8pt; margin-bottom:4pt; page-break-inside:avoid; page-break-after:avoid; line-height:116%; font-family:'Arial, sans-serif'; font-size:16pt; font-weight:normal; font-style:normal; color:#0f4761 }
+        h3 { margin-top:8pt; margin-bottom:4pt; page-break-inside:avoid; page-break-after:avoid; line-height:116%; font-family:Arial, sans-serif; font-size:14pt; font-weight:normal; color:#0f4761 }
+        h4 { margin-top:4pt; margin-bottom:2pt; page-break-inside:avoid; page-break-after:avoid; line-height:116%; font-size:12pt; font-weight:normal; font-style:italic; color:#0f4761 }
+        h5 { margin-top:4pt; margin-bottom:2pt; page-break-inside:avoid; page-break-after:avoid; line-height:116%; font-size:12pt; font-weight:normal; font-style:normal; color:#0f4761 }
+        h6 { margin-top:2pt; margin-bottom:0pt; page-break-inside:avoid; page-break-after:avoid; line-height:116%; font-size:12pt; font-weight:normal; font-style:italic; color:#595959 }
+        .Heading7 { margin-top:2pt; margin-bottom:0pt; page-break-inside:avoid; page-break-after:avoid; line-height:116%; font-size:12pt; font-weight:normal; color:#595959 }
+        .Heading8 { margin-bottom:0pt; page-break-inside:avoid; page-break-after:avoid; line-height:116%; font-size:12pt; font-weight:normal; font-style:italic; color:#272727 }
+        .Heading9 { margin-bottom:0pt; page-break-inside:avoid; page-break-after:avoid; line-height:116%; font-family:Arial, sans-serif; font-size:12pt; font-weight:normal; color:#272727 }
+        .IntenseQuote { margin:18pt 43.2pt; text-align:center; line-height:116%; border-top:0.75pt solid #0f4761; border-bottom:0.75pt solid #0f4761; padding-top:10pt; padding-bottom:10pt; font-size:12pt; font-style:italic; color:#0f4761 }
+        .ListParagraph { margin-left:36pt; margin-bottom:8pt; line-height:116%; font-size:12pt }
+        .Quote { margin-top:8pt; margin-bottom:8pt; text-align:center; line-height:116%; font-size:12pt; font-style:italic; color:#404040 }
+        .Subtitle { margin-bottom:8pt; line-height:116%; font-size:14pt; letter-spacing:0.75pt; color:#595959 }
+        .Title { margin-bottom:4pt; line-height:normal; font-family:'Arial, sans-serif'; font-size:28pt; letter-spacing:-0.5pt }
+        span.Heading1Char { font-family:'Arial, sans-serif'; font-size:20pt; color:#0f4761 }
+        span.Heading2Char { font-family:'Arial, sans-serif'; font-size:16pt; color:#0f4761 }
+        span.Heading3Char { font-size:14pt; color:#0f4761 }
+        span.Heading4Char { font-style:italic; color:#0f4761 }
+        span.Heading5Char { color:#0f4761 }
+        span.Heading6Char { font-style:italic; color:#595959 }
+        span.Heading7Char { color:#595959 }
+        span.Heading8Char { font-style:italic; color:#272727 }
+        span.Heading9Char { color:#272727 }
+        span.IntenseEmphasis { font-style:italic; color:#0f4761 }
+        span.IntenseQuoteChar { font-style:italic; color:#0f4761 }
+        span.IntenseReference { font-weight:bold; font-variant:small-caps; letter-spacing:0.25pt; color:#0f4761 }
+        span.QuoteChar { font-style:italic; color:#404040 }
+        span.SubtitleChar { font-size:14pt; letter-spacing:0.75pt; color:#595959 }
+        span.TitleChar { font-family:'Arial, sans-serif'; font-size:28pt; letter-spacing:-0.5pt }
+        @media (max-width: 900px) { 
+            img { 
+               max-width: 100%;
+               height: auto;
+            }
+
+            .table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            td, th {
+                padding: 8px;
+                text-align: left;
+                border: 1px solid #ddd;
+            }
+        }    
+    </style>
+</head>
+<body>
+    <p>
+        <span style="height:0pt; display:block; position:absolute; z-index:-2">
+            <img src="http://127.0.0.1:8000/static/img/tdb.png" width="79" height="74" alt="" style="margin-top:1pt; margin-left:20pt; position:absolute" />
+        </span>
+    </p>
+    <p style="margin-top:10pt; margin-bottom:50pt;">
+        <span style="font-family:Arial">&#xa0;</span>
+    </p>    
+    <h1 style="line-height:120%; font-size:16pt">
+        <strong><span style="font-family:Arial; ">ΑΝΑΦΟΡΑ ΑΞΙΩΜΑΤΙΚΟΥ ΥΠΗΡΕΣΙΑΣ ΤΗΣ: {{ officer_service_report.date|date:"l, j F Y" }}</span></strong>
+    </h1>
+    <table style="width:1200pt; margin-bottom:0pt; border-collapse:collapse; table-layout: fixed;">
+        <tr style="height:14pt">
+            <td style="width:260pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle; background-color:#bfbfbf">
+                <ol style="margin:2pt; padding-left:0pt">
+                    <li class="ListParagraph" style="margin-left:33pt; margin-bottom:0pt; line-height:normal; padding-left:2.99pt; font-family:Arial">
+                        Αξιωματικός υπηρεσίας ΚΕΠΙΚ
+                    </li>
+                </ol>
+            </td>
+            <td style="width:322.2pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle; background-color:#bfbfbf">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">{{ officer.rank }} {{ officer.last_name }}</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:14pt">
+            <td style="width:357.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">Ενημερώθηκα από τον Διοικητή του ΚΕΠΙΚ</span>
+                </p>
+            </td>
+            <td style="width:322.2pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">{{ info_kepik }}</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:14.4pt">
+            <td style="width:357.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">Ενημερώθηκα από τον Διοικητή του Λόχου</span>
+                </p>
+            </td>
+            <td style="width:322.2pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">{{ info_lohos }}</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:14.4pt">
+            <td style="width:357.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">Ενημερώθηκα από τον Διοικητή της Μονάδας</span>
+                </p>
+            </td>
+            <td style="width:322.2pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">{{ info_monada }}</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:14.4pt">
+            <td style="width:357.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">Παρελήφθησαν τα κλειδιά της κλειδοθήκης Αξιωματικού ΚΕΠΙΚ</span>
+                </p>
+            </td>
+            <td style="width:322.2pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">{{ keys }}</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:14.4pt">
+            <td colspan="2" style="width:690.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">&#xa0;</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:14.4pt">
+            <td style="width:357.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle; background-color:#bfbfbf">
+                <ol start="2" style="margin:0pt; padding-left:0pt">
+                    <li class="ListParagraph" style="margin-left:33.01pt; margin-bottom:0pt; text-align:justify; line-height:normal; padding-left:2.99pt; font-family:Arial">
+                        Τμήμα Τηλεφωνικού Κέντρου
+                    </li>
+                </ol>
+            </td>
+            <td style="width:322.2pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle; background-color:#bfbfbf">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">{{ tele_center.rank }} {{ tele_center.last_name }}</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:14.4pt">
+            <td style="width:357.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">Έγινε τηλεφωνικός έλεγχος τις προβλεπόμενες ώρες ανα τρίωρο</span>
+                </p>
+            </td>
+            <td style="width:322.2pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">{{ phone_check }}</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:14.4pt">
+            <td style="width:357.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">Διακοπές που αναφέρθηκαν (άκρα, αριθμός κυκλώματος)</span>
+                </p>
+            </td>
+            <td style="width:322.2pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">{{ interrupts }}</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:14.4pt">
+            <td style="width:357.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">Αίτια και διάρκεια διακοπών</span>
+                </p>
+            </td>
+            <td style="width:322.2pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">{{ causes }}</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:14.4pt">
+            <td style="width:357.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">Ενέργειες για την αποκατάσταση των διακοπών</span>
+                </p>
+            </td>
+            <td style="width:322.2pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">{{ actions }}</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:14.4pt">
+            <td style="width:357.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">Διακοπές που αποκαταστάθηκαν</span>
+                </p>
+            </td>
+            <td style="width:322.2pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">{{ restored }}</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:14.4pt">
+            <td colspan="2" style="width:690.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">&#xa0;</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:14.4pt">
+            <td style="width:357.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle; background-color:#bfbfbf">
+                <ol start="3" style="margin:0pt; padding-left:0pt">
+                    <li class="ListParagraph" style="margin-left:33.01pt; margin-bottom:0pt; text-align:justify; line-height:normal; padding-left:2.99pt; font-family:Arial">
+                        Τμήμα Καταχώρισης Τηλετύπων
+                    </li>
+                </ol>
+            </td>
+            <td style="width:322.2pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle; background-color:#bfbfbf">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">{{ tele_register.rank }} {{ tele_register.last_name }}</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:14.4pt">
+            <td style="width:357.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">ΣΔΑ – ΠΥΡΣΕΙΑ</span>
+                </p>
+            </td>
+            <td style="width:322.2pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">{{ system_sda }}</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:14.4pt">
+            <td style="width:357.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">AIFS</span>
+                </p>
+            </td>
+            <td style="width:322.2pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">{{ system_aifs }}</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:14.4pt">
+            <td style="width:357.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">CRONOS</span>
+                </p>
+            </td>
+            <td style="width:322.2pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">{{ system_cronos }}</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:14.4pt">
+            <td style="width:357.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">Βλάβες συστημάτων</span>
+                </p>
+            </td>
+            <td style="width:322.2pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">{{ system_faults }}</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:14.4pt">
+            <td style="width:357.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">Ενέργειες αποκατάστασης βλαβών</span>
+                </p>
+            </td>
+            <td style="width:322.2pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">{{ repair_actions }}</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:14.4pt">
+            <td colspan="2" style="width:690.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">&#xa0;</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:14.4pt">
+            <td style="width:357.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle; background-color:#bfbfbf">
+                <ol start="4" style="margin:0pt; padding-left:0pt">
+                    <li class="ListParagraph" style="margin-left:33.01pt; margin-bottom:0pt; text-align:justify; line-height:normal; padding-left:2.99pt; font-family:Arial">
+                        Τμήμα HARP
+                    </li>
+                </ol>
+            </td>
+            <td style="width:322.2pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle; background-color:#bfbfbf">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">{{ harp_phone }}</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:14.4pt">
+            <td style="width:357.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">Παραλήφθηκε το τηλέφωνο HARP από την διαχείριση του HARP</span>
+                </p>
+            </td>
+            <td style="width:322.2pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">{{ harp_phone }}</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:14.4pt">
+            <td style="width:357.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">Έγινε έλεγχος της λειτουργικότητας του VPN και της εφαρμογής</span>
+                </p>
+            </td>
+            <td style="width:322.2pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">{{ vpn_check }}</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:30.25pt">
+            <td style="width:357.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">Έγινε έλεγχος της εφαρμογής TRACKHARP μέσω της</span>
+                </p>
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">διαχειριστικής σελίδας</span>
+                </p>
+            </td>
+            <td style="width:322.2pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">{{ trackharp_check }}</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:14.4pt">
+            <td colspan="2" style="width:690.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">&#xa0;</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:14.4pt">
+            <td style="width:357.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle; background-color:#bfbfbf">
+                <ol start="5" style="margin:0pt; padding-left:0pt">
+                    <li class="ListParagraph" style="margin-left:33.01pt; margin-bottom:0pt; text-align:justify; line-height:normal; padding-left:2.99pt; font-family:Arial">
+                        Τμήμα Δικτύων
+                    </li>
+                </ol>
+            </td>
+            <td style="width:322.2pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle; background-color:#bfbfbf">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">&#xa0;</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:30.25pt">
+            <td style="width:362.7pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; page-break-inside:avoid; page-break-after:avoid; line-height:normal">
+                    <span style="font-family:Arial">Έγινε έλεγχος του δικτύου (ΔΙΔΕΣ, NS WAN, ΑΔΜΕ) μέσω των εποπτικών εργαλείων ανα τρίωρο</span>
+                </p>
+            </td>
+            <td style="width:312.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; page-break-inside:avoid; page-break-after:avoid; line-height:normal">
+                    <span style="font-family:Arial">{{ network_check }}</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:14.4pt">
+            <td style="width:362.7pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; page-break-inside:avoid; page-break-after:avoid; line-height:normal">
+                    <span style="font-family:Arial">Πρόβλημα που διαπιστώθηκε</span>
+                </p>
+            </td>
+            <td style="width:312.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; page-break-inside:avoid; page-break-after:avoid; line-height:normal">
+                    <span style="font-family:Arial">{{ network_problem }}</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:30.25pt">
+            <td style="width:362.7pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; page-break-inside:avoid; page-break-after:avoid; line-height:normal">
+                    <span style="font-family:Arial">Έγινε έλεγχος των εξυπηρετών του ΚΕΠΙΚ/ΓΕΣ μέσω των εποπτικών εργαλείων ανα τρίωρο</span>
+                </p>
+            </td>
+            <td style="width:312.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; page-break-inside:avoid; page-break-after:avoid; line-height:normal">
+                    <span style="font-family:Arial">{{ server_check }}</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:14.4pt">
+            <td style="width:362.7pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; page-break-inside:avoid; page-break-after:avoid; line-height:normal">
+                    <span style="font-family:Arial">Πρόβλημα που διαπιστώθηκε</span>
+                </p>
+            </td>
+            <td style="width:312.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; page-break-inside:avoid; page-break-after:avoid; line-height:normal">
+                    <span style="font-family:Arial">{{ server_problem }}</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:30.25pt">
+            <td style="width:362.7pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; page-break-inside:avoid; page-break-after:avoid; line-height:normal">
+                    <span style="font-family:Arial">Έγινε έλεγχος των εφαρμογών του ΚΕΠΙΚ/ΓΕΣ μέσω των υπερσυνδέσμων ανα τρίωρο</span>
+                </p>
+            </td>
+            <td style="width:312.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; page-break-inside:avoid; page-break-after:avoid; line-height:normal">
+                    <span style="font-family:Arial">{{ application_check }}</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:14.4pt">
+            <td style="width:362.7pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; page-break-inside:avoid; page-break-after:avoid; line-height:normal">
+                    <span style="font-family:Arial">Πρόβλημα που διαπιστώθηκε</span>
+                </p>
+            </td>
+            <td style="width:312.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; page-break-inside:avoid; page-break-after:avoid; line-height:normal">
+                    <span style="font-family:Arial">{{ application_problem }}</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:30.25pt">
+            <td style="width:362.7pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; page-break-inside:avoid; page-break-after:avoid; line-height:normal">
+                    <span style="font-family:Arial">Έγινε έλεγχος των τηλεφώνων VOSIP μέσω των εποπτικών εργαλείων ανα τρίωρο</span>
+                </p>
+            </td>
+            <td style="width:312.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; page-break-inside:avoid; page-break-after:avoid; line-height:normal">
+                    <span style="font-family:Arial">{{ vosip_check }}</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:14.4pt">
+            <td style="width:362.7pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; page-break-inside:avoid; page-break-after:avoid; line-height:normal">
+                    <span style="font-family:Arial">Πρόβλημα που διαπιστώθηκε</span>
+                </p>
+            </td>
+            <td style="width:312.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; page-break-inside:avoid; page-break-after:avoid; line-height:normal">
+                    <span style="font-family:Arial">{{ vosip_problem }}</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:14.4pt">
+            <td colspan="2" style="width:690.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">&#xa0;</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:14.4pt">
+            <td colspan="2" style="width:690.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">&#xa0;</span>
+                </p>
+            </td>
+        </tr>
+        <tr style="height:14.4pt">
+            <td colspan="2" style="width:690.95pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:middle">
+                <p style="margin-bottom:0pt; text-align:justify; line-height:normal">
+                    <span style="font-family:Arial">&#xa0;</span>
+                </p>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

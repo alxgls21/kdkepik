@@ -2,6 +2,9 @@
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.core.files.base import ContentFile
+import os
+from datetime import datetime
 
 class DidesCategory(models.Model):
     UNCLASSIFIED_NETWORK = 'unclassified'
@@ -123,4 +126,21 @@ class Soldier(models.Model):
     class Meta:
         verbose_name = _('Στρατιώτης')
         verbose_name_plural = _('Στρατιώτες')
+
+
+class AxypKepikServiceReport(models.Model):
+    pdf = models.FileField(upload_to='pdfs/', blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if self.pdf:
+            # Δημιουργία του νέου ονόματος αρχείου
+            report_date = datetime.now().strftime('%d-%m-%Y')
+            new_filename = f'Αναφορά_ΑΞΥΠ_της_{report_date}.pdf'
+            self.pdf.name = new_filename
         
+        super(AxypKepikServiceReport, self).save(*args, **kwargs)
+
+    def __str__(self):
+        if self.pdf:
+            return f"Αναφορά ΑΞΥΠ της {datetime.now().strftime('%d-%m-%Y')}"
+        return "Αναφορά ΑΞΥΠ χωρίς ημερομηνία"
