@@ -10,6 +10,7 @@ from datetime import datetime
 from django.utils.translation import gettext as _
 from django.utils.formats import date_format
 import locale
+import os
 
 def index(request):
     return render(request, 'index.html')
@@ -100,7 +101,7 @@ def anafora_ipiresia_view(request):
             temp_html_file_path = temp_html_file.name
 
         # Διαμόρφωση του pdfkit με το μονοπάτι του εκτελέσιμου wkhtmltopdf
-        pdfkit_config = pdfkit.configuration(wkhtmltopdf=r'F:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe')
+        pdfkit_config = pdfkit.configuration(wkhtmltopdf=os.path.join('myapp', 'bin', 'wkhtmltopdf.exe'))
 
         # Δημιουργία του PDF από το προσωρινό αρχείο με επιπλέον options
         pdf = pdfkit.from_file(temp_html_file_path, False, configuration=pdfkit_config, options={
