@@ -1,0 +1,679 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Αναφορά Υπηρεσίας Οπλίτη{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/anafora_ipiresia_opliti.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="video-background">
+    <video autoplay muted loop>
+        <source src="{% static 'img/background.webm' %}" type="video/webm">
+    </video>
+</div>
+<div class="form-container">
+    <h1>ΚΕΠΙΚ/ΓΕΣ ΤΜΗΜΑ ΣΗΜΑΤΩΝ, ΑΝΑΦΟΡΑ ΥΠΗΡΕΣΙΑΣ</h1>
+    <form method="post">
+        {% csrf_token %}
+        <p>
+            <label for="report_date">Ημερομηνία Αναφοράς:</label>
+            <input type="date" id="report_date" name="report_date" required>
+        </p>
+        
+        <!-- Fieldset για ΣΔΑ – ΠΥΡΣΕΙΑ -->
+        <fieldset>
+            <legend>ΣΔΑ – ΠΥΡΣΕΙΑ</legend>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ΒΑΘΜΟΣ ΠΡΟΤΕΡΑΙΟΤΗΤΑΣ</th>
+                        <th>Z</th>
+                        <th>O</th>
+                        <th>P</th>
+                        <th>R</th>
+                        <th>ΣΥΝΟΛΟ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>ΔΙΑΒΑΘΜΙΣΜΕΝΑ (U)</td>
+                        <td><input type="number" id="zu" name="zu" oninput="calculateTotalSDA(); calculateTotalIncoming()"></td>
+                        <td><input type="number" id="ou" name="ou" oninput="calculateTotalSDA(); calculateTotalIncoming()"></td>
+                        <td><input type="number" id="pu" name="pu" oninput="calculateTotalSDA(); calculateTotalIncoming()"></td>
+                        <td><input type="number" id="ru" name="ru" oninput="calculateTotalSDA(); calculateTotalIncoming()"></td>
+                        <td rowspan="2" class="total-cell"><input type="number" id="total_sum_sda" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>ΔΙΑΒΑΘΜΙΣΜΕΝΑ (H)</td>
+                        <td><input type="number" id="zh" name="zh" oninput="calculateTotalSDA(); calculateTotalIncoming()"></td>
+                        <td><input type="number" id="oh" name="oh" oninput="calculateTotalSDA(); calculateTotalIncoming()"></td>
+                        <td><input type="number" id="ph" name="ph" oninput="calculateTotalSDA(); calculateTotalIncoming()"></td>
+                        <td><input type="number" id="rh" name="rh" oninput="calculateTotalSDA(); calculateTotalIncoming()"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </fieldset>
+
+        <!-- Fieldset για AIFS -->
+        <fieldset>
+            <legend>AIFS</legend>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ΒΑΘΜΟΣ ΠΡΟΤΕΡΑΙΟΤΗΤΑΣ</th>
+                        <th>Z</th>
+                        <th>O</th>
+                        <th>P</th>
+                        <th>R</th>
+                        <th>ΣΥΝΟΛΟ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>ΔΙΑΒΑΘΜΙΣΜΕΝΑ (U)</td>
+                        <td><input type="number" id="zu_aifs" name="zu_aifs" oninput="calculateTotalAIFS(); calculateTotalIncoming()"></td>
+                        <td><input type="number" id="ou_aifs" name="ou_aifs" oninput="calculateTotalAIFS(); calculateTotalIncoming()"></td>
+                        <td><input type="number" id="pu_aifs" name="pu_aifs" oninput="calculateTotalAIFS(); calculateTotalIncoming()"></td>
+                        <td><input type="number" id="ru_aifs" name="ru_aifs" oninput="calculateTotalAIFS(); calculateTotalIncoming()"></td>
+                        <td rowspan="2" class="total-cell"><input type="number" id="total_sum_aifs" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>ΔΙΑΒΑΘΜΙΣΜΕΝΑ (H)</td>
+                        <td><input type="number" id="zh_aifs" name="zh_aifs" oninput="calculateTotalAIFS(); calculateTotalIncoming()"></td>
+                        <td><input type="number" id="oh_aifs" name="oh_aifs" oninput="calculateTotalAIFS(); calculateTotalIncoming()"></td>
+                        <td><input type="number" id="ph_aifs" name="ph_aifs" oninput="calculateTotalAIFS(); calculateTotalIncoming()"></td>
+                        <td><input type="number" id="rh_aifs" name="rh_aifs" oninput="calculateTotalAIFS(); calculateTotalIncoming()"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </fieldset>
+
+        <!-- Fieldset για ΣΥΝΟΛΟ ΕΙΣΕΡΧΟΜΕΝΩΝ (AIFS & ΣΔΑ – ΠΥΡΣΕΙΑ) -->
+        <fieldset>
+            <legend>ΣΥΝΟΛΟ ΕΙΣΕΡΧΟΜΕΝΩΝ (AIFS & ΣΔΑ – ΠΥΡΣΕΙΑ)</legend>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ΒΑΘΜΟΣ ΠΡΟΤΕΡΑΙΟΤΗΤΑΣ</th>
+                        <th>Z</th>
+                        <th>O</th>
+                        <th>P</th>
+                        <th>R</th>
+                        <th>ΣΥΝΟΛΟ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>ΔΙΑΒΑΘΜΙΣΜΕΝΑ (U)</td>
+                        <td><input type="number" id="zu_total" name="zu_total" readonly></td>
+                        <td><input type="number" id="ou_total" name="ou_total" readonly></td>
+                        <td><input type="number" id="pu_total" name="pu_total" readonly></td>
+                        <td><input type="number" id="ru_total" name="ru_total" readonly></td>
+                        <td rowspan="2" class="total-cell"><input type="number" id="total_sum_incoming" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>ΔΙΑΒΑΘΜΙΣΜΕΝΑ (H)</td>
+                        <td><input type="number" id="zh_total" name="zh_total" readonly></td>
+                        <td><input type="number" id="oh_total" name="oh_total" readonly></td>
+                        <td><input type="number" id="ph_total" name="ph_total" readonly></td>
+                        <td><input type="number" id="rh_total" name="rh_total" readonly></td>
+                    </tr>
+                </tbody>
+            </table>
+        </fieldset>
+
+        <!-- Fieldset για CRONOS -->
+        <fieldset>
+            <legend>CRONOS</legend>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ΒΑΘΜΟΣ ΠΡΟΤΕΡΑΙΟΤΗΤΑΣ</th>
+                        <th>Z</th>
+                        <th>O</th>
+                        <th>P</th>
+                        <th>R</th>
+                        <th>ΣΥΝΟΛΟ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>ΔΙΑΒΑΘΜΙΣΜΕΝΑ (U)</td>
+                        <td><input type="number" id="zu_cronos" name="zu_cronos" oninput="calculateTotalCRONOS(); calculateTotalGeneral()"></td>
+                        <td><input type="number" id="ou_cronos" name="ou_cronos" oninput="calculateTotalCRONOS(); calculateTotalGeneral()"></td>
+                        <td><input type="number" id="pu_cronos" name="pu_cronos" oninput="calculateTotalCRONOS(); calculateTotalGeneral()"></td>
+                        <td><input type="number" id="ru_cronos" name="ru_cronos" oninput="calculateTotalCRONOS(); calculateTotalGeneral()"></td>
+                        <td rowspan="2" class="total-cell"><input type="number" id="total_sum_cronos" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>ΔΙΑΒΑΘΜΙΣΜΕΝΑ (H)</td>
+                        <td><input type="number" id="zh_cronos" name="zh_cronos" oninput="calculateTotalCRONOS(); calculateTotalGeneral()"></td>
+                        <td><input type="number" id="oh_cronos" name="oh_cronos" oninput="calculateTotalCRONOS(); calculateTotalGeneral()"></td>
+                        <td><input type="number" id="ph_cronos" name="ph_cronos" oninput="calculateTotalCRONOS(); calculateTotalGeneral()"></td>
+                        <td><input type="number" id="rh_cronos" name="rh_cronos" oninput="calculateTotalCRONOS(); calculateTotalGeneral()"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </fieldset>
+
+        <!-- Fieldset για ΓΕΝΙΚΟ ΣΥΝΟΛΟ -->
+        <fieldset>
+            <legend>ΓΕΝΙΚΟ ΣΥΝΟΛΟ</legend>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ΒΑΘΜΟΣ ΠΡΟΤΕΡΑΙΟΤΗΤΑΣ</th>
+                        <th>Z</th>
+                        <th>O</th>
+                        <th>P</th>
+                        <th>R</th>
+                        <th>ΣΥΝΟΛΟ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>ΔΙΑΒΑΘΜΙΣΜΕΝΑ (U)</td>
+                        <td><input type="number" id="zu_general" name="zu_general" readonly></td>
+                        <td><input type="number" id="ou_general" name="ou_general" readonly></td>
+                        <td><input type="number" id="pu_general" name="pu_general" readonly></td>
+                        <td><input type="number" id="ru_general" name="ru_general" readonly></td>
+                        <td rowspan="2" class="total-cell"><input type="number" id="total_sum_general" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>ΔΙΑΒΑΘΜΙΣΜΕΝΑ (H)</td>
+                        <td><input type="number" id="zh_general" name="zh_general" readonly></td>
+                        <td><input type="number" id="oh_general" name="oh_general" readonly></td>
+                        <td><input type="number" id="ph_general" name="ph_general" readonly></td>
+                        <td><input type="number" id="rh_general" name="rh_general" readonly></td>
+                    </tr>
+                </tbody>
+            </table>
+        </fieldset>
+
+        <fieldset>
+            <legend>Α. Αναφέρονται τα ακόλουθα στοιχεία που αφορούν την εκτέλεση της υπηρεσίας μου:</legend>
+            <p>
+                <label for="arrival_time">Ώρα προσέλευσης:</label>
+                <input type="time" id="arrival_time" name="arrival_time" required>
+            </p>
+            <p>
+                <label for="departure_time">Ώρα αποχώρησης:</label>
+                <input type="time" id="departure_time" name="departure_time" required>
+            </p>
+            <p>
+                <label for="problems">Προβλήματα – Παρατηρήσεις κατά την ανάληψη της υπηρεσίας:</label>
+                <textarea id="problems" name="problems"></textarea>
+            </p>
+        </fieldset>
+
+        <fieldset>
+            <legend>Β. Αριθμός σημάτων από ΠΥΡΣΕΙΑ</legend>
+            <p>
+                <label for="incoming_signals">Εισερχόμενα:</label>
+                <input type="number" id="incoming_signals" name="incoming_signals" value="0" readonly>
+            </p>
+            <p>
+                <label for="outgoing_signals">Εξερχόμενα:</label>
+                <input type="number" id="outgoing_signals" name="outgoing_signals" min="0">
+            </p>
+            <p>
+                <label for="transit_signals">Διαβατικά:</label>
+                <input type="number" id="transit_signals" name="transit_signals" min="0">
+            </p>
+            <p>
+                <label for="non_transmitted_signals">Μη διακινηθέντα σήματα ΠΥΡΣΕΙΑ:</label>
+                <input type="number" id="non_transmitted_signals" name="non_transmitted_signals" min="0">
+            </p>
+            <p>
+                <label for="system_operation">Ορθή λειτουργία συστήματος:</label>
+                <textarea id="system_operation" name="system_operation"></textarea>
+            </p>
+            <p>
+                <label for="transmission_issues">Λόγοι αδυναμίας διαβίβασης σημάτων:</label>
+                <textarea id="transmission_issues" name="transmission_issues"></textarea>
+            </p>
+        </fieldset>
+
+        <fieldset>
+            <legend>Γ. Σήματα CRONOS</legend>
+            <p>
+                <label for="cronos_signals">Αριθμός σημάτων CRONOS:</label>
+                <input type="number" id="cronos_signals" name="cronos_signals" value="0" readonly>
+            </p>
+            <p>
+                <label for="cronos_non_transmitted">Μη διακινηθέντα σήματα CRONOS:</label>
+                <input type="number" id="cronos_non_transmitted" name="cronos_non_transmitted" min="0">
+            </p>
+            <p>
+                <label for="cronos_system_operation">Ορθή λειτουργία συστήματος:</label>
+                <textarea id="cronos_system_operation" name="cronos_system_operation"></textarea>
+            </p>
+            <p>
+                <label for="cronos_issues">Λόγοι αδυναμίας διαβίβασης σημάτων και παρατηρήσεις:</label>
+                <textarea id="cronos_issues" name="cronos_issues"></textarea>
+            </p>
+        </fieldset>
+
+        <fieldset>
+            <legend>Δ. Σήματα AIFS</legend>
+            <p>
+                <label for="aifs_signals">Αριθμός σημάτων AIFS:</label>
+                <input type="number" id="aifs_signals" name="aifs_signals" value="0" readonly>
+            </p>
+            <p>
+                <label for="aifs_non_transmitted">Μη διακινηθέντα σήματα AIFS:</label>
+                <input type="number" id="aifs_non_transmitted" name="aifs_non_transmitted" min="0">
+            </p>
+            <p>
+                <label for="aifs_system_operation">Ορθή λειτουργία συστήματος:</label>
+                <textarea id="aifs_system_operation" name="aifs_system_operation"></textarea>
+            </p>
+            <p>
+                <label for="aifs_issues">Λόγοι αδυναμίας διαβίβασης σημάτων και παρατηρήσεις:</label>
+                <textarea id="aifs_issues" name="aifs_issues"></textarea>
+            </p>
+        </fieldset>
+
+        <fieldset>
+            <legend>Ε. Γενικές Παρατηρήσεις</legend>
+            <p>
+                <label for="general_observations">Γενικές Παρατηρήσεις:</label>
+                <textarea id="general_observations" name="general_observations"></textarea>
+            </p>
+        </fieldset>
+
+<fieldset>
+    <legend>ΕΛΕΓΧΟΣ ΓΡΑΜΜΩΝ ΕΨΑΔ</legend>
+    <table>
+        <thead>
+            <tr>
+                <th>Α/Α</th>
+                <th>ΣΧΗΜΑΤΙΣΜΟΣ</th>
+                <th>ΕΨΑΔ</th>
+                <th>14:00</th>
+                <th>18:00</th>
+                <th>23:00</th>
+                <th>03:00</th>
+                <th>06:00</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>ΥΠΕΘΑ</td>
+                <td>9-501-1616</td>
+                <td><input type="text" name="check_1_14" /></td>
+                <td><input type="text" name="check_1_18" /></td>
+                <td><input type="text" name="check_1_23" /></td>
+                <td><input type="text" name="check_1_03" /></td>
+                <td><input type="text" name="check_1_06" /></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>ΓΕΕΘΑ</td>
+                <td>9-500-2299</td>
+                <td><input type="text" name="check_2_14" /></td>
+                <td><input type="text" name="check_2_18" /></td>
+                <td><input type="text" name="check_2_23" /></td>
+                <td><input type="text" name="check_2_03" /></td>
+                <td><input type="text" name="check_2_06" /></td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>ΓΕΑ</td>
+                <td>9-600-1972</td>
+                <td><input type="text" name="check_3_14" /></td>
+                <td><input type="text" name="check_3_18" /></td>
+                <td><input type="text" name="check_3_23" /></td>
+                <td><input type="text" name="check_3_03" /></td>
+                <td><input type="text" name="check_3_06" /></td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>ΓΕΝ</td>
+                <td>9-705-1369</td>
+                <td><input type="text" name="check_4_14" /></td>
+                <td><input type="text" name="check_4_18" /></td>
+                <td><input type="text" name="check_4_23" /></td>
+                <td><input type="text" name="check_4_03" /></td>
+                <td><input type="text" name="check_4_06" /></td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>1 ΣΤΡΑΤΙΑ</td>
+                <td>851-3911</td>
+                <td><input type="text" name="check_5_14" /></td>
+                <td><input type="text" name="check_5_18" /></td>
+                <td><input type="text" name="check_5_23" /></td>
+                <td><input type="text" name="check_5_03" /></td>
+                <td><input type="text" name="check_5_06" /></td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>Γ ΣΣ</td>
+                <td>831-3911</td>
+                <td><input type="text" name="check_6_14" /></td>
+                <td><input type="text" name="check_6_18" /></td>
+                <td><input type="text" name="check_6_23" /></td>
+                <td><input type="text" name="check_6_03" /></td>
+                <td><input type="text" name="check_6_06" /></td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>Δ ΣΣ</td>
+                <td>841-4911</td>
+                <td><input type="text" name="check_7_14" /></td>
+                <td><input type="text" name="check_7_18" /></td>
+                <td><input type="text" name="check_7_23" /></td>
+                <td><input type="text" name="check_7_03" /></td>
+                <td><input type="text" name="check_7_06" /></td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td>ΑΣΔΕΝ</td>
+                <td>801-5911</td>
+                <td><input type="text" name="check_8_14" /></td>
+                <td><input type="text" name="check_8_18" /></td>
+                <td><input type="text" name="check_8_23" /></td>
+                <td><input type="text" name="check_8_03" /></td>
+                <td><input type="text" name="check_8_06" /></td>
+            </tr>
+            <tr>
+                <td>9</td>
+                <td>ΑΣΔΥΣ</td>
+                <td>802-6911</td>
+                <td><input type="text" name="check_9_14" /></td>
+                <td><input type="text" name="check_9_18" /></td>
+                <td><input type="text" name="check_9_23" /></td>
+                <td><input type="text" name="check_9_03" /></td>
+                <td><input type="text" name="check_9_06" /></td>
+            </tr>
+            <tr>
+                <td>10</td>
+                <td>ΔΔΕΕ</td>
+                <td>816-2400</td>
+                <td><input type="text" name="check_10_14" /></td>
+                <td><input type="text" name="check_10_18" /></td>
+                <td><input type="text" name="check_10_23" /></td>
+                <td><input type="text" name="check_10_03" /></td>
+                <td><input type="text" name="check_10_06" /></td>
+            </tr>
+            <tr>
+                <td>11</td>
+                <td>ΓΕΕΦ</td>
+                <td>8099-7000</td>
+                <td><input type="text" name="check_11_14" /></td>
+                <td><input type="text" name="check_11_18" /></td>
+                <td><input type="text" name="check_11_23" /></td>
+                <td><input type="text" name="check_11_03" /></td>
+                <td><input type="text" name="check_11_06" /></td>
+            </tr>
+            <tr>
+                <td>12</td>
+                <td>ΕΛΔΥΚ</td>
+                <td>8099-2700</td>
+                <td><input type="text" name="check_12_14" /></td>
+                <td><input type="text" name="check_12_18" /></td>
+                <td><input type="text" name="check_12_23" /></td>
+                <td><input type="text" name="check_12_03" /></td>
+                <td><input type="text" name="check_12_06" /></td>
+            </tr>
+            <tr>
+                <td>13</td>
+                <td>Ι ΜΠ</td>
+                <td>821-2611</td>
+                <td><input type="text" name="check_13_14" /></td>
+                <td><input type="text" name="check_13_18" /></td>
+                <td><input type="text" name="check_13_23" /></td>
+                <td><input type="text" name="check_13_03" /></td>
+                <td><input type="text" name="check_13_06" /></td>
+            </tr>
+            <tr>
+                <td>14</td>
+                <td>95 ΑΔΤΕ Τ/Κ</td>
+                <td>865-5152</td>
+                <td><input type="text" name="check_14_14" /></td>
+                <td><input type="text" name="check_14_18" /></td>
+                <td><input type="text" name="check_14_23" /></td>
+                <td><input type="text" name="check_14_03" /></td>
+                <td><input type="text" name="check_14_06" /></td>
+            </tr>
+            <tr>
+                <td>15</td>
+                <td>9 ΤΑΞ ΠΖ</td>
+                <td>811-1212</td>
+                <td><input type="text" name="check_15_14" /></td>
+                <td><input type="text" name="check_15_18" /></td>
+                <td><input type="text" name="check_15_23" /></td>
+                <td><input type="text" name="check_15_03" /></td>
+                <td><input type="text" name="check_15_06" /></td>
+            </tr>
+            <tr>
+                <td>16</td>
+                <td>XXIV ΤΘΤ</td>
+                <td>857-4000</td>
+                <td><input type="text" name="check_16_14" /></td>
+                <td><input type="text" name="check_16_18" /></td>
+                <td><input type="text" name="check_16_23" /></td>
+                <td><input type="text" name="check_16_03" /></td>
+                <td><input type="text" name="check_16_06" /></td>
+            </tr>
+            <tr>
+                <td>17</td>
+                <td>ΣΠΖ</td>
+                <td>589-2100</td>
+                <td><input type="text" name="check_17_14" /></td>
+                <td><input type="text" name="check_17_18" /></td>
+                <td><input type="text" name="check_17_23" /></td>
+                <td><input type="text" name="check_17_03" /></td>
+                <td><input type="text" name="check_17_06" /></td>
+            </tr>
+            <tr>
+                <td>18</td>
+                <td>ΣΠΒ</td>
+                <td>871-1000</td>
+                <td><input type="text" name="check_18_14" /></td>
+                <td><input type="text" name="check_18_18" /></td>
+                <td><input type="text" name="check_18_23" /></td>
+                <td><input type="text" name="check_18_03" /></td>
+                <td><input type="text" name="check_18_06" /></td>
+            </tr>
+            <tr>
+                <td>19</td>
+                <td>ΣΔΒ</td>
+                <td>814-2100</td>
+                <td><input type="text" name="check_19_14" /></td>
+                <td><input type="text" name="check_19_18" /></td>
+                <td><input type="text" name="check_19_23" /></td>
+                <td><input type="text" name="check_19_03" /></td>
+                <td><input type="text" name="check_19_06" /></td>
+            </tr>
+            <tr>
+                <td>20</td>
+                <td>ΣΧΑΛ</td>
+                <td>872-1000</td>
+                <td><input type="text" name="check_20_14" /></td>
+                <td><input type="text" name="check_20_18" /></td>
+                <td><input type="text" name="check_20_23" /></td>
+                <td><input type="text" name="check_20_03" /></td>
+                <td><input type="text" name="check_20_06" /></td>
+            </tr>
+            <tr>
+                <td>21</td>
+                <td>ΓΥΣ</td>
+                <td>806-6600</td>
+                <td><input type="text" name="check_21_14" /></td>
+                <td><input type="text" name="check_21_18" /></td>
+                <td><input type="text" name="check_21_23" /></td>
+                <td><input type="text" name="check_21_03" /></td>
+                <td><input type="text" name="check_21_06" /></td>
+            </tr>
+            <tr>
+                <td>22</td>
+                <td>2 ΤΕΑΣ</td>
+                <td>817-1000</td>
+                <td><input type="text" name="check_22_14" /></td>
+                <td><input type="text" name="check_22_18" /></td>
+                <td><input type="text" name="check_22_23" /></td>
+                <td><input type="text" name="check_22_03" /></td>
+                <td><input type="text" name="check_22_06" /></td>
+            </tr>
+            <tr>
+                <td>23</td>
+                <td>ΣΕΘΑ</td>
+                <td>828-6581</td>
+                <td><input type="text" name="check_23_14" /></td>
+                <td><input type="text" name="check_23_18" /></td>
+                <td><input type="text" name="check_23_23" /></td>
+                <td><input type="text" name="check_23_03" /></td>
+                <td><input type="text" name="check_23_06" /></td>
+            </tr>
+            <tr>
+                <td>24</td>
+                <td>ΚΕΠΙΚ</td>
+                <td>800-5989</td>
+                <td><input type="text" name="check_24_14" /></td>
+                <td><input type="text" name="check_24_18" /></td>
+                <td><input type="text" name="check_24_23" /></td>
+                <td><input type="text" name="check_24_03" /></td>
+                <td><input type="text" name="check_24_06" /></td>
+            </tr>
+        </tbody>
+    </table>
+    <p>ΠΑΡΑΤΗΡΗΣΕΙΣ</p>
+    <textarea name="remarks" rows="3"></textarea>
+</fieldset>
+        
+
+        <p><button type="submit" class="submit-button">Υποβολή</button></p>
+    </form>
+</div>
+
+<script>
+    // Υπολογισμός για τον πίνακα ΣΔΑ – ΠΥΡΣΕΙΑ
+    function calculateTotalSDA() {
+        let zu = parseInt(document.getElementById('zu').value) || 0;
+        let ou = parseInt(document.getElementById('ou').value) || 0;
+        let pu = parseInt(document.getElementById('pu').value) || 0;
+        let ru = parseInt(document.getElementById('ru').value) || 0;
+        let zh = parseInt(document.getElementById('zh').value) || 0;
+        let oh = parseInt(document.getElementById('oh').value) || 0;
+        let ph = parseInt(document.getElementById('ph').value) || 0;
+        let rh = parseInt(document.getElementById('rh').value) || 0;
+
+        let totalSumSDA = zu + ou + pu + ru + zh + oh + ph + rh;
+        document.getElementById('total_sum_sda').value = totalSumSDA;
+
+        // Ενημέρωση του πεδίου Εισερχόμενα στην ενότητα Β
+        document.getElementById('incoming_signals').value = totalSumSDA;
+    }
+
+    // Υπολογισμός για τον πίνακα AIFS
+    function calculateTotalAIFS() {
+        let zu_aifs = parseInt(document.getElementById('zu_aifs').value) || 0;
+        let ou_aifs = parseInt(document.getElementById('ou_aifs').value) || 0;
+        let pu_aifs = parseInt(document.getElementById('pu_aifs').value) || 0;
+        let ru_aifs = parseInt(document.getElementById('ru_aifs').value) || 0;
+        let zh_aifs = parseInt(document.getElementById('zh_aifs').value) || 0;
+        let oh_aifs = parseInt(document.getElementById('oh_aifs').value) || 0;
+        let ph_aifs = parseInt(document.getElementById('ph_aifs').value) || 0;
+        let rh_aifs = parseInt(document.getElementById('rh_aifs').value) || 0;
+
+        let totalSumAIFS = zu_aifs + ou_aifs + pu_aifs + ru_aifs + zh_aifs + oh_aifs + ph_aifs + rh_aifs;
+        document.getElementById('total_sum_aifs').value = totalSumAIFS;
+
+        // Ενημέρωση του πεδίου Αριθμός σημάτων AIFS στην ενότητα Δ
+        document.getElementById('aifs_signals').value = totalSumAIFS;
+    }
+
+    // Υπολογισμός για τον πίνακα ΣΥΝΟΛΟ ΕΙΣΕΡΧΟΜΕΝΩΝ (AIFS & ΣΔΑ – ΠΥΡΣΕΙΑ)
+    function calculateTotalIncoming() {
+        let zu = parseInt(document.getElementById('zu').value) || 0;
+        let ou = parseInt(document.getElementById('ou').value) || 0;
+        let pu = parseInt(document.getElementById('pu').value) || 0;
+        let ru = parseInt(document.getElementById('ru').value) || 0;
+        let zh = parseInt(document.getElementById('zh').value) || 0;
+        let oh = parseInt(document.getElementById('oh').value) || 0;
+        let ph = parseInt(document.getElementById('ph').value) || 0;
+        let rh = parseInt(document.getElementById('rh').value) || 0;
+
+        let zu_aifs = parseInt(document.getElementById('zu_aifs').value) || 0;
+        let ou_aifs = parseInt(document.getElementById('ou_aifs').value) || 0;
+        let pu_aifs = parseInt(document.getElementById('pu_aifs').value) || 0;
+        let ru_aifs = parseInt(document.getElementById('ru_aifs').value) || 0;
+        let zh_aifs = parseInt(document.getElementById('zh_aifs').value) || 0;
+        let oh_aifs = parseInt(document.getElementById('oh_aifs').value) || 0;
+        let ph_aifs = parseInt(document.getElementById('ph_aifs').value) || 0;
+        let rh_aifs = parseInt(document.getElementById('rh_aifs').value) || 0;
+
+        document.getElementById('zu_total').value = zu + zu_aifs;
+        document.getElementById('ou_total').value = ou + ou_aifs;
+        document.getElementById('pu_total').value = pu + pu_aifs;
+        document.getElementById('ru_total').value = ru + ru_aifs;
+
+        document.getElementById('zh_total').value = zh + zh_aifs;
+        document.getElementById('oh_total').value = oh + oh_aifs;
+        document.getElementById('ph_total').value = ph + ph_aifs;
+        document.getElementById('rh_total').value = rh + rh_aifs;
+
+        let totalSumIncoming = zu + ou + pu + ru + zh + oh + ph + rh + zu_aifs + ou_aifs + pu_aifs + ru_aifs + zh_aifs + oh_aifs + ph_aifs + rh_aifs;
+        document.getElementById('total_sum_incoming').value = totalSumIncoming;
+    }
+
+    // Υπολογισμός για τον πίνακα CRONOS
+    function calculateTotalCRONOS() {
+        let zu_cronos = parseInt(document.getElementById('zu_cronos').value) || 0;
+        let ou_cronos = parseInt(document.getElementById('ou_cronos').value) || 0;
+        let pu_cronos = parseInt(document.getElementById('pu_cronos').value) || 0;
+        let ru_cronos = parseInt(document.getElementById('ru_cronos').value) || 0;
+        let zh_cronos = parseInt(document.getElementById('zh_cronos').value) || 0;
+        let oh_cronos = parseInt(document.getElementById('oh_cronos').value) || 0;
+        let ph_cronos = parseInt(document.getElementById('ph_cronos').value) || 0;
+        let rh_cronos = parseInt(document.getElementById('rh_cronos').value) || 0;
+
+        let totalSumCRONOS = zu_cronos + ou_cronos + pu_cronos + ru_cronos + zh_cronos + oh_cronos + ph_cronos + rh_cronos;
+        document.getElementById('total_sum_cronos').value = totalSumCRONOS;
+
+        // Ενημέρωση του πεδίου Αριθμός σημάτων CRONOS στην ενότητα Γ
+        document.getElementById('cronos_signals').value = totalSumCRONOS;
+    }
+
+    // Υπολογισμός για τον πίνακα ΓΕΝΙΚΟ ΣΥΝΟΛΟ
+    function calculateTotalGeneral() {
+        let zu_total = parseInt(document.getElementById('zu_total').value) || 0;
+        let ou_total = parseInt(document.getElementById('ou_total').value) || 0;
+        let pu_total = parseInt(document.getElementById('pu_total').value) || 0;
+        let ru_total = parseInt(document.getElementById('ru_total').value) || 0;
+        let zh_total = parseInt(document.getElementById('zh_total').value) || 0;
+        let oh_total = parseInt(document.getElementById('oh_total').value) || 0;
+        let ph_total = parseInt(document.getElementById('ph_total').value) || 0;
+        let rh_total = parseInt(document.getElementById('rh_total').value) || 0;
+
+        let zu_cronos = parseInt(document.getElementById('zu_cronos').value) || 0;
+        let ou_cronos = parseInt(document.getElementById('ou_cronos').value) || 0;
+        let pu_cronos = parseInt(document.getElementById('pu_cronos').value) || 0;
+        let ru_cronos = parseInt(document.getElementById('ru_cronos').value) || 0;
+        let zh_cronos = parseInt(document.getElementById('zh_cronos').value) || 0;
+        let oh_cronos = parseInt(document.getElementById('oh_cronos').value) || 0;
+        let ph_cronos = parseInt(document.getElementById('ph_cronos').value) || 0;
+        let rh_cronos = parseInt(document.getElementById('rh_cronos').value) || 0;
+
+        document.getElementById('zu_general').value = zu_total + zu_cronos;
+        document.getElementById('ou_general').value = ou_total + ou_cronos;
+        document.getElementById('pu_general').value = pu_total + pu_cronos;
+        document.getElementById('ru_general').value = ru_total + ru_cronos;
+
+        document.getElementById('zh_general').value = zh_total + zh_cronos;
+        document.getElementById('oh_general').value = oh_total + oh_cronos;
+        document.getElementById('ph_general').value = ph_total + ph_cronos;
+        document.getElementById('rh_general').value = rh_total + rh_cronos;
+
+        let totalSumGeneral = zu_total + ou_total + pu_total + ru_total + zh_total + oh_total + ph_total + rh_total + 
+                              zu_cronos + ou_cronos + pu_cronos + ru_cronos + zh_cronos + oh_cronos + ph_cronos + rh_cronos;
+
+        document.getElementById('total_sum_general').value = totalSumGeneral;
+    }
+</script>
+{% endblock %}

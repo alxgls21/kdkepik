@@ -10,4 +10,6 @@ urlpatterns = [
     path('anafora_ipiresia/', views.anafora_ipiresia_view, name='anafora_ipiresia'),
     path('print_anafora/', views.anafora_ipiresia_view, name='print_anafora'),  # Διόρθωση του ονόματος της view
     path('katalogoi/', views.katalogoi_view, name='katalogoi'),
+    path('odigies_sistimaton/', views.odigies_sistimaton_view, name='odigies_sistimaton'),
+    path('anafora_ipiresia_opliti/', views.anafora_ipiresia_opliti_view, name='anafora_ipiresia_opliti'),
 ]

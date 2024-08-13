@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Οδηγίες Επικοινωνιακών Συστημάτων{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/odigies_sistimaton.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="video-background">
+    <video autoplay muted loop>
+        <source src="{% static 'img/background.webm' %}" type="video/webm">
+    </video>
+</div>
+<div class="main-content">
+    <h1>Οδηγίες Επικοινωνιακών Συστημάτων</h1>
+    <div class="button-container">
+        <button class="button-86" role="button" onclick="location.href='#'">Σήματα CRONOS</button>
+        <button class="button-86" role="button" onclick="location.href='#'">Σήματα AIFS</button>
+        <button class="button-86" role="button" onclick="location.href='#'">Μηνύματα ΣΔΑ - ΠΥΡΣΕΙΑ</button>
+        <button class="button-86" role="button" onclick="location.href='#'">Τμήμα Τηλεφωνικού Κέντρου</button>
+        <button class="button-86" role="button" onclick="location.href='#'">Τμήμα Διακίνησης Αλληλογραφίας</button>
+    </div>
+</div>
+{% endblock %}

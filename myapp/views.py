@@ -125,3 +125,38 @@ def anafora_ipiresia_view(request):
 
 def katalogoi_view(request):
     return render(request, 'katalogoi.html')
+
+def odigies_sistimaton_view(request):
+    return render(request, 'odigies_sistimaton.html')
+
+def anafora_ipiresia_opliti_view(request):
+    if request.method == 'POST':
+        context = {
+            'report_date': request.POST.get('report_date'),
+            'arrival_time': request.POST.get('arrival_time'),
+            'departure_time': request.POST.get('departure_time'),
+            'problems': request.POST.get('problems'),
+            'incoming_signals': request.POST.get('incoming_signals'),
+            'outgoing_signals': request.POST.get('outgoing_signals'),
+            'transit_signals': request.POST.get('transit_signals'),
+            'non_transmitted_signals': request.POST.get('non_transmitted_signals'),
+            'system_operation': request.POST.get('system_operation'),
+            'transmission_issues': request.POST.get('transmission_issues'),
+            'cronos_signals': request.POST.get('cronos_signals'),
+            'cronos_non_transmitted': request.POST.get('cronos_non_transmitted'),
+            'cronos_system_operation': request.POST.get('cronos_system_operation'),
+            'cronos_issues': request.POST.get('cronos_issues'),
+            'aifs_signals': request.POST.get('aifs_signals'),
+            'aifs_non_transmitted': request.POST.get('aifs_non_transmitted'),
+            'aifs_system_operation': request.POST.get('aifs_system_operation'),
+            'aifs_issues': request.POST.get('aifs_issues'),
+            'general_observations': request.POST.get('general_observations')
+        }
+
+    context = {
+        'range_0_10': range(11),  # για drop-down λίστες με επιλογές 0-10
+        'range_0_21': range(22),  # για drop-down λίστες με επιλογές 0-21
+        'range_0_41': range(42),  # για drop-down λίστες με επιλογές 0-41
+    }
+    
+    return render(request, 'anafora_ipiresia_opliti.html')
