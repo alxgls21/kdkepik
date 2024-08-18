@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
-from .models import DidesCategory, HarpCategory, AdmeCategory, OfficerServiceReport, Soldier, AxypKepikServiceReport
+from .models import DidesCategory, HarpCategory, AdmeCategory, OfficerServiceReport, Soldier, AxypKepikServiceReport, OplitiServiceReport
 from django.core.files.base import ContentFile
 from django.http import HttpResponse
 from io import BytesIO
@@ -11,6 +11,7 @@ from django.utils.translation import gettext as _
 from django.utils.formats import date_format
 import locale
 import os
+import platform
 
 def index(request):
     return render(request, 'index.html')
@@ -100,8 +101,15 @@ def anafora_ipiresia_view(request):
             temp_html_file.write(html_string.encode('utf-8'))
             temp_html_file_path = temp_html_file.name
 
-        # Διαμόρφωση του pdfkit με το μονοπάτι του εκτελέσιμου wkhtmltopdf
-        pdfkit_config = pdfkit.configuration(wkhtmltopdf=os.path.join('myapp', 'bin', 'wkhtmltopdf.exe'))
+    # Ανίχνευση του λειτουργικού συστήματος και διαμόρφωση του pdfkit
+        if platform.system() == 'Windows':
+            wkhtmltopdf_path = os.path.join('myapp', 'bin', 'wkhtmltopdf.exe')
+        elif platform.system() == 'Darwin':  # Darwin είναι το όνομα του πυρήνα του macOS
+            wkhtmltopdf_path = os.path.join('myapp', 'bin', 'wkhtmltopdf')
+        else:
+            raise Exception("Unsupported OS")
+
+        pdfkit_config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
 
         # Δημιουργία του PDF από το προσωρινό αρχείο με επιπλέον options
         pdf = pdfkit.from_file(temp_html_file_path, False, configuration=pdfkit_config, options={
@@ -131,8 +139,15 @@ def odigies_sistimaton_view(request):
 
 def anafora_ipiresia_opliti_view(request):
     if request.method == 'POST':
+        # Παίρνουμε την ημερομηνία από το request
+        report_date = request.POST.get('report_date')
+        
+        # Μετατροπή της ημερομηνίας στο format dd/mm/yyyy
+        formatted_date = datetime.strptime(report_date, '%Y-%m-%d').strftime('%d/%m/%Y')
+        
+        # Συλλογή των δεδομένων από τη φόρμα
         context = {
-            'report_date': request.POST.get('report_date'),
+            'report_date': formatted_date,
             'arrival_time': request.POST.get('arrival_time'),
             'departure_time': request.POST.get('departure_time'),
             'problems': request.POST.get('problems'),
@@ -150,13 +165,166 @@ def anafora_ipiresia_opliti_view(request):
             'aifs_non_transmitted': request.POST.get('aifs_non_transmitted'),
             'aifs_system_operation': request.POST.get('aifs_system_operation'),
             'aifs_issues': request.POST.get('aifs_issues'),
-            'general_observations': request.POST.get('general_observations')
+            'general_observations': request.POST.get('general_observations'),
+            'remarks': request.POST.get('remarks'),
+
+            # Συλλογή δεδομένων για τον πίνακα ελέγχου γραμμών ΕΨΑΔ
+            'checks': {
+                'check_1_14': request.POST.get('check_1_14'),
+                'check_1_18': request.POST.get('check_1_18'),
+                'check_1_23': request.POST.get('check_1_23'),
+                'check_1_03': request.POST.get('check_1_03'),
+                'check_1_06': request.POST.get('check_1_06'),
+                'check_2_14': request.POST.get('check_2_14'),
+                'check_2_18': request.POST.get('check_2_18'),
+                'check_2_23': request.POST.get('check_2_23'),
+                'check_2_03': request.POST.get('check_2_03'),
+                'check_2_06': request.POST.get('check_2_06'),
+                'check_3_14': request.POST.get('check_3_14'),
+                'check_3_18': request.POST.get('check_3_18'),
+                'check_3_23': request.POST.get('check_3_23'),
+                'check_3_03': request.POST.get('check_3_03'),
+                'check_3_06': request.POST.get('check_3_06'),
+                'check_4_14': request.POST.get('check_4_14'),
+                'check_4_18': request.POST.get('check_4_18'),
+                'check_4_23': request.POST.get('check_4_23'),
+                'check_4_03': request.POST.get('check_4_03'),
+                'check_4_06': request.POST.get('check_4_06'),
+                'check_5_14': request.POST.get('check_5_14'),
+                'check_5_18': request.POST.get('check_5_18'),
+                'check_5_23': request.POST.get('check_5_23'),
+                'check_5_03': request.POST.get('check_5_03'),
+                'check_5_06': request.POST.get('check_5_06'),
+                'check_6_14': request.POST.get('check_6_14'),
+                'check_6_18': request.POST.get('check_6_18'),
+                'check_6_23': request.POST.get('check_6_23'),
+                'check_6_03': request.POST.get('check_6_03'),
+                'check_6_06': request.POST.get('check_6_06'),
+                'check_7_14': request.POST.get('check_7_14'),
+                'check_7_18': request.POST.get('check_7_18'),
+                'check_7_23': request.POST.get('check_7_23'),
+                'check_7_03': request.POST.get('check_7_03'),
+                'check_7_06': request.POST.get('check_7_06'),
+                'check_8_14': request.POST.get('check_8_14'),
+                'check_8_18': request.POST.get('check_8_18'),
+                'check_8_23': request.POST.get('check_8_23'),
+                'check_8_03': request.POST.get('check_8_03'),
+                'check_8_06': request.POST.get('check_8_06'),
+                'check_9_14': request.POST.get('check_9_14'),
+                'check_9_18': request.POST.get('check_9_18'),
+                'check_9_23': request.POST.get('check_9_23'),
+                'check_9_03': request.POST.get('check_9_03'),
+                'check_9_06': request.POST.get('check_9_06'),
+                'check_10_14': request.POST.get('check_10_14'),
+                'check_10_18': request.POST.get('check_10_18'),
+                'check_10_23': request.POST.get('check_10_23'),
+                'check_10_03': request.POST.get('check_10_03'),
+                'check_10_06': request.POST.get('check_10_06'),
+                'check_11_14': request.POST.get('check_11_14'),
+                'check_11_18': request.POST.get('check_11_18'),
+                'check_11_23': request.POST.get('check_11_23'),
+                'check_11_03': request.POST.get('check_11_03'),
+                'check_11_06': request.POST.get('check_11_06'),
+                'check_12_14': request.POST.get('check_12_14'),
+                'check_12_18': request.POST.get('check_12_18'),
+                'check_12_23': request.POST.get('check_12_23'),
+                'check_12_03': request.POST.get('check_12_03'),
+                'check_12_06': request.POST.get('check_12_06'),
+                'check_13_14': request.POST.get('check_13_14'),
+                'check_13_18': request.POST.get('check_13_18'),
+                'check_13_23': request.POST.get('check_13_23'),
+                'check_13_03': request.POST.get('check_13_03'),
+                'check_13_06': request.POST.get('check_13_06'),
+                'check_14_14': request.POST.get('check_14_14'),
+                'check_14_18': request.POST.get('check_14_18'),
+                'check_14_23': request.POST.get('check_14_23'),
+                'check_14_03': request.POST.get('check_14_03'),
+                'check_14_06': request.POST.get('check_14_06'),
+                'check_15_14': request.POST.get('check_15_14'),
+                'check_15_18': request.POST.get('check_15_18'),
+                'check_15_23': request.POST.get('check_15_23'),
+                'check_15_03': request.POST.get('check_15_03'),
+                'check_15_06': request.POST.get('check_15_06'),
+                'check_16_14': request.POST.get('check_16_14'),
+                'check_16_18': request.POST.get('check_16_18'),
+                'check_16_23': request.POST.get('check_16_23'),
+                'check_16_03': request.POST.get('check_16_03'),
+                'check_16_06': request.POST.get('check_16_06'),
+                'check_17_14': request.POST.get('check_17_14'),
+                'check_17_18': request.POST.get('check_17_18'),
+                'check_17_23': request.POST.get('check_17_23'),
+                'check_17_03': request.POST.get('check_17_03'),
+                'check_17_06': request.POST.get('check_17_06'),
+                'check_18_14': request.POST.get('check_18_14'),
+                'check_18_18': request.POST.get('check_18_18'),
+                'check_18_23': request.POST.get('check_18_23'),
+                'check_18_03': request.POST.get('check_18_03'),
+                'check_18_06': request.POST.get('check_18_06'),
+                'check_19_14': request.POST.get('check_19_14'),
+                'check_19_18': request.POST.get('check_19_18'),
+                'check_19_23': request.POST.get('check_19_23'),
+                'check_19_03': request.POST.get('check_19_03'),
+                'check_19_06': request.POST.get('check_19_06'),
+                'check_20_14': request.POST.get('check_20_14'),
+                'check_20_18': request.POST.get('check_20_18'),
+                'check_20_23': request.POST.get('check_20_23'),
+                'check_20_03': request.POST.get('check_20_03'),
+                'check_20_06': request.POST.get('check_20_06'),
+                'check_21_14': request.POST.get('check_21_14'),
+                'check_21_18': request.POST.get('check_21_18'),
+                'check_21_23': request.POST.get('check_21_23'),
+                'check_21_03': request.POST.get('check_21_03'),
+                'check_21_06': request.POST.get('check_21_06'),
+                'check_22_14': request.POST.get('check_22_14'),
+                'check_22_18': request.POST.get('check_22_18'),
+                'check_22_23': request.POST.get('check_22_23'),
+                'check_22_03': request.POST.get('check_22_03'),
+                'check_22_06': request.POST.get('check_22_06'),
+                'check_23_14': request.POST.get('check_23_14'),
+                'check_23_18': request.POST.get('check_23_18'),
+                'check_23_23': request.POST.get('check_23_23'),
+                'check_23_03': request.POST.get('check_23_03'),
+                'check_23_06': request.POST.get('check_23_06'),
+                'check_24_14': request.POST.get('check_24_14'),
+                'check_24_18': request.POST.get('check_24_18'),
+                'check_24_23': request.POST.get('check_24_23'),
+                'check_24_03': request.POST.get('check_24_03'),
+                'check_24_06': request.POST.get('check_24_06'),
+            }
         }
 
-    context = {
-        'range_0_10': range(11),  # για drop-down λίστες με επιλογές 0-10
-        'range_0_21': range(22),  # για drop-down λίστες με επιλογές 0-21
-        'range_0_41': range(42),  # για drop-down λίστες με επιλογές 0-41
-    }
-    
+        # Δημιουργία του HTML από το template
+        html_string = render_to_string('print_anafora_opliti.html', context)
+
+        # Αποθήκευση του HTML σε προσωρινό αρχείο
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.html') as temp_html_file:
+            temp_html_file.write(html_string.encode('utf-8'))
+            temp_html_file_path = temp_html_file.name
+
+        # Ανίχνευση του λειτουργικού συστήματος και διαμόρφωση του pdfkit
+        if platform.system() == 'Windows':
+            wkhtmltopdf_path = os.path.join('myapp', 'bin', 'wkhtmltopdf.exe')
+        elif platform.system() == 'Darwin':  # Darwin είναι το όνομα του πυρήνα του macOS
+            wkhtmltopdf_path = os.path.join('myapp', 'bin', 'wkhtmltopdf')
+        else:
+            raise Exception("Unsupported OS")
+
+        pdfkit_config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
+
+        # Δημιουργία του PDF από το προσωρινό αρχείο με επιπλέον options
+        pdf = pdfkit.from_file(temp_html_file_path, False, configuration=pdfkit_config, options={
+            'no-stop-slow-scripts': '',
+            'disable-smart-shrinking': '',
+            'enable-local-file-access': '',  # Αυτό επιτρέπει την πρόσβαση σε τοπικά αρχεία
+            'orientation': 'Landscape'  # Καθορίζει την οριζόντια εκτύπωση
+        })
+
+        # Αποθήκευση του PDF στο μοντέλο
+        service_report = OplitiServiceReport()
+        service_report.pdf.save('Αναφορά_Οπλίτη_{}.pdf'.format(datetime.now().strftime('%d-%m-%Y')), ContentFile(pdf))
+
+        # Ανακατεύθυνση ή εμφάνιση της σελίδας με το PDF
+        return HttpResponse(pdf, content_type='application/pdf')
+
+    # Εμφάνιση της φόρμας για συμπλήρωση
     return render(request, 'anafora_ipiresia_opliti.html')

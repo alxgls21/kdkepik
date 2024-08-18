@@ -144,3 +144,20 @@ class AxypKepikServiceReport(models.Model):
         if self.pdf:
             return f"Αναφορά ΑΞΥΠ της {datetime.now().strftime('%d-%m-%Y')}"
         return "Αναφορά ΑΞΥΠ χωρίς ημερομηνία"
+    
+class OplitiServiceReport(models.Model):
+    pdf = models.FileField(upload_to='opliti_reports/', blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if self.pdf:
+            # Δημιουργία του νέου ονόματος αρχείου
+            report_date = datetime.now().strftime('%d-%m-%Y')
+            new_filename = f'Αναφορά_Οπλίτη_της_{report_date}.pdf'
+            self.pdf.name = new_filename
+        
+        super(OplitiServiceReport, self).save(*args, **kwargs)
+
+    def __str__(self):
+        if self.pdf:
+            return f"Αναφορά Οπλίτη της {datetime.now().strftime('%d-%m-%Y')}"
+        return "Αναφορά Οπλίτη χωρίς ημερομηνία"

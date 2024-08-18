@@ -3,7 +3,7 @@
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
-from .models import DidesCategory, HarpCategory, AdmeCategory, OfficerServiceReport, Soldier, AxypKepikServiceReport
+from .models import DidesCategory, HarpCategory, AdmeCategory, OfficerServiceReport, Soldier, AxypKepikServiceReport, OplitiServiceReport
 
 class DidesCategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'category', 'application', 'ip_address', 'supervisory_tool')
@@ -34,3 +34,4 @@ admin.site.register(AdmeCategory, AdmeCategoryAdmin)
 admin.site.register(OfficerServiceReport, OfficerServiceReportAdmin)
 admin.site.register(Soldier, SoldierAdmin)
 admin.site.register(AxypKepikServiceReport)
+admin.site.register(OplitiServiceReport)
