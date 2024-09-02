@@ -12,4 +12,8 @@ urlpatterns = [
     path('katalogoi/', views.katalogoi_view, name='katalogoi'),
     path('odigies_sistimaton/', views.odigies_sistimaton_view, name='odigies_sistimaton'),
     path('anafora_ipiresia_opliti/', views.anafora_ipiresia_opliti_view, name='anafora_ipiresia_opliti'),
+    path('vtc/', views.vtc_view, name='vtc'),
+    path('pyrseia/', views.pyrseia_view, name='pyrseia'),
+    path('dides/', views.dides_view, name='dides'),
+
 ]

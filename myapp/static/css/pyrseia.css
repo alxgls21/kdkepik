@@ -190,10 +190,13 @@ button:active::after {
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     padding: 20px;
-    width: 50%; /* Αφήνουμε το πλάτος να προσαρμόζεται αυτόματα */
-    margin-top: 20px;
+    width: 50%; /* Πλάτος στο 50% της οθόνης */
+    margin: 20px auto; /* Κεντράρισμα με margin */
     text-align: center;
-    display: inline-block; /* Επιτρέπει στο fieldset να προσαρμόζεται στο περιεχόμενο */
+    display: flex; /* Χρήση Flexbox */
+    flex-direction: column; /* Το περιεχόμενο στοιχίζεται κάθετα */
+    align-items: center; /* Κεντράρισμα οριζόντια */
+    justify-content: center; /* Κεντράρισμα κάθετα */
 }
 
 .fieldset-container {

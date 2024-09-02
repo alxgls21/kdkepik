@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}VOSIP Οδηγίες και Εφαρμογές{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/vtc.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="video-background">
+    <video autoplay muted loop>
+        <source src="{% static 'img/background.webm' %}" type="video/webm">
+    </video>
+</div>
+<div class="main-content">
+    <h1>VOSIP Οδηγίες και Εφαρμογές</h1>
+    <div class="button-container">
+        <button class="button-86" role="button" onclick="location.href='{% static 'docs/iview_CA_certificate.pdf' %}'">Εγκατάσταση Πιστοποιητικού iView CA</button>
+        <button class="button-86" role="button" onclick="location.href='{% static 'docs/install_tech_instructions.pdf' %}'">Τεχνικές Οδηγίες Εγκατάστασης</button>
+
+        <fieldset class="fieldset-container">
+            <legend>Εφαρμογές (WinRAR αρχεία)</legend>
+            <button class="button-86" role="button" onclick="location.href='{% static 'docs/extension_1_2_0_8.rar' %}'">Extension_1_2_0_8</button>
+            <button class="button-86" role="button" onclick="location.href='{% static 'docs/iviewCA.rar' %}'">iviewCA</button>
+        </fieldset>
+    </div>
+</div>
+{% endblock %}

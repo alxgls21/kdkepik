@@ -328,3 +328,12 @@ def anafora_ipiresia_opliti_view(request):
 
     # Εμφάνιση της φόρμας για συμπλήρωση
     return render(request, 'anafora_ipiresia_opliti.html')
+
+def vtc_view(request):
+    return render(request, 'vtc.html')
+
+def pyrseia_view(request):
+    return render(request, 'pyrseia.html')
+
+def dides_view(request):
+    return render(request, 'dides.html')

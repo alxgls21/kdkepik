@@ -190,31 +190,27 @@ button:active::after {
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     padding: 20px;
-    width: 50%; /* Αφήνουμε το πλάτος να προσαρμόζεται αυτόματα */
-    margin-top: 20px;
+    width: 50%; /* Πλάτος στο 50% της οθόνης */
+    margin: 20px auto; /* Κεντράρισμα με margin */
     text-align: center;
-    display: inline-block; /* Επιτρέπει στο fieldset να προσαρμόζεται στο περιεχόμενο */
-}
-
-.fieldset-container {
-    display: flex;
-    justify-content: center; /* Κεντράρει τα κουμπιά οριζόντια */
-    align-items: center; /* Κεντράρει τα κουμπιά κάθετα, αν χρειαστεί */
-    flex-direction: column; /* Βάζει τα κουμπιά το ένα κάτω από το άλλο */
+    display: flex; /* Χρήση Flexbox */
+    flex-direction: column; /* Το περιεχόμενο στοιχίζεται κάθετα */
+    align-items: center; /* Κεντράρισμα οριζόντια */
+    justify-content: center; /* Κεντράρισμα κάθετα */
 }
 
 .fieldset-container button {
-    display: block; /* Κάνει τα κουμπιά να εμφανίζονται το ένα κάτω από το άλλο */
-    width: auto; /* Κάνει τα κουμπιά να καταλαμβάνουν το πλήρες πλάτος του container */
-    margin-top: 10px; /* Προσθέτει απόσταση μεταξύ των κουμπιών */
-    padding: 10px 20px; /* Διασφαλίζει ότι τα κουμπιά έχουν περιθώριο γύρω από το κείμενο */
-    font-size: 1em; /* Ρυθμίζει το μέγεθος της γραμματοσειράς για τα κουμπιά */
-    border-radius: 5px; /* Προσθέτει στρογγυλεμένες γωνίες */
-    background-color: #575757; /* Χρώμα background για τα κουμπιά */
-    color: white; /* Χρώμα κειμένου */
-    border: none; /* Αφαιρεί τα περιθώρια */
-    cursor: pointer; /* Αλλάζει τον δείκτη του ποντικιού σε χεράκι όταν βρίσκεται πάνω στο κουμπί */
-    white-space: nowrap; /* Αποτρέπει το κείμενο να διπλώνει μέσα στο κουμπί */
+    display: block;
+    width: auto;
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 5px;
+    background-color: #575757;
+    color: white;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
 }
 
 .fieldset-container button:hover {

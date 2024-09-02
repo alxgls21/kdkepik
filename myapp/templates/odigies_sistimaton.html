@@ -15,12 +15,27 @@
 </div>
 <div class="main-content">
     <h1>Οδηγίες Επικοινωνιακών Συστημάτων</h1>
-    <div class="button-container">
-        <button class="button-86" role="button" onclick="location.href='#'">Σήματα CRONOS</button>
-        <button class="button-86" role="button" onclick="location.href='#'">Σήματα AIFS</button>
-        <button class="button-86" role="button" onclick="location.href='#'">Μηνύματα ΣΔΑ - ΠΥΡΣΕΙΑ</button>
-        <button class="button-86" role="button" onclick="location.href='#'">Τμήμα Τηλεφωνικού Κέντρου</button>
-        <button class="button-86" role="button" onclick="location.href='#'">Τμήμα Διακίνησης Αλληλογραφίας</button>
-    </div>
+
+    <fieldset class="button-container">
+        <legend>CRONOS</legend>
+        <button class="button-86" role="button" onclick="location.href='{% static 'docs/cronos_readme.pdf' %}'">Οδηγίες CRONOS</button>
+    </fieldset>
+
+    <fieldset class="button-container">
+        <legend>AIFS</legend>
+        <button class="button-86" role="button" onclick="location.href='{% static 'docs/aifs_readme_eleftherou_keimenou.pdf' %}'">AIFS Ελευθέρου Κειμένου</button>
+        <button class="button-86" role="button" onclick="location.href='{% static 'docs/aifs_readme_imerologia_delete.pdf' %}'">AIFS Διαγραφή Ημερολογίων</button>
+        <button class="button-86" role="button" onclick="location.href='{% static 'docs/aifs_readme_kathari_ekkinisi.pdf' %}'">AIFS Καθαρή Εκκίνηση</button>
+        <button class="button-86" role="button" onclick="location.href='{% static 'docs/aifs_readme_katharismos_maskon_simaton.pdf' %}'">AIFS Καθαρισμός Μασκών</button>
+        <button class="button-86" role="button" onclick="location.href='{% static 'docs/aifs_readme_odigies_apostolis.pdf' %}'">AIFS Οδηγίες Αποστολής</button>
+        <button class="button-86" role="button" onclick="location.href='{% static 'docs/aifs_readme_sfalma_simaton.pdf' %}'">AIFS Σφάλμα Σημάτων</button>
+        <button class="button-86" role="button" onclick="location.href='{% static 'docs/aifs_readme_simata_elegxou.pdf' %}'">AIFS Σήματα Ελέγχου</button>
+    </fieldset>
+
+    <fieldset class="button-container">
+        <legend>ΣΔΑ - ΠΥΡΣΕΙΑ</legend>
+        <button class="button-86" role="button" onclick="location.href='{% static 'docs/sda_pyrseia_readme.pdf' %}'">Οδηγίες ΣΔΑ - ΠΥΡΣΕΙΑ</button>
+    </fieldset>
+
 </div>
 {% endblock %}

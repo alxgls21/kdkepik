@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}ΠΥΡΣΕΙΑ ΟΔΗΓΙΕΣ{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/pyrseia.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="video-background">
+    <video autoplay muted loop>
+        <source src="{% static 'img/background.webm' %}" type="video/webm">
+    </video>
+</div>
+<div class="main-content">
+    <h1>ΠΥΡΣΕΙΑ ΟΔΗΓΙΕΣ</h1>
+
+    <fieldset class="fieldset-container">
+        <legend>Οδηγίες</legend>
+        <div class="button-container">
+            <button class="button-86" role="button" onclick="location.href='{% static 'docs/pyrseia_instr.pdf' %}'">ΠΥΡΣΕΙΑ - Οδηγίες Διαχειριστή</button>
+            <button class="button-86" role="button" onclick="location.href='{% static 'docs/pyrseia_instr_2.pdf' %}'">ΠΥΡΣΕΙΑ - Οδηγίες Διαχειριστή 2</button>
+            <button class="button-86" role="button" onclick="location.href='{% static 'docs/pyrseia_aksyp.pdf' %}'">ΠΥΡΣΕΙΑ - Οδηγίες ΑΞΥΠ</button>
+        </div>
+    </fieldset>
+</div>
+{% endblock %}
