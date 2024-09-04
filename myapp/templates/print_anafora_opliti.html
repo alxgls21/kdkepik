@@ -6,7 +6,7 @@
 		<title>
 		</title>
 		<style>
-			body { line-height:108%; font-family:Aptos; font-size:11pt }
+			body { line-height:108%; font-family:Arial; font-size:11pt }
 			h1, h2, h3, h4, h5, h6, p { margin:0pt 0pt 8pt }
 			li, table { margin-top:0pt; margin-bottom:8pt }
 			h1 { margin-top:18pt; margin-bottom:4pt; page-break-inside:avoid; page-break-after:avoid; line-height:108%; font-family:'Aptos Display'; font-size:20pt; font-weight:normal; color:#0f4761 }
@@ -63,14 +63,10 @@ td, th {
 }
 }	
 
+
 		</style>
 	</head>
 	<body>
-		<p>
-			<span style="height:0pt; display:block; position:absolute; z-index:-1"><img src="http://127.0.0.1:8000/static/img/tdb.png" width="70" height="65" alt="" style="margin-top:5pt; margin-left:3.2pt; position:absolute" /></span><span style="font-family:Arial">&#xa0;</span>
-		</p>
-		<p>
-		<div>
 			<h1 style="line-height:108%; font-size:13pt">
 				<strong><span style="font-family:Arial; ">ΚΕΠΙΚ/ΓΕΣ ΤΜΗΜΑ ΣΗΜΑΤΩΝ, ΑΝΑΦΟΡΑ ΥΠΗΡΕΣΙΑΣ:</span></strong>
 			</h1>
@@ -99,6 +95,7 @@ td, th {
 						</p>
 					</td>
 				</tr>
+				
 				<tr style="height:14.4pt">
 					<td style="width:222.95pt; border-top:0.75pt solid #000000; border-right:0.75pt solid #000000; border-bottom:0.75pt solid #000000; padding-right:5.03pt; padding-left:5.03pt; vertical-align:middle">
 						<ol start="2" style="margin:0pt; padding-left:0pt">
@@ -125,7 +122,7 @@ td, th {
 				<tr style="height:36pt">
 					<td colspan="2" style="width:532.55pt; border-top:0.75pt solid #000000; padding-right:5.03pt; padding-left:5.03pt; vertical-align:middle">
 						<p style="margin-bottom:0pt; line-height:normal">
-							&#xa0;
+							{{ problems }}
 						</p>
 					</td>
 				</tr>
@@ -151,7 +148,7 @@ td, th {
 					</td>
 					<td style="width:299.7pt; border-top:0.75pt solid #000000; border-left:0.75pt solid #000000; border-bottom:0.75pt solid #000000; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top">
 						<p style="margin-bottom:0pt; line-height:normal">
-							&#xa0;
+							{{ incoming_signals }}
 						</p>
 					</td>
 				</tr>
@@ -165,7 +162,7 @@ td, th {
 					</td>
 					<td style="width:299.7pt; border-top:0.75pt solid #000000; border-left:0.75pt solid #000000; border-bottom:0.75pt solid #000000; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top">
 						<p style="margin-bottom:0pt; line-height:normal">
-							&#xa0;
+							{{ outgoing_signals }}
 						</p>
 					</td>
 				</tr>
@@ -179,7 +176,7 @@ td, th {
 					</td>
 					<td style="width:299.7pt; border-top:0.75pt solid #000000; border-left:0.75pt solid #000000; border-bottom:0.75pt solid #000000; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top">
 						<p style="margin-bottom:0pt; line-height:normal">
-							&#xa0;
+							{{ transit_signals }}
 						</p>
 					</td>
 				</tr>
@@ -193,7 +190,7 @@ td, th {
 					</td>
 					<td style="width:299.7pt; border-top:0.75pt solid #000000; border-left:0.75pt solid #000000; border-bottom:0.75pt solid #000000; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top">
 						<p style="margin-bottom:0pt; line-height:normal">
-							&#xa0;
+							{{ non_transmitted_signals }}
 						</p>
 					</td>
 				</tr>
@@ -207,7 +204,7 @@ td, th {
 					</td>
 					<td style="width:299.7pt; border-top:0.75pt solid #000000; border-left:0.75pt solid #000000; border-bottom:0.75pt solid #000000; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top">
 						<p style="margin-bottom:0pt; line-height:normal">
-							&#xa0;
+							{{ system_operation }}
 						</p>
 					</td>
 				</tr>
@@ -223,7 +220,7 @@ td, th {
 				<tr style="height:36pt">
 					<td colspan="2" style="width:533.45pt; border-top:0.75pt solid #000000; padding-right:5.03pt; padding-left:5.03pt; vertical-align:middle">
 						<p style="margin-bottom:0pt; line-height:normal">
-							<strong>&#xa0;</strong>
+							{{ transmission_issues }}
 						</p>
 					</td>
 				</tr>
@@ -249,7 +246,7 @@ td, th {
 					</td>
 					<td style="width:299.7pt; border-top:0.75pt solid #000000; border-left:0.75pt solid #000000; border-bottom:0.75pt solid #000000; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top">
 						<p style="margin-bottom:0pt; line-height:normal">
-							&#xa0;
+							{{ cronos_signals }}
 						</p>
 					</td>
 				</tr>
@@ -263,7 +260,7 @@ td, th {
 					</td>
 					<td style="width:299.7pt; border-top:0.75pt solid #000000; border-left:0.75pt solid #000000; border-bottom:0.75pt solid #000000; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top">
 						<p style="margin-bottom:0pt; line-height:normal">
-							&#xa0;
+							{{ cronos_non_transmitted }}
 						</p>
 					</td>
 				</tr>
@@ -277,7 +274,7 @@ td, th {
 					</td>
 					<td style="width:299.7pt; border-top:0.75pt solid #000000; border-left:0.75pt solid #000000; border-bottom:0.75pt solid #000000; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top">
 						<p style="margin-bottom:0pt; line-height:normal">
-							&#xa0;
+							{{ cronos_system_operation }}
 						</p>
 					</td>
 				</tr>
@@ -293,7 +290,7 @@ td, th {
 				<tr style="height:36pt">
 					<td colspan="2" style="width:533.45pt; border-top:0.75pt solid #000000; padding-right:5.03pt; padding-left:5.03pt; vertical-align:middle">
 						<p style="margin-bottom:0pt; line-height:normal">
-							<strong>&#xa0;</strong>
+							{{ cronos_issues }}
 						</p>
 					</td>
 				</tr>
@@ -319,7 +316,7 @@ td, th {
 					</td>
 					<td style="width:299.7pt; border-top:0.75pt solid #000000; border-left:0.75pt solid #000000; border-bottom:0.75pt solid #000000; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top">
 						<p style="margin-bottom:0pt; line-height:normal">
-							&#xa0;
+							{{ aifs_signals }}
 						</p>
 					</td>
 				</tr>
@@ -333,7 +330,7 @@ td, th {
 					</td>
 					<td style="width:299.7pt; border-top:0.75pt solid #000000; border-left:0.75pt solid #000000; border-bottom:0.75pt solid #000000; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top">
 						<p style="margin-bottom:0pt; line-height:normal">
-							&#xa0;
+							{{ aifs_non_transmitted }}
 						</p>
 					</td>
 				</tr>
@@ -347,7 +344,7 @@ td, th {
 					</td>
 					<td style="width:299.7pt; border-top:0.75pt solid #000000; border-left:0.75pt solid #000000; border-bottom:0.75pt solid #000000; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top">
 						<p style="margin-bottom:0pt; line-height:normal">
-							&#xa0;
+							{{ aifs_system_operation }}
 						</p>
 					</td>
 				</tr>
@@ -363,7 +360,7 @@ td, th {
 				<tr style="height:36pt">
 					<td colspan="2" style="width:533.45pt; border-top:0.75pt solid #000000; padding-right:5.03pt; padding-left:5.03pt; vertical-align:middle">
 						<p style="margin-bottom:0pt; line-height:normal">
-							<strong>&#xa0;</strong>
+							{{ aifs_issues }}
 						</p>
 					</td>
 				</tr>
@@ -382,7 +379,7 @@ td, th {
 				<tr style="height:36pt">
 					<td style="width:533.45pt; border-top:0.75pt solid #000000; padding-right:5.03pt; padding-left:5.03pt; vertical-align:middle">
 						<p style="margin-bottom:0pt; line-height:normal">
-							<strong>&#xa0;</strong>
+							{{ general_observations }}
 						</p>
 					</td>
 				</tr>
@@ -417,7 +414,7 @@ td, th {
 				&#xa0;
 			</p>
 			<p>
-				&#xa0;
+				<span style="width:300.3pt; display:inline-block">&#xa0;</span>
 			</p>
 			<h1 style="line-height:108%; font-size:13pt">
 				<strong><span style="font-family:Arial; ">ΑΝΑΛΥΤΙΚΟΣ ΠΙΝΑΚΑΣ ΣΗΜΑΤΩΝ ΒΑΡΔΙΑΣ</span></strong>
@@ -2211,14 +2208,5 @@ td, th {
 			<p>
 				&#xa0;
 			</p>
-			<div style="clear:both">
-				<p class="Footer" style="text-align:center; font-size:14pt">
-					<span style="font-family:'Aptos Display'">- 1 -</span>
-				</p>
-				<p class="Footer">
-					&#xa0;
-				</p>
-			</div>
-		</div>
 	</body>
 </html>
