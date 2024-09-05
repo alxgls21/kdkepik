@@ -1,140 +1,62 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <title>Example</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1 style="line-height: 108%; font-size: 13pt;">
+        <span style="font-family: arial, helvetica, sans-serif;"><strong>ΚΕΠΙΚ/ΓΕΣ ΤΜΗΜΑ ΣΗΜΑΤΩΝ, ΑΝΑΦΟΡΑ ΥΠΗΡΕΣΙΑΣ:</strong></span>
+    </h1>
+    <p style="line-height: 108%; font-size: 2pt;">&nbsp;</p>
+    
+    <!-- First Table -->
+    <table class="table-style">
+        <tbody>
+            <tr>
+                <td colspan="2" class="header-style">
+                    <p><strong>Α. Αναφέρονται τα ακόλουθα στοιχεία που αφορούν την εκτέλεση της υπηρεσίας μου:</strong></p>
+                </td>
+            </tr>
+            <tr>
+                <td><ol><li><strong>Ώρα προσέλευσης:</strong></li></ol></td>
+                <td><p>&nbsp;</p></td>
+            </tr>
+            <tr>
+                <td><ol start="2"><li><strong>Ώρα αποχώρησης:</strong></li></ol></td>
+                <td><p>&nbsp;</p></td>
+            </tr>
+            <tr>
+                <td colspan="2"><ol start="3"><li><strong>Προβλήματα – Παρατηρήσεις κατά την ανάληψη της υπηρεσίας: (χρέωση υλικών, μη διεκπεραίωση αλληλογραφίας, κλπ.)</strong></li></ol></td>
+            </tr>
+        </tbody>
+    </table>
 
-{% block content %}
-<div class="form-container">
-    <h1>ΚΕΠΙΚ/ΓΕΣ ΤΜΗΜΑ ΣΗΜΑΤΩΝ, ΑΝΑΦΟΡΑ ΥΠΗΡΕΣΙΑΣ</h1>
-    <form method="post">
-        {% csrf_token %}
-        <p>
-            <label for="report_date">Ημερομηνία Αναφοράς:</label>
-            <input type="date" id="report_date" name="report_date" required>
-        </p>
+    <!-- Second Table -->
+    <table class="table-style">
+        <tbody>
+            <tr>
+                <td colspan="2" class="header-style">
+                    <p><strong>Β. Αριθμός σημάτων από ΠΥΡΣΕΙΑ</strong></p>
+                </td>
+            </tr>
+            <tr>
+                <td><ol><li><strong>Εισερχόμενα:</strong></li></ol></td>
+                <td><p>&nbsp;</p></td>
+            </tr>
+            <tr>
+                <td><ol start="2"><li><strong>Εξερχόμενα:</strong></li></ol></td>
+                <td><p>&nbsp;</p></td>
+            </tr>
+            <tr>
+                <td><ol start="3"><li><strong>Διαβατικά:</strong></li></ol></td>
+                <td><p>&nbsp;</p></td>
+            </tr>
+        </tbody>
+    </table>
 
-        <fieldset>
-            <legend>Α. Στοιχεία Υπηρεσίας</legend>
-            <p>
-                <label for="arrival_time">Ώρα προσέλευσης:</label>
-                <input type="time" id="arrival_time" name="arrival_time" required>
-            </p>
-            <p>
-                <label for="departure_time">Ώρα αποχώρησης:</label>
-                <input type="time" id="departure_time" name="departure_time" required>
-            </p>
-            <p>
-                <label for="problems">Προβλήματα – Παρατηρήσεις:</label>
-                <textarea id="problems" name="problems"></textarea>
-            </p>
-        </fieldset>
-
-        <fieldset>
-            <legend>Β. Αριθμός σημάτων από ΠΥΡΣΕΙΑ</legend>
-            <p>
-                <label for="incoming_signals">Εισερχόμενα:</label>
-                <select id="incoming_signals" name="incoming_signals">
-                    {% for i in range_0_10 %}
-                        <option value="{{ i }}">{{ i }}</option>
-                    {% endfor %}
-                </select>
-            </p>                       
-            <p>
-                <label for="outgoing_signals">Εξερχόμενα:</label>
-                <select id="outgoing_signals" name="outgoing_signals">
-                    {% for i in range_0_10 %}
-                        <option value="{{ i }}">{{ i }}</option>
-                    {% endfor %}
-                </select>
-            </p>
-            <p>
-                <label for="transit_signals">Διαβατικά:</label>
-                <select id="transit_signals" name="transit_signals">
-                    {% for i in range_0_10 %}
-                        <option value="{{ i }}">{{ i }}</option>
-                    {% endfor %}
-                </select>
-            </p>
-            <p>
-                <label for="non_transmitted_signals">Μη διακινηθέντα σήματα ΠΥΡΣΕΙΑ:</label>
-                <select id="non_transmitted_signals" name="non_transmitted_signals">
-                    {% for i in range_0_10 %}
-                        <option value="{{ i }}">{{ i }}</option>
-                    {% endfor %}
-                </select>
-            </p>
-            <p>
-                <label for="system_operation">Ορθή λειτουργία συστήματος:</label>
-                <textarea id="system_operation" name="system_operation"></textarea>
-            </p>
-            <p>
-                <label for="transmission_issues">Λόγοι αδυναμίας διαβίβασης σημάτων:</label>
-                <textarea id="transmission_issues" name="transmission_issues"></textarea>
-            </p>
-        </fieldset>
-        
-        <fieldset>
-            <legend>Γ. Σήματα CRONOS</legend>
-            <p>
-                <label for="cronos_signals">Αριθμός σημάτων CRONOS:</label>
-                <select id="cronos_signals" name="cronos_signals">
-                    {% for i in range_0_21 %}
-                        <option value="{{ i }}">{{ i }}</option>
-                    {% endfor %}
-                </select>
-            </p>
-            <p>
-                <label for="cronos_non_transmitted">Μη διακινηθέντα σήματα CRONOS:</label>
-                <select id="cronos_non_transmitted" name="cronos_non_transmitted">
-                    {% for i in range_0_21 %}
-                        <option value="{{ i }}">{{ i }}</option>
-                    {% endfor %}
-                </select>
-            </p>
-            <p>
-                <label for="cronos_system_operation">Ορθή λειτουργία συστήματος:</label>
-                <textarea id="cronos_system_operation" name="cronos_system_operation"></textarea>
-            </p>
-            <p>
-                <label for="cronos_issues">Λόγοι αδυναμίας διαβίβασης σημάτων και παρατηρήσεις:</label>
-                <textarea id="cronos_issues" name="cronos_issues"></textarea>
-            </p>
-        </fieldset>
-        
-        <fieldset>
-            <legend>Δ. Σήματα AIFS</legend>
-            <p>
-                <label for="aifs_signals">Αριθμός σημάτων AIFS:</label>
-                <select id="aifs_signals" name="aifs_signals">
-                    {% for i in range_0_41 %}
-                        <option value="{{ i }}">{{ i }}</option>
-                    {% endfor %}
-                </select>
-            </p>
-            <p>
-                <label for="aifs_non_transmitted">Μη διακινηθέντα σήματα AIFS:</label>
-                <select id="aifs_non_transmitted" name="aifs_non_transmitted">
-                    {% for i in range_0_41 %}
-                        <option value="{{ i }}">{{ i }}</option>
-                    {% endfor %}
-                </select>
-            </p>
-            <p>
-                <label for="aifs_system_operation">Ορθή λειτουργία συστήματος:</label>
-                <textarea id="aifs_system_operation" name="aifs_system_operation"></textarea>
-            </p>
-            <p>
-                <label for="aifs_issues">Λόγοι αδυναμίας διαβίβασης σημάτων και παρατηρήσεις:</label>
-                <textarea id="aifs_issues" name="aifs_issues"></textarea>
-            </p>
-        </fieldset>
-
-        <fieldset>
-            <legend>Ε. Γενικές Παρατηρήσεις</legend>
-            <p>
-                <label for="general_observations">Γενικές Παρατηρήσεις:</label>
-                <textarea id="general_observations" name="general_observations"></textarea>
-            </p>
-        </fieldset>
-
-        <p><button type="submit" class="submit-button">Υποβολή</button></p>
-    </form>
-</div>
-{% endblock %}
+    <!-- Rest of the HTML... -->
+</body>
+</html>

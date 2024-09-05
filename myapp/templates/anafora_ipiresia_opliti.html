@@ -54,6 +54,7 @@
                     </tr>
                 </tbody>
             </table>
+            <input type="hidden" id="hidden_total_sum_sda" name="hidden_total_sum_sda">
         </fieldset>
 
         <!-- Fieldset για AIFS -->
@@ -88,6 +89,7 @@
                     </tr>
                 </tbody>
             </table>
+            <input type="hidden" id="hidden_total_sum_aifs" name="hidden_total_sum_aifs">
         </fieldset>
 
         <!-- Fieldset για ΣΥΝΟΛΟ ΕΙΣΕΡΧΟΜΕΝΩΝ (AIFS & ΣΔΑ – ΠΥΡΣΕΙΑ) -->
@@ -122,6 +124,7 @@
                     </tr>
                 </tbody>
             </table>
+            <input type="hidden" id="hidden_total_sum_incoming" name="hidden_total_sum_incoming">
         </fieldset>
 
         <!-- Fieldset για CRONOS -->
@@ -156,6 +159,7 @@
                     </tr>
                 </tbody>
             </table>
+            <input type="hidden" id="hidden_total_sum_cronos" name="hidden_total_sum_cronos">
         </fieldset>
 
         <!-- Fieldset για ΓΕΝΙΚΟ ΣΥΝΟΛΟ -->
@@ -190,6 +194,7 @@
                     </tr>
                 </tbody>
             </table>
+            <input type="hidden" id="hidden_total_sum_general" name="hidden_total_sum_general">
         </fieldset>
 
         <fieldset>
@@ -545,14 +550,13 @@
     <p>ΠΑΡΑΤΗΡΗΣΕΙΣ</p>
     <textarea name="remarks" rows="3"></textarea>
 </fieldset>
-        
 
         <p><button type="submit" class="submit-button">Υποβολή</button></p>
     </form>
 </div>
 
 <script>
-    // Υπολογισμός για τον πίνακα ΣΔΑ – ΠΥΡΣΕΙΑ
+    // Οι ίδιες συναρτήσεις JavaScript παραμένουν για τον υπολογισμό των συνόλων
     function calculateTotalSDA() {
         let zu = parseInt(document.getElementById('zu').value) || 0;
         let ou = parseInt(document.getElementById('ou').value) || 0;
@@ -565,12 +569,10 @@
 
         let totalSumSDA = zu + ou + pu + ru + zh + oh + ph + rh;
         document.getElementById('total_sum_sda').value = totalSumSDA;
-
-        // Ενημέρωση του πεδίου Εισερχόμενα στην ενότητα Β
         document.getElementById('incoming_signals').value = totalSumSDA;
+        document.getElementById('hidden_total_sum_sda').value = totalSumSDA;
     }
 
-    // Υπολογισμός για τον πίνακα AIFS
     function calculateTotalAIFS() {
         let zu_aifs = parseInt(document.getElementById('zu_aifs').value) || 0;
         let ou_aifs = parseInt(document.getElementById('ou_aifs').value) || 0;
@@ -583,12 +585,10 @@
 
         let totalSumAIFS = zu_aifs + ou_aifs + pu_aifs + ru_aifs + zh_aifs + oh_aifs + ph_aifs + rh_aifs;
         document.getElementById('total_sum_aifs').value = totalSumAIFS;
-
-        // Ενημέρωση του πεδίου Αριθμός σημάτων AIFS στην ενότητα Δ
         document.getElementById('aifs_signals').value = totalSumAIFS;
+        document.getElementById('hidden_total_sum_aifs').value = totalSumAIFS;
     }
 
-    // Υπολογισμός για τον πίνακα ΣΥΝΟΛΟ ΕΙΣΕΡΧΟΜΕΝΩΝ (AIFS & ΣΔΑ – ΠΥΡΣΕΙΑ)
     function calculateTotalIncoming() {
         let zu = parseInt(document.getElementById('zu').value) || 0;
         let ou = parseInt(document.getElementById('ou').value) || 0;
@@ -612,7 +612,6 @@
         document.getElementById('ou_total').value = ou + ou_aifs;
         document.getElementById('pu_total').value = pu + pu_aifs;
         document.getElementById('ru_total').value = ru + ru_aifs;
-
         document.getElementById('zh_total').value = zh + zh_aifs;
         document.getElementById('oh_total').value = oh + oh_aifs;
         document.getElementById('ph_total').value = ph + ph_aifs;
@@ -620,9 +619,9 @@
 
         let totalSumIncoming = zu + ou + pu + ru + zh + oh + ph + rh + zu_aifs + ou_aifs + pu_aifs + ru_aifs + zh_aifs + oh_aifs + ph_aifs + rh_aifs;
         document.getElementById('total_sum_incoming').value = totalSumIncoming;
+        document.getElementById('hidden_total_sum_incoming').value = totalSumIncoming;
     }
 
-    // Υπολογισμός για τον πίνακα CRONOS
     function calculateTotalCRONOS() {
         let zu_cronos = parseInt(document.getElementById('zu_cronos').value) || 0;
         let ou_cronos = parseInt(document.getElementById('ou_cronos').value) || 0;
@@ -635,12 +634,10 @@
 
         let totalSumCRONOS = zu_cronos + ou_cronos + pu_cronos + ru_cronos + zh_cronos + oh_cronos + ph_cronos + rh_cronos;
         document.getElementById('total_sum_cronos').value = totalSumCRONOS;
-
-        // Ενημέρωση του πεδίου Αριθμός σημάτων CRONOS στην ενότητα Γ
         document.getElementById('cronos_signals').value = totalSumCRONOS;
+        document.getElementById('hidden_total_sum_cronos').value = totalSumCRONOS;
     }
 
-    // Υπολογισμός για τον πίνακα ΓΕΝΙΚΟ ΣΥΝΟΛΟ
     function calculateTotalGeneral() {
         let zu_total = parseInt(document.getElementById('zu_total').value) || 0;
         let ou_total = parseInt(document.getElementById('ou_total').value) || 0;
@@ -674,6 +671,7 @@
                               zu_cronos + ou_cronos + pu_cronos + ru_cronos + zh_cronos + oh_cronos + ph_cronos + rh_cronos;
 
         document.getElementById('total_sum_general').value = totalSumGeneral;
+        document.getElementById('hidden_total_sum_general').value = totalSumGeneral;
     }
 </script>
 {% endblock %}
