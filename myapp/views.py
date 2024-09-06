@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
+from django.db.models import Sum
 from django.template.loader import render_to_string
-from .models import DidesCategory, HarpCategory, AdmeCategory, OfficerServiceReport, Soldier, AxypKepikServiceReport, OplitiServiceReport
+from .models import DidesCategory, HarpCategory, AdmeCategory, OfficerServiceReport, Soldier, AxypKepikServiceReport, OplitiServiceReport, ServiceReportSummary
 from django.core.files.base import ContentFile
 from django.http import HttpResponse
 from io import BytesIO
@@ -144,7 +145,22 @@ def anafora_ipiresia_opliti_view(request):
         
         # Μετατροπή της ημερομηνίας στο format dd/mm/yyyy
         formatted_date = datetime.strptime(report_date, '%Y-%m-%d').strftime('%d/%m/%Y')
-        
+
+        # Παίρνουμε τα σύνολα
+        total_sda = int(request.POST.get('hidden_total_sum_sda', 0))
+        total_aifs = int(request.POST.get('hidden_total_sum_aifs', 0))
+        total_cronos = int(request.POST.get('hidden_total_sum_cronos', 0))
+        total_general = int(request.POST.get('hidden_total_sum_general', 0))
+
+        # Αποθηκεύουμε τα σύνολα στη βάση δεδομένων
+        ServiceReportSummary.objects.create(
+            report_date=report_date,
+            total_sda=total_sda,
+            total_aifs=total_aifs,
+            total_cronos=total_cronos,
+            total_general=total_general
+        )
+
         # Συλλογή των δεδομένων από τη φόρμα
         context = {
             'report_date': formatted_date,
@@ -520,3 +536,27 @@ def pyrseia_view(request):
 
 def dides_view(request):
     return render(request, 'dides.html')
+
+def katastaseis_view(request):
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    # Φιλτράρισμα με βάση το εύρος ημερομηνιών
+    if start_date and end_date:
+        reports = ServiceReportSummary.objects.filter(report_date__range=[start_date, end_date])
+    else:
+        reports = ServiceReportSummary.objects.all()
+
+    # Υπολογισμός των συνολικών συνόλων
+    total_sda = reports.aggregate(Sum('total_sda'))['total_sda__sum'] or 0
+    total_aifs = reports.aggregate(Sum('total_aifs'))['total_aifs__sum'] or 0
+    total_cronos = reports.aggregate(Sum('total_cronos'))['total_cronos__sum'] or 0
+    total_general = reports.aggregate(Sum('total_general'))['total_general__sum'] or 0
+
+    context = {
+        'total_sda': total_sda,
+        'total_aifs': total_aifs,
+        'total_cronos': total_cronos,
+        'total_general': total_general
+    }
+    return render(request, 'katastaseis.html', context)

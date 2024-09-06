@@ -1,0 +1,46 @@
+<form method="get" action="{% url 'katastaseis' %}">
+    <label for="start_date">Από:</label>
+    <input type="date" id="start_date" name="start_date">
+
+    <label for="end_date">Έως:</label>
+    <input type="date" id="end_date" name="end_date">
+
+    <button type="submit">Εμφάνιση Γραφημάτων</button>
+</form>
+
+<canvas id="reportChart"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var ctx = document.getElementById('reportChart').getContext('2d');
+    var reportChart = new Chart(ctx, {
+        type: 'bar',  // Τύπος γραφήματος
+        data: {
+            labels: ['ΣΔΑ - ΠΥΡΣΕΙΑ', 'AIFS', 'CRONOS', 'ΓΕΝΙΚΟ ΣΥΝΟΛΟ'],
+            datasets: [{
+                label: 'Σύνολα',
+                data: [{{ total_sda }}, {{ total_aifs }}, {{ total_cronos }}, {{ total_general }}],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>

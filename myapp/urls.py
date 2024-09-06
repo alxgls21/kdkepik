@@ -15,5 +15,5 @@ urlpatterns = [
     path('vtc/', views.vtc_view, name='vtc'),
     path('pyrseia/', views.pyrseia_view, name='pyrseia'),
     path('dides/', views.dides_view, name='dides'),
-
+    path('katastaseis/', views.katastaseis_view, name='katastaseis'),
 ]

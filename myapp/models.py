@@ -161,3 +161,58 @@ class OplitiServiceReport(models.Model):
         if self.pdf:
             return f"Αναφορά Οπλίτη της {datetime.now().strftime('%d-%m-%Y')}"
         return "Αναφορά Οπλίτη χωρίς ημερομηνία"
+    
+from django.db import models
+from django.utils.translation import gettext_lazy as _
+
+class AxypCodesCategory(models.Model):
+    # Κατηγορίες για το "ΕΙΔΟΣ"
+    ITEM_CHOICES = [
+        ('computers', 'ΥΠΟΛΟΓΙΣΤΕΣ'),
+        ('pyrseia', 'ΠΥΡΣΕΙΑ'),
+        ('applications', 'ΛΟΙΠΕΣ ΕΦΑΡΜΟΓΕΣ'),
+        ('staff', 'ΣΤΕΛΕΧΗ'),
+        ('useful_phones', 'ΧΡΗΣΙΜΑ ΤΗΛΕΦΩΝΑ'),
+        ('phone_codes', 'ΚΩΔΙΚΟΙ ΛΕΙΤΟΥΡΓΙΑΣ ΤΗΛΕΦΩΝΟΥ'),
+    ]
+    
+    # Το βασικό πεδίο για το είδος
+    item_type = models.CharField(_('ΕΙΔΟΣ'), max_length=50, choices=ITEM_CHOICES, blank=True, null=True)
+
+    # Πεδία για "ΥΠΟΛΟΓΙΣΤΕΣ", "ΠΥΡΣΕΙΑ", "ΛΟΙΠΕΣ ΕΦΑΡΜΟΓΕΣ"
+    server_pc = models.CharField(_('Server/PC'), max_length=100, blank=True, null=True)
+    username = models.CharField(_('Username'), max_length=100, blank=True, null=True)
+    password = models.CharField(_('Password'), max_length=100, blank=True, null=True)
+
+    # Πεδία για "ΣΤΕΛΕΧΗ"
+    last_name = models.CharField(_('Επώνυμο'), max_length=100, blank=True, null=True)
+    first_name = models.CharField(_('Όνομα'), max_length=100, blank=True, null=True)
+    position = models.CharField(_('Πόστο'), max_length=100, blank=True, null=True)
+
+    # Πεδία για "ΧΡΗΣΙΜΑ ΤΗΛΕΦΩΝΑ"
+    description = models.CharField(_('Περιγραφή'), max_length=100, blank=True, null=True)
+    contact_phone = models.CharField(_('Τηλέφωνο Επικοινωνίας'), max_length=20, blank=True, null=True)
+
+    # Πεδία για "ΚΩΔΙΚΟΙ ΛΕΙΤΟΥΡΓΙΑΣ ΤΗΛΕΦΩΝΟΥ"
+    phone_code = models.CharField(_('Κωδικός'), max_length=50, blank=True, null=True)
+    phone_function = models.CharField(_('Λειτουργία'), max_length=100, blank=True, null=True)
+
+    # Γενικό πεδίο για παρατηρήσεις
+    notes = models.TextField(_('Παρατηρήσεις'), blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.item_type}'
+
+    class Meta:
+        verbose_name = _('Κωδικός ΑΞΥΠ')
+        verbose_name_plural = _('Κωδικοί ΑΞΥΠ')
+
+class ServiceReportSummary(models.Model):
+    report_date = models.DateField()
+    total_sda = models.IntegerField()  # Σύνολο για ΣΔΑ - ΠΥΡΣΕΙΑ
+    total_aifs = models.IntegerField()  # Σύνολο για AIFS
+    total_cronos = models.IntegerField()  # Σύνολο για CRONOS
+    total_general = models.IntegerField()  # Γενικό Σύνολο
+
+    def __str__(self):
+        return f"Αναφορά {self.report_date} - Γενικό Σύνολο: {self.total_general}"
