@@ -1,0 +1,78 @@
+def posta_view(request):
+    if request.method == 'POST':
+        total_force = int(request.POST.get('total_force', 0))
+        soldiers_data = []
+
+        # Συλλογή δεδομένων στρατιωτών από τη φόρμα
+        for i in range(1, total_force + 1):
+            soldier_form = SoldierForm({
+                'post': request.POST.get(f'post_{i}', ' '),
+                'service': request.POST.get(f'service_{i}', ' '),
+                'night': request.POST.get(f'night_{i}', ' '),
+                'change': request.POST.get(f'change_{i}', ' '),
+                'duration': request.POST.get(f'duration_{i}', ' '),
+                'from_date': request.POST.get(f'from_{i}', None),
+                'to_date': request.POST.get(f'to_{i}', None),
+                'cleaning': request.POST.get(f'cleaning_{i}', ' '),
+            })
+
+            if soldier_form.is_valid():
+                cleaned_data = soldier_form.cleaned_data
+
+                # Επεξεργασία ημερομηνιών
+                from_date = cleaned_data.get('from_date')
+                to_date = cleaned_data.get('to_date')
+
+                # Προσθήκη των δεδομένων με μορφοποιημένες ημερομηνίες
+                soldiers_data.append({
+                    'soldier_form': cleaned_data,
+                    'from_date': from_date.strftime('%d/%m/%Y') if from_date else '',
+                    'to_date': to_date.strftime('%d/%m/%Y') if to_date else '',
+                })
+
+        # Συγκεντρωτικά Στοιχεία
+        summary_form = SummaryForm({
+            'absences': request.POST.get('absences', ' '),
+            'present': request.POST.get('present', ' '),
+        })
+        if summary_form.is_valid():
+            summary_data = summary_form.cleaned_data
+
+        context = {
+            'date': 'Ημερομηνία: Σήμερα',
+            'soldiers_data': soldiers_data,
+            'summary_data': summary_data,
+        }
+
+        return render(request, 'print_posta.html', context)
+
+    else:
+        # GET request: Εμφάνιση της αρχικής φόρμας με στρατιώτες
+        soldiers = Soldier.objects.all().order_by('last_name')
+
+        # Δημιουργία δεδομένων για τους στρατιώτες στο context
+        soldiers_data = []
+        for soldier in soldiers:
+            soldiers_data.append({
+                'soldier_form': {
+                    'rank': soldier.rank,
+                    'last_name': soldier.last_name,
+                    'first_name': soldier.first_name,
+                    'post': '',
+                    'service': '',
+                    'night': '',
+                    'change': '',
+                    'duration': '',
+                    'from_date': '',
+                    'to_date': '',
+                    'cleaning': ''
+                },
+                'from_date': '',
+                'to_date': ''
+            })
+
+        context = {
+            'soldiers_data': soldiers_data
+        }
+
+        return render(request, 'posta.html', context)

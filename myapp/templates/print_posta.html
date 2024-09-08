@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ημερήσιο Δυναμολόγιο - Εκτύπωση</title>
+</head>
+<body>
+
+<div class="form-container">
+    <h1>Ημερήσιο Δυναμολόγιο - {{ date }}</h1>
+
+    <!-- Πίνακας: Στοιχεία Υπηρεσίας Στρατιωτών -->
+    <fieldset>
+        <legend>Στοιχεία Υπηρεσίας Στρατιωτών</legend>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Α/Α</th>
+                    <th>Στοιχεία Στρατιώτη</th>
+                    <th>Πόστο</th>
+                    <th>Υπηρεσιακό</th>
+                    <th>Διανυκτέρευση</th>
+                    <th>Μεταβολές/Υπηρεσίες</th>
+                    <th>Διάρκεια</th>
+                    <th>Από</th>
+                    <th>Έως</th>
+                    <th>Καθαριότητες</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for soldier in soldiers_data %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ soldier.soldier_form.rank }} {{ soldier.soldier_form.last_name }} {{ soldier.soldier_form.first_name }}</td>
+                    <td>{{ soldier.soldier_form.post }}</td>
+                    <td>{{ soldier.soldier_form.service }}</td>
+                    <td>{{ soldier.soldier_form.night }}</td>
+                    <td>{{ soldier.soldier_form.change }}</td>
+                    <td>{{ soldier.soldier_form.duration }}</td>
+                    <td>{{ soldier.from_date }}</td>
+                    <td>{{ soldier.to_date }}</td>
+                    <td>{{ soldier.soldier_form.cleaning }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </fieldset>
+
+    <!-- Πίνακας: Συγκεντρωτικά Στοιχεία -->
+    <fieldset>
+        <legend>Συγκεντρωτικά Στοιχεία</legend>
+        <table border="1">
+            <tr>
+                <th>Απουσίες</th>
+                <td>{{ summary_data.absences }}</td>
+            </tr>
+            <tr>
+                <th>Παρουσίες</th>
+                <td>{{ summary_data.present }}</td>
+            </tr>
+        </table>
+    </fieldset>
+
+    <!-- Πίνακας: Ειδικά Στοιχεία -->
+    <fieldset>
+        <legend>Ειδικά Στοιχεία</legend>
+        <table border="1">
+            <tr>
+                <th>Τιμητικές Άδειες</th>
+                <td>{{ special_data.honor_leaves }}</td>
+            </tr>
+            <tr>
+                <th>Κανονικές Άδειες</th>
+                <td>{{ special_data.regular_leaves }}</td>
+            </tr>
+            <tr>
+                <th>Υπηρεσιακά</th>
+                <td>{{ special_data.service_leaves }}</td>
+            </tr>
+            <tr>
+                <th>ΕΥ</th>
+                <td>{{ special_data.ey_leaves }}</td>
+            </tr>
+            <tr>
+                <th>Απόσπαση</th>
+                <td>{{ special_data.detachments }}</td>
+            </tr>
+            <tr>
+                <th>Σύνολο</th>
+                <td>{{ special_data.total_special }}</td>
+            </tr>
+        </table>
+    </fieldset>
+
+    <!-- Πίνακας: Υπηρεσία Σήμερα και Εφεδρικοί -->
+    <fieldset>
+        <legend>Υπηρεσία Σήμερα και Εφεδρικοί</legend>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Στοιχεία Στρατιώτη</th>
+                    <th>Μεταβολές / Υπηρεσίες</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for service in current_service %}
+                <tr>
+                    <td>{{ service.soldier_name }}</td>
+                    <td>{{ service.change }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </fieldset>
+
+    <!-- Πίνακας: Εξοδούχοι -->
+    <fieldset>
+        <legend>Εξοδούχοι</legend>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Α/Α</th>
+                    <th>Στοιχεία Στρατιώτη</th>
+                    <th>Υπηρεσιακό</th>
+                    <th>Διανυκτέρευση</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for exodos in exodouchoi %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ exodos.soldier_name }}</td>
+                    <td>{{ exodos.service }}</td>
+                    <td>{{ exodos.night }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </fieldset>
+
+    <!-- Πίνακας: Κατάλογος Κανονικών Αδειών -->
+    <fieldset>
+        <legend>Κατάλογος Κανονικών Αδειών</legend>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Α/Α</th>
+                    <th>Στοιχεία Στρατιώτη</th>
+                    <th>Είδος Άδειας</th>
+                    <th>Από</th>
+                    <th>Έως</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for leave in regular_leaves %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ leave.soldier_name }}</td>
+                    <td>{{ leave.leave_type }}</td>
+                    <td>{{ leave.from_date }}</td>
+                    <td>{{ leave.to_date }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </fieldset>
+
+    <!-- Πίνακας: Κατάλογος Ειδικών Περιπτώσεων -->
+    <fieldset>
+        <legend>Κατάλογος Ειδικών Περιπτώσεων</legend>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Α/Α</th>
+                    <th>Στοιχεία Στρατιώτη</th>
+                    <th>Ειδική Περίπτωση</th>
+                    <th>Διάρκεια</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for case in special_cases %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ case.soldier_name }}</td>
+                    <td>{{ case.special_case }}</td>
+                    <td>{{ case.duration }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </fieldset>
+
+    <!-- Πίνακας: Κατάλογος Τιμητικών Αδειών -->
+    <fieldset>
+        <legend>Κατάλογος Τιμητικών Αδειών</legend>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Α/Α</th>
+                    <th>Στοιχεία Στρατιώτη</th>
+                    <th>Είδος Άδειας</th>
+                    <th>Διάρκεια</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for honor in honor_leaves %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ honor.soldier_name }}</td>
+                    <td>{{ honor.leave_type }}</td>
+                    <td>{{ honor.duration }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </fieldset>
+</div>
+
+</body>
+</html>

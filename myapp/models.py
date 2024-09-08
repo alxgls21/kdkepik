@@ -216,3 +216,5 @@ class ServiceReportSummary(models.Model):
 
     def __str__(self):
         return f"Αναφορά {self.report_date} - Γενικό Σύνολο: {self.total_general}"
+
+from django.db import models

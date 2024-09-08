@@ -16,7 +16,7 @@
 </div>
 <div class="form-container">
     <h1>Καταχωρήσεις Υπηρεσίας Στρατιωτών της <span id="formatted-date"></span></h1> <!-- Εδώ θα εμφανιστεί η ημερομηνία -->
-    <form method="POST">
+    <form method="POST" action="{% url 'posta' %}">
         {% csrf_token %}
         <fieldset>
             <legend>Στοιχεία Υπηρεσίας Στρατιωτών</legend>
@@ -83,6 +83,8 @@
             </table>
         </fieldset>
 
+    <div class="table-wrapper">
+        <!-- Συγκεντρωτικά Στοιχεία -->
         <fieldset>
             <legend>Συγκεντρωτικά Στοιχεία</legend>
             <table border="1" id="summary-table">
@@ -100,7 +102,8 @@
                 </tr>
             </table>
         </fieldset>
-
+        
+        <!-- Ειδικά Στοιχεία -->
         <fieldset>
             <legend>Ειδικά Στοιχεία</legend>
             <table border="1" id="special-details">
@@ -130,6 +133,8 @@
                 </tr>
             </table>
         </fieldset>
+    </div>
+        
 
         <fieldset>
             <legend>Υπηρεσία Σήμερα και Εφεδρικοί</legend>
@@ -214,7 +219,7 @@
                 </tbody>
             </table>
         </fieldset>
-        
+        <button type="submit" class="submit-button">Υποβολή Ημερήσιου Δυναμολογίου</button>
     </form>
 </div>
 

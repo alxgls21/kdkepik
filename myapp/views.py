@@ -13,6 +13,10 @@ from django.utils.formats import date_format
 import locale
 import os
 import platform
+from django.urls import reverse
+from django.shortcuts import redirect
+from .forms import SoldierForm, SummaryForm, SpecialDetailsForm, CurrentServiceForm, ExodouchoiForm, RegularLeaveForm, SpecialCaseForm, HonorLeaveForm
+
 
 def index(request):
     return render(request, 'index.html')
@@ -560,3 +564,114 @@ def katastaseis_view(request):
         'total_general': total_general
     }
     return render(request, 'katastaseis.html', context)
+
+
+from django.shortcuts import render
+from .models import Soldier
+from .forms import SoldierForm, SummaryForm
+
+def posta_view(request):
+    if request.method == 'POST':
+        # Παίρνουμε την ημερομηνία
+        report_date = request.POST.get('report_date', datetime.now().strftime('%Y-%m-%d'))
+        formatted_date = datetime.strptime(report_date, '%Y-%m-%d').strftime('%d/%m/%Y')
+
+        # Συλλογή δεδομένων στρατιωτών από τη φόρμα
+        total_force = int(request.POST.get('total_force', 0))
+        soldiers_data = []
+        for i in range(1, total_force + 1):
+            soldier_form = SoldierForm({
+                'post': request.POST.get(f'post_{i}', ''),
+                'service': request.POST.get(f'service_{i}', ''),
+                'night': request.POST.get(f'night_{i}', ''),
+                'change': request.POST.get(f'change_{i}', ''),
+                'duration': request.POST.get(f'duration_{i}', ''),
+                'from_date': request.POST.get(f'from_{i}', None),
+                'to_date': request.POST.get(f'to_{i}', None),
+                'cleaning': request.POST.get(f'cleaning_{i}', ''),
+            })
+
+            if soldier_form.is_valid():
+                cleaned_data = soldier_form.cleaned_data
+                from_date = cleaned_data.get('from_date')
+                to_date = cleaned_data.get('to_date')
+
+                # Προσθήκη δεδομένων στρατιώτη στη λίστα
+                soldiers_data.append({
+                    'soldier_form': cleaned_data,
+                    'from_date': from_date.strftime('%d/%m/%Y') if from_date else '',
+                    'to_date': to_date.strftime('%d/%m/%Y') if to_date else '',
+                })
+
+        # Συγκεντρωτικά Στοιχεία
+        summary_form = SummaryForm({
+            'absences': request.POST.get('absences', ''),
+            'present': request.POST.get('present', ''),
+        })
+        summary_data = summary_form.cleaned_data if summary_form.is_valid() else {}
+
+        # Ειδικά Στοιχεία
+        special_data = {
+            'honor_leaves': request.POST.get('honor_leaves', '0'),
+            'regular_leaves': request.POST.get('regular_leaves', '0'),
+            'service_leaves': request.POST.get('service_leaves', '0'),
+            'ey_leaves': request.POST.get('ey_leaves', '0'),
+            'detachments': request.POST.get('detachments', '0'),
+            'total_special': request.POST.get('total_special', '0')
+        }
+
+        # Δημιουργία context για το template
+        context = {
+            'date': formatted_date,
+            'soldiers_data': soldiers_data,
+            'summary_data': summary_data,
+            'special_data': special_data,
+            'current_service': [],  # Προσθέστε δεδομένα από τη φόρμα
+            'exodouchoi': [],  # Προσθέστε δεδομένα από τη φόρμα
+            'regular_leaves': [],  # Προσθέστε δεδομένα από τη φόρμα
+            'special_cases': [],  # Προσθέστε δεδομένα από τη φόρμα
+            'honor_leaves': []  # Προσθέστε δεδομένα από τη φόρμα
+        }
+
+        # Δημιουργία του HTML από το template
+        html_string = render_to_string('print_posta.html', context)
+
+        # Αποθήκευση του HTML σε προσωρινό αρχείο
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.html') as temp_html_file:
+            temp_html_file.write(html_string.encode('utf-8'))
+            temp_html_file_path = temp_html_file.name
+
+        # Ανίχνευση του λειτουργικού συστήματος και διαμόρφωση του pdfkit
+        if platform.system() == 'Windows':
+            wkhtmltopdf_path = os.path.join('myapp', 'bin', 'wkhtmltopdf.exe')
+        elif platform.system() == 'Darwin':
+            wkhtmltopdf_path = os.path.join('myapp', 'bin', 'wkhtmltopdf')
+        else:
+            raise Exception("Unsupported OS")
+
+        pdfkit_config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
+
+        # Δημιουργία του PDF από το προσωρινό αρχείο με επιπλέον options
+        pdf = pdfkit.from_file(temp_html_file_path, False, configuration=pdfkit_config, options={
+            'no-stop-slow-scripts': '',
+            'disable-smart-shrinking': '',
+            'enable-local-file-access': '',
+            'orientation': 'Landscape'
+        })
+
+        # Αποθήκευση του PDF
+        service_report = AxypKepikServiceReport()
+        service_report.pdf.save(f'Posta_Report_{datetime.now().strftime("%d-%m-%Y")}.pdf', ContentFile(pdf))
+
+        # Επιστροφή του PDF στον χρήστη
+        return HttpResponse(pdf, content_type='application/pdf')
+
+    # Εμφάνιση της φόρμας σε GET request
+    soldiers = Soldier.objects.all().order_by('last_name')
+    soldiers_data = [{'rank': soldier.rank, 'last_name': soldier.last_name, 'first_name': soldier.first_name} for soldier in soldiers]
+
+    context = {
+        'soldiers': soldiers_data
+    }
+
+    return render(request, 'posta.html', context)

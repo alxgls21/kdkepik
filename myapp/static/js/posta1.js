@@ -10,7 +10,7 @@ function calculateSummary() {
     const absenceValues = ["Απόσπαση", "Κανονική Άδεια", "Τιμητική Άδεια", "Αγροτική Άδεια", "Αναρρωτική Άδεια", "Φοιτητική Άδεια", "Υπηρεσιακό", "ΕΥ"];
     
     absencesSelect.forEach(function(select) {
-        const value = select.value;
+        const value = select ? select.value : ''; // Έλεγχος ύπαρξης
         if (absenceValues.includes(value)) {
             totalAbsences++;
         }
@@ -49,28 +49,19 @@ function calculateSummary() {
 
 function updateCurrentService() {
     const absencesSelect = document.querySelectorAll('select[name^="change_"]');
-    const soldiers = document.querySelectorAll('td:nth-child(2)'); // Τα στοιχεία στρατιωτών (2η στήλη)
+    const soldiers = document.querySelectorAll('td:nth-child(2)');
     const serviceTableBody = document.querySelector('#current-service tbody');
     
     serviceTableBody.innerHTML = '';
 
     absencesSelect.forEach(function(select, index) {
-        const value = select.value;
-        const soldierName = soldiers[index].textContent; // Παίρνουμε το όνομα του στρατιώτη
+        const value = select ? select.value : ''; // Έλεγχος ύπαρξης
+        const soldierName = soldiers[index] ? soldiers[index].textContent : ''; // Έλεγχος ύπαρξης
         const eligibleValues = ["ΤΗΠ", "ΤΦ", "Θ", "ΟΥ", "Ε", "ΕΦΕΔΡ"];
 
         if (eligibleValues.includes(value)) {
             const row = document.createElement('tr');
-
-            const soldierCell = document.createElement('td');
-            soldierCell.textContent = soldierName;
-
-            const serviceCell = document.createElement('td');
-            serviceCell.textContent = value;
-
-            row.appendChild(soldierCell);
-            row.appendChild(serviceCell);
-
+            row.innerHTML = `<td>${soldierName}</td><td>${value}</td>`;
             serviceTableBody.appendChild(row);
         }
     });
@@ -86,9 +77,9 @@ function updateExodouchoi() {
     let counter = 0;
 
     soldiers.forEach(function(soldier, index) {
-        const soldierName = soldier.textContent;
-        const serviceValue = services[index].value;
-        const nightValue = nights[index].value;
+        const soldierName = soldier ? soldier.textContent : ''; // Έλεγχος ύπαρξης
+        const serviceValue = services[index] ? services[index].value : ''; // Έλεγχος ύπαρξης
+        const nightValue = nights[index] ? nights[index].value : ''; // Έλεγχος ύπαρξης
 
         if (serviceValue && nightValue) {
             counter++;
@@ -117,16 +108,17 @@ function updateRegularLeave() {
     const leaveTypes = ["Κανονική Άδεια", "Φοιτητική Άδεια", "Αγροτική Άδεια", "Αναρρωτική Άδεια"];
 
     soldiers.forEach(function(soldier, index) {
-        const changeValue = changes[index].value;
-        const fromDate = fromDates[index].value;
-        const toDate = toDates[index].value;
+        const soldierName = soldier ? soldier.textContent : ''; // Έλεγχος ύπαρξης
+        const changeValue = changes[index] ? changes[index].value : ''; // Έλεγχος ύπαρξης
+        const fromDate = fromDates[index] ? fromDates[index].value : ''; // Έλεγχος ύπαρξης
+        const toDate = toDates[index] ? toDates[index].value : ''; // Έλεγχος ύπαρξης
 
         if (leaveTypes.includes(changeValue) && fromDate && toDate) {
             counter++;
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${counter}</td>
-                <td>${soldier.textContent}</td>
+                <td>${soldierName}</td>
                 <td>${changeValue}</td>
                 <td>${fromDate}</td>
                 <td>${toDate}</td>
@@ -148,15 +140,16 @@ function updateSpecialCases() {
     const specialCaseTypes = ["ΕΥ", "Απόσπαση"];
 
     soldiers.forEach(function(soldier, index) {
-        const changeValue = changes[index].value;
-        const durationValue = durations[index].value;
+        const soldierName = soldier ? soldier.textContent : ''; // Έλεγχος ύπαρξης
+        const changeValue = changes[index] ? changes[index].value : ''; // Έλεγχος ύπαρξης
+        const durationValue = durations[index] ? durations[index].value : ''; // Έλεγχος ύπαρξης
 
         if (specialCaseTypes.includes(changeValue) && durationValue) {
             counter++;
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${counter}</td>
-                <td>${soldier.textContent}</td>
+                <td>${soldierName}</td>
                 <td>${changeValue}</td>
                 <td>${durationValue}</td>
             `;
@@ -175,15 +168,16 @@ function updateHonorLeave() {
     let counter = 0;
 
     soldiers.forEach(function(soldier, index) {
-        const changeValue = changes[index].value;
-        const durationValue = durations[index].value;
+        const soldierName = soldier ? soldier.textContent : ''; // Έλεγχος ύπαρξης
+        const changeValue = changes[index] ? changes[index].value : ''; // Έλεγχος ύπαρξης
+        const durationValue = durations[index] ? durations[index].value : ''; // Έλεγχος ύπαρξης
 
         if (changeValue === "Τιμητική Άδεια" && durationValue) {
             counter++;
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${counter}</td>
-                <td>${soldier.textContent}</td>
+                <td>${soldierName}</td>
                 <td>${changeValue}</td>
                 <td>${durationValue}</td>
             `;
@@ -219,7 +213,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const currentDate = new Date();
     const formattedDate = formatDate(currentDate);
     document.getElementById('formatted-date').textContent = formattedDate;
-    document.getElementById('current-date').textContent = formattedDate;
 
     updateExodouchoi();
 });

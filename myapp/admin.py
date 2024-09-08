@@ -36,7 +36,6 @@ class AxypCodesCategoryAdmin(admin.ModelAdmin):
     class Media:
         js = ('js/axypcodes.js',)
 
-
 admin.site.register(DidesCategory, DidesCategoryAdmin)
 admin.site.register(HarpCategory, HarpCategoryAdmin)
 admin.site.register(AdmeCategory, AdmeCategoryAdmin)
