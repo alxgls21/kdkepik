@@ -3,6 +3,8 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    background-color: #1b1b1b;
+    color: white;
 }
 
 .header {
@@ -32,59 +34,49 @@ video {
     object-fit: cover;
 }
 
-/* Στυλ για την κύρια επικεφαλίδα */
 .main-content h1 {
     font-size: 2.5em;
     margin-bottom: 20px;
 }
 
-/* Στυλ για τη λίστα κατηγοριών και υποκατηγοριών */
-ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    text-align: left;
-    display: inline-block;
-    width: 70%;
+/* Fieldset container styling */
+.fieldset-container {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    width: 70%; /* Πλάτος στο 70% της οθόνης */
+    margin: 20px auto; /* Κεντράρισμα */
+    text-align: center;
 }
 
-.category-title, .subcategory-title {
-    background-color: #333;
-    padding: 15px;
+.fieldset-container legend {
     cursor: pointer;
-    border-radius: 5px;
-    margin-bottom: 5px;
-    transition: background-color 0.3s ease;
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #ffffff;
 }
 
-.category-title:hover, .subcategory-title:hover {
+/* Πίνακες */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
     background-color: #444;
-}
-
-.category-content, .subcategory-content {
-    display: none;
-    padding-left: 0px;
-}
-
-.subcategory-title {
-    background-color: #444;
-    margin-top: 10px;
-}
-
-.subcategory-content li {
-    padding: 10px;
-    background-color: #555;
-    margin-bottom: 5px;
-    border-radius: 5px;
-}
-
-.subcategory-content li a {
     color: #fff;
-    text-decoration: none;
 }
 
-.subcategory-content li a:hover {
-    text-decoration: underline;
+td {
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 /* Στυλ για το footer */
@@ -98,7 +90,7 @@ footer {
     width: 100%;
 }
 
-/* Στυλ για το μενού */
+/* Dropdown menu */
 header {
     color: #fff;
     padding: 10px 0;

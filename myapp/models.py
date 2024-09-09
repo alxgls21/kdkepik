@@ -218,3 +218,39 @@ class ServiceReportSummary(models.Model):
         return f"Αναφορά {self.report_date} - Γενικό Σύνολο: {self.total_general}"
 
 from django.db import models
+
+class AxypCodesComputers(AxypCodesCategory):
+    class Meta:
+        proxy = True
+        verbose_name = "Υπολογιστές"
+        verbose_name_plural = "Υπολογιστές"
+
+class AxypCodesPyrseia(AxypCodesCategory):
+    class Meta:
+        proxy = True
+        verbose_name = "Πυρσεία"
+        verbose_name_plural = "Πυρσεία"
+
+class AxypCodesApplications(AxypCodesCategory):
+    class Meta:
+        proxy = True
+        verbose_name = "Λοιπές Εφαρμογές"
+        verbose_name_plural = "Λοιπές Εφαρμογές"
+
+class AxypCodesStaff(AxypCodesCategory):
+    class Meta:
+        proxy = True
+        verbose_name = "Στελέχη"
+        verbose_name_plural = "Στελέχη"
+
+class AxypCodesUsefulPhones(AxypCodesCategory):
+    class Meta:
+        proxy = True
+        verbose_name = "Χρήσιμα Τηλέφωνα"
+        verbose_name_plural = "Χρήσιμα Τηλέφωνα"
+
+class AxypCodesPhoneCodes(AxypCodesCategory):
+    class Meta:
+        proxy = True
+        verbose_name = "Κωδικοί Λειτουργίας Τηλεφώνου"
+        verbose_name_plural = "Κωδικοί Λειτουργίας Τηλεφώνου"

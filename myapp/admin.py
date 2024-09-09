@@ -3,7 +3,7 @@
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
-from .models import DidesCategory, HarpCategory, AdmeCategory, OfficerServiceReport, Soldier, AxypKepikServiceReport, OplitiServiceReport, AxypCodesCategory
+from .models import DidesCategory, HarpCategory, AdmeCategory, OfficerServiceReport, Soldier, AxypKepikServiceReport, OplitiServiceReport, AxypCodesCategory, AxypCodesComputers, AxypCodesPyrseia, AxypCodesApplications,  AxypCodesStaff, AxypCodesUsefulPhones, AxypCodesPhoneCodes
 
 class DidesCategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'category', 'application', 'ip_address', 'supervisory_tool')
@@ -36,6 +36,30 @@ class AxypCodesCategoryAdmin(admin.ModelAdmin):
     class Media:
         js = ('js/axypcodes.js',)
 
+class ComputersAdmin(AxypCodesCategoryAdmin):
+    def get_queryset(self, request):
+        return super().get_queryset(request).filter(item_type='computers')
+
+class PyrseiaAdmin(AxypCodesCategoryAdmin):
+    def get_queryset(self, request):
+        return super().get_queryset(request).filter(item_type='pyrseia')
+
+class ApplicationsAdmin(AxypCodesCategoryAdmin):
+    def get_queryset(self, request):
+        return super().get_queryset(request).filter(item_type='applications')
+
+class StaffAdmin(AxypCodesCategoryAdmin):
+    def get_queryset(self, request):
+        return super().get_queryset(request).filter(item_type='staff')
+
+class UsefulPhonesAdmin(AxypCodesCategoryAdmin):
+    def get_queryset(self, request):
+        return super().get_queryset(request).filter(item_type='useful_phones')
+
+class PhoneCodesAdmin(AxypCodesCategoryAdmin):
+    def get_queryset(self, request):
+        return super().get_queryset(request).filter(item_type='phone_codes')
+
 admin.site.register(DidesCategory, DidesCategoryAdmin)
 admin.site.register(HarpCategory, HarpCategoryAdmin)
 admin.site.register(AdmeCategory, AdmeCategoryAdmin)
@@ -44,3 +68,9 @@ admin.site.register(Soldier, SoldierAdmin)
 admin.site.register(AxypKepikServiceReport)
 admin.site.register(OplitiServiceReport)
 admin.site.register(AxypCodesCategory, AxypCodesCategoryAdmin)
+admin.site.register(AxypCodesComputers, ComputersAdmin)
+admin.site.register(AxypCodesPyrseia, PyrseiaAdmin)
+admin.site.register(AxypCodesApplications, ApplicationsAdmin)
+admin.site.register(AxypCodesStaff, StaffAdmin)
+admin.site.register(AxypCodesUsefulPhones, UsefulPhonesAdmin)
+admin.site.register(AxypCodesPhoneCodes, PhoneCodesAdmin)

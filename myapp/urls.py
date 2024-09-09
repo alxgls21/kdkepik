@@ -17,4 +17,5 @@ urlpatterns = [
     path('dides/', views.dides_view, name='dides'),
     path('katastaseis/', views.katastaseis_view, name='katastaseis'),
     path('posta/', views.posta_view, name='posta'),
+    path('passwords/', views.passwords_view, name='passwords_view'),  # Προσθήκη του νέου URL για το passwords_view
 ]

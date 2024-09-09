@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.db.models import Sum
 from django.template.loader import render_to_string
-from .models import DidesCategory, HarpCategory, AdmeCategory, OfficerServiceReport, Soldier, AxypKepikServiceReport, OplitiServiceReport, ServiceReportSummary
+from .models import DidesCategory, HarpCategory, AdmeCategory, OfficerServiceReport, Soldier, AxypKepikServiceReport, OplitiServiceReport, ServiceReportSummary, AxypCodesCategory  
 from django.core.files.base import ContentFile
 from django.http import HttpResponse
 from io import BytesIO
@@ -15,7 +15,7 @@ import os
 import platform
 from django.urls import reverse
 from django.shortcuts import redirect
-from .forms import SoldierForm, SummaryForm, SpecialDetailsForm, CurrentServiceForm, ExodouchoiForm, RegularLeaveForm, SpecialCaseForm, HonorLeaveForm
+from .forms import SoldierForm, SummaryForm
 
 
 def index(request):
@@ -675,3 +675,25 @@ def posta_view(request):
     }
 
     return render(request, 'posta.html', context)
+
+def passwords_view(request):
+    # Φόρτωση δεδομένων ανά κατηγορία από τη βάση δεδομένων
+    computers = AxypCodesCategory.objects.filter(item_type='computers')
+    pyrseia = AxypCodesCategory.objects.filter(item_type='pyrseia')
+    applications = AxypCodesCategory.objects.filter(item_type='applications')
+    staff = AxypCodesCategory.objects.filter(item_type='staff')
+    useful_phones = AxypCodesCategory.objects.filter(item_type='useful_phones')
+    phone_codes = AxypCodesCategory.objects.filter(item_type='phone_codes')
+
+    # Σύνδεση των δεδομένων με το template
+    context = {
+        'computers': computers,
+        'pyrseia': pyrseia,
+        'applications': applications,
+        'staff': staff,
+        'useful_phones': useful_phones,
+        'phone_codes': phone_codes,
+    }
+
+    # Απόδοση του template με τα δεδομένα
+    return render(request, 'passwords.html', context)

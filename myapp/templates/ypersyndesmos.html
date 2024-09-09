@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}ΠΕΔΙΑ ΕΛΕΓΧΟΥ{% endblock %}
+{% block title %}Πεδία Ελέγχου{% endblock %}
 
 {% block extra_head %}
     <link rel="stylesheet" href="{% static 'css/ypersyndesmos.css' %}">
@@ -15,82 +15,110 @@
 </div>
 <div class="main-content">
     <h1>Πεδία Ελέγχου</h1>
-    <ul>
-        <li>
-            <h2 class="category-title">ΔΙΔΕΣ</h2>
-            <ul class="category-content" style="display: none;">
-                <li>
-                    <h3 class="subcategory-title">Αδιαβάθμητο Δίκτυο DCE</h3>
-                    <ul class="subcategory-content" style="display: none;">
-                        {% for entry in unclassified_network %}
-                            <li>
-                                <a href="http://{{ entry.ip_address }}">{{ entry.name }}</a>
-                                ({{ entry.get_category_display }}, {{ entry.get_application_display }})
-                                <br>
-                                Εποπτικό Μέσο: {{ entry.supervisory_tool }}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </li>
-                <li>
-                    <h3 class="subcategory-title">Διαβαθμισμένο Δίκτυο DTE</h3>
-                    <ul class="subcategory-content" style="display: none;">
-                        {% for entry in classified_network %}
-                            <li>
-                                <a href="http://{{ entry.ip_address }}">{{ entry.name }}</a>
-                                ({{ entry.get_category_display }}, {{ entry.get_application_display }})
-                                <br>
-                                Εποπτικό Μέσο: {{ entry.supervisory_tool }}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </li>
-            </ul>
-        </li>
-        <li>
-            <h2 class="category-title">HARP</h2>
-            <ul class="category-content" style="display: none;">
-                {% for entry in harp_categories %}
-                    <li>
-                        <a href="http://{{ entry.ip_address }}">{{ entry.name }}</a>
-                        <br>
-                        Εποπτικό Μέσο: {{ entry.supervisory_tool }}
-                    </li>
-                {% endfor %}
-            </ul>
-        </li>
-        <li>
-            <h2 class="category-title">ΑΔΜΕ</h2>
-            <ul class="category-content" style="display: none;">
-                {% for entry in adme_categories %}
-                    <li>
-                        <a href="http://{{ entry.ip_address }}">{{ entry.name }}</a>
-                        <br>
-                        Εποπτικό Μέσο: {{ entry.supervisory_tool }}
-                    </li>
-                {% endfor %}
-            </ul>
-        </li>
-    </ul>
+
+    <!-- ΔΙΔΕΣ -->
+    <fieldset class="fieldset-container">
+        <legend onclick="toggleFieldset(this)">ΔΙΔΕΣ</legend>
+        <div class="category-content" style="display: none;">
+            <h3 class="subcategory-title">Αδιαβάθμητο Δίκτυο DCE</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Όνομα</th>
+                        <th>IP Address</th>
+                        <th>Εποπτικό Μέσο</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in unclassified_network %}
+                    <tr>
+                        <td>{{ entry.name }}</td>
+                        <td>{{ entry.ip_address }}</td>
+                        <td>{{ entry.supervisory_tool }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h3 class="subcategory-title">Διαβαθμισμένο Δίκτυο DTE</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Όνομα</th>
+                        <th>IP Address</th>
+                        <th>Εποπτικό Μέσο</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in classified_network %}
+                    <tr>
+                        <td>{{ entry.name }}</td>
+                        <td>{{ entry.ip_address }}</td>
+                        <td>{{ entry.supervisory_tool }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </fieldset>
+
+    <!-- HARP -->
+    <fieldset class="fieldset-container">
+        <legend onclick="toggleFieldset(this)">HARP</legend>
+        <div class="category-content" style="display: none;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Όνομα</th>
+                        <th>IP Address</th>
+                        <th>Εποπτικό Μέσο</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in harp_categories %}
+                    <tr>
+                        <td>{{ entry.name }}</td>
+                        <td>{{ entry.ip_address }}</td>
+                        <td>{{ entry.supervisory_tool }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </fieldset>
+
+    <!-- ΑΔΜΕ -->
+    <fieldset class="fieldset-container">
+        <legend onclick="toggleFieldset(this)">ΑΔΜΕ</legend>
+        <div class="category-content" style="display: none;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Όνομα</th>
+                        <th>IP Address</th>
+                        <th>Εποπτικό Μέσο</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in adme_categories %}
+                    <tr>
+                        <td>{{ entry.name }}</td>
+                        <td>{{ entry.ip_address }}</td>
+                        <td>{{ entry.supervisory_tool }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </fieldset>
+
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const titles = document.querySelectorAll('.category-title');
-        titles.forEach(title => {
-            title.addEventListener('click', function () {
-                const content = this.nextElementSibling;
-                content.style.display = content.style.display === 'none' ? 'block' : 'none';
-            });
-        });
-
-        const subcategoryTitles = document.querySelectorAll('.subcategory-title');
-        subcategoryTitles.forEach(subcategoryTitle => {
-            subcategoryTitle.addEventListener('click', function () {
-                const content = this.nextElementSibling;
-                content.style.display = content.style.display === 'none' ? 'block' : 'none';
-            });
-        });
-    });
+    function toggleFieldset(legendElement) {
+        const content = legendElement.nextElementSibling;
+        content.style.display = content.style.display === 'none' ? 'block' : 'none';
+    }
 </script>
+
 {% endblock %}
