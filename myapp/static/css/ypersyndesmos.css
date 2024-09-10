@@ -1,10 +1,19 @@
 /* Γενικό στυλ για τη σελίδα */
+html, body {
+    height: 100%; /* Καθώς πρέπει το html και το body να καλύπτουν όλο το ύψος */
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #1b1b1b;
     color: white;
+    display: flex;
+    flex-direction: column; /* Η σελίδα λειτουργεί ως Flexbox container */
+    min-height: 100vh; /* Καλύπτει τουλάχιστον το ύψος του παραθύρου */
 }
 
 .header {
@@ -16,6 +25,7 @@ body {
 .main-content {
     padding: 20px;
     text-align: center;
+    flex: 1; /* Η περιοχή του περιεχομένου μεγαλώνει για να καλύψει τον διαθέσιμο χώρο */
 }
 
 .video-background {
@@ -77,17 +87,6 @@ th {
 
 td {
     background-color: rgba(255, 255, 255, 0.2);
-}
-
-/* Στυλ για το footer */
-footer {
-    background-color: rgba(0, 0, 0, 0.8);
-    padding: 10px 0;
-    text-align: center;
-    color: #fff;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
 }
 
 /* Dropdown menu */
@@ -160,4 +159,16 @@ header nav ul li a:hover {
     display: block;
     opacity: 1;
     transform: scaleY(1);
+}
+
+/* Στυλ για το footer */
+footer {
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    position: relative;
+    bottom: 0;
+    left: 0;
 }

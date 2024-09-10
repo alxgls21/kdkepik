@@ -1,11 +1,10 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 
-{% block title %}Posta - Καταχωρήσεις Στρατιωτών{% endblock %}
+{% block title %}Στοιχεία Υπηρεσίας Στρατιωτών{% endblock %}
 
 {% block extra_head %}
     <link rel="stylesheet" href="{% static 'css/posta.css' %}">
-    <script src="{% static 'js/posta1.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -14,13 +13,15 @@
         <source src="{% static 'img/index_back.webm' %}" type="video/webm">
     </video>
 </div>
-<div class="form-container">
-    <h1>Καταχωρήσεις Υπηρεσίας Στρατιωτών της <span id="formatted-date"></span></h1> <!-- Εδώ θα εμφανιστεί η ημερομηνία -->
-    <form method="POST" action="{% url 'posta' %}">
-        {% csrf_token %}
-        <fieldset>
-            <legend>Στοιχεία Υπηρεσίας Στρατιωτών</legend>
-            <table border="1">
+
+<div class="main-content">
+    <h1>Στοιχεία Υπηρεσίας Στρατιωτών</h1>
+
+    <!-- Πίνακας Στοιχείων Στρατιωτών -->
+    <fieldset class="fieldset-container">
+        <legend onclick="toggleFieldset(this)">Πίνακας Στοιχείων</legend>
+        <div class="category-content">
+            <table id="soldier-table">
                 <thead>
                     <tr>
                         <th>Α/Α</th>
@@ -28,7 +29,7 @@
                         <th>Πόστο</th>
                         <th>Υπηρεσιακό</th>
                         <th>Διανυκτέρευση</th>
-                        <th>Μεταβολές/Υπηρεσίες</th>
+                        <th>Μεταβολές / Υπηρεσίες</th>
                         <th>Διάρκεια</th>
                         <th>Από</th>
                         <th>Έως</th>
@@ -39,121 +40,102 @@
                     {% for soldier in soldiers %}
                     <tr>
                         <td>{{ forloop.counter }}</td>
-                        <td>{{ soldier.rank }} {{ soldier.last_name }} {{ soldier.first_name }}</td>
+                        <td>{{ soldier.vathmos }} {{ soldier.eponymo }} {{ soldier.onoma }}</td>
+                        <td>{{ soldier.posto }}</td>
+                        <td><input type="text" placeholder="Υπηρεσιακό" name="ypiresiako" /></td>
+                        <td><input type="text" placeholder="Διανυκτέρευση" name="dianyktereysi" /></td>
                         <td>
-                            <select name="post_{{ forloop.counter }}">
-                                <option value="">-- Επιλέξτε Πόστο --</option>
-                                <option value="HARP">HARP</option>
-                                <option value="Helpdesk">Helpdesk</option>
-                                <option value="Διαχείριση Δικτύων/Κυκλωμάτων">Διαχείριση Δικτύων/Κυκλωμάτων</option>
-                                <option value="Τηλέτυπα">Τηλέτυπα</option>
-                                <option value="Τηλεφωνικό">Τηλεφωνικό</option>
-                                <option value="Τμήμα ΟΤΕ">Τμήμα ΟΤΕ</option>
-                                <option value="ΥΕΣΑ">ΥΕΣΑ</option>
+                            <select>
+                                <option value="">Επιλέξτε</option>
+                                <option>Απόσπαση</option>
+                                <option>Κανονική Άδεια</option>
+                                <option>Τιμητική Άδεια</option>
+                                <option>Αγροτική Άδεια</option>
+                                <option>Αναρρωτική Άδεια</option>
+                                <option>Φοιτητική Άδεια</option>
+                                <option>Άδεια Ορκομωσίας</option>
+                                <option>Αιμοδοτική Άδεια</option>
+                                <option>ΕΥ</option>
+                                <option>Υπηρεσιακό</option>
                             </select>
                         </td>
-                        <td><input type="text" name="service_{{ forloop.counter }}" /></td>
-                        <td><input type="text" name="night_{{ forloop.counter }}" /></td>
+                        <td><input type="text" placeholder="Διάρκεια" name="diarkeia" /></td>
+                        <td><input type="text" placeholder="Από" name="apo" /></td>
+                        <td><input type="text" placeholder="Έως" name="eos" /></td>
                         <td>
-                            <select name="change_{{ forloop.counter }}">
-                                <option value="">-- Επιλέξτε Μεταβολή/Υπηρεσία --</option>
-                                <option value="Απόσπαση">Απόσπαση</option>
-                                <option value="Κανονική Άδεια">Κανονική Άδεια</option>
-                                <option value="Τιμητική Άδεια">Τιμητική Άδεια</option>
-                                <option value="Αγροτική Άδεια">Αγροτική Άδεια</option>
-                                <option value="Αναρρωτική Άδεια">Αναρρωτική Άδεια</option>
-                                <option value="Φοιτητική Άδεια">Φοιτητική Άδεια</option>
-                                <option value="Υπηρεσιακό">Υπηρεσιακό</option>
-                                <option value="ΤΗΠ">ΤΗΠ</option>
-                                <option value="ΤΦ">ΤΦ</option>
-                                <option value="Θ">Θ</option>
-                                <option value="ΟΥ">ΟΥ</option>
-                                <option value="Ε">Ε</option>
-                                <option value="ΕΥ">ΕΥ</option>
-                                <option value="ΕΦΕΔΡ">ΕΦΕΔΡ</option>
+                            <select>
+                                <option value="">Επιλέξτε</option>
+                                <option>ΚΕΠΙΚ-Αξιωματικών</option>
+                                <option>ΥΕΣΑ</option>
+                                <option>Helpdesk</option>
+                                <option>Διάδρομος-Τουαλέτες</option>
                             </select>
                         </td>
-                        <td><input type="text" name="duration_{{ forloop.counter }}" /></td>
-                        <td><input type="text" name="from_{{ forloop.counter }}" /></td>
-                        <td><input type="text" name="to_{{ forloop.counter }}" /></td>
-                        <td><input type="text" name="cleaning_{{ forloop.counter }}" /></td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
-        </fieldset>
+        </div>
+    </fieldset>
 
-    <div class="table-wrapper">
-        <!-- Συγκεντρωτικά Στοιχεία -->
-        <fieldset>
-            <legend>Συγκεντρωτικά Στοιχεία</legend>
-            <table border="1" id="summary-table">
-                <tr>
-                    <th>Δύναμη 1ου Λόχου</th>
-                    <td id="total-force">{{ soldiers|length }}</td>
-                </tr>
-                <tr>
-                    <th>Απουσίες</th>
-                    <td id="absences">0</td>
-                </tr>
-                <tr>
-                    <th>Παρουσίες</th>
-                    <td id="present">0</td>
-                </tr>
-            </table>
+    <div class="tables-container">
+        <fieldset class="fieldset-container">
+            <legend onclick="toggleFieldset(this)">Γενικά Στοιχεία Λόχου</legend>
+            <div class="category-content">
+                <table id="general-info">
+                    <tr>
+                        <td>Δύναμη 1ου Λόχου</td>
+                        <td id="dynamis_lochou">0</td>
+                    </tr>
+                    <tr>
+                        <td>Απουσίες</td>
+                        <td id="apousies">0</td>
+                    </tr>
+                    <tr>
+                        <td>Παρουσίες</td>
+                        <td id="parousies">0</td>
+                    </tr>
+                </table>
+            </div>
         </fieldset>
-        
-        <!-- Ειδικά Στοιχεία -->
-        <fieldset>
-            <legend>Ειδικά Στοιχεία</legend>
-            <table border="1" id="special-details">
-                <tr>
-                    <th>Τιμητικές Άδειες</th>
-                    <td id="honor-leave">0</td>
-                </tr>
-                <tr>
-                    <th>Κανονικές Άδειες</th>
-                    <td id="regular-leave">0</td>
-                </tr>
-                <tr>
-                    <th>Υπηρεσιακά</th>
-                    <td id="service-leave">0</td>
-                </tr>
-                <tr>
-                    <th>ΕΥ</th>
-                    <td id="ey-leave">0</td>
-                </tr>
-                <tr>
-                    <th>Απόσπαση</th>
-                    <td id="detachment">0</td>
-                </tr>
-                <tr>
-                    <th>Σύνολο</th>
-                    <td id="total-special">0</td>
-                </tr>
-            </table>
+    
+        <fieldset class="fieldset-container">
+            <legend onclick="toggleFieldset(this)">Ειδικά Στοιχεία Λόχου</legend>
+            <div class="category-content">
+                <table id="special-info">
+                    <tr>
+                        <td>Τιμητικές Άδειες</td>
+                        <td id="timitikes">0</td>
+                    </tr>
+                    <tr>
+                        <td>Λοιπές Άδειες</td>
+                        <td id="loipes_adeies">0</td>
+                    </tr>
+                    <tr>
+                        <td>Υπηρεσιακά</td>
+                        <td id="ypiresiaka">0</td>
+                    </tr>
+                    <tr>
+                        <td>Απόσπαση</td>
+                        <td id="apospathseis">0</td>
+                    </tr>
+                    <tr>
+                        <td>ΕΥ</td>
+                        <td id="ey">0</td>
+                    </tr>
+                    <tr>
+                        <td>Σύνολο</td>
+                        <td id="synolo">0</td>
+                    </tr>
+                </table>
+            </div>
         </fieldset>
     </div>
-        
-
-        <fieldset>
-            <legend>Υπηρεσία Σήμερα και Εφεδρικοί</legend>
-            <table border="1" id="current-service">
-                <thead>
-                    <tr>
-                        <th>Στοιχεία Στρατιώτη</th>
-                        <th>Μεταβολές / Υπηρεσίες</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Οι γραμμές θα γεμίσουν από το JavaScript -->
-                </tbody>
-            </table>
-        </fieldset>
-
-        <fieldset>
-            <legend>Εξοδούχοι</legend>
-            <table id="exodouchoi-table" border="1">
+    
+    <fieldset class="fieldset-container">
+        <legend onclick="toggleFieldset(this)">Κατάσταση Εξοδούχων</legend>
+        <div class="category-content">
+            <table id="exodouxoi-table">
                 <thead>
                     <tr>
                         <th>Α/Α</th>
@@ -163,14 +145,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Εδώ θα προστίθενται δυναμικά οι στρατιώτες -->
+                    <!-- Στοιχεία θα συμπληρωθούν από το JS -->
                 </tbody>
             </table>
-        </fieldset>
+        </div>
+    </fieldset>    
 
-        <fieldset>
-            <legend>Κατάλογος Κανονικών Αδειών</legend>
-            <table id="regular-leave-table" border="1">
+    <fieldset class="fieldset-container">
+        <legend>Κατάσταση Αδειούχων</legend>
+        <div class="category-content">
+            <table id="adeiouxoi-table">
                 <thead>
                     <tr>
                         <th>Α/Α</th>
@@ -181,31 +165,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Οι γραμμές θα γεμίσουν δυναμικά από το JavaScript -->
+                    <!-- Τα δεδομένα θα προστεθούν μέσω του JS -->
                 </tbody>
             </table>
-        </fieldset>
+        </div>
+    </fieldset>
 
-        <fieldset>
-            <legend>Κατάλογος Ειδικών Περιπτώσεων</legend>
-            <table id="special-cases-table" border="1">
-                <thead>
-                    <tr>
-                        <th>Α/Α</th>
-                        <th>Στοιχεία Στρατιώτη</th>
-                        <th>Ειδική Περίπτωση</th>
-                        <th>Διάρκεια</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Οι γραμμές θα γεμίσουν δυναμικά από το JavaScript -->
-                </tbody>
-            </table>
-        </fieldset>
-
-        <fieldset>
-            <legend>Κατάλογος Τιμητικών Αδειών</legend>
-            <table id="honor-leave-table" border="1">
+    
+    <fieldset class="fieldset-container">
+        <legend>Κατάσταση Τιμητικών Αδειούχων</legend>
+        <div class="category-content">
+            <table id="timitikes-table">
                 <thead>
                     <tr>
                         <th>Α/Α</th>
@@ -215,18 +185,225 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Οι γραμμές θα γεμίσουν δυναμικά από το JavaScript -->
+                    <!-- Στοιχεία θα συμπληρωθούν από το JS -->
                 </tbody>
             </table>
-        </fieldset>
-        <button type="submit" class="submit-button">Υποβολή Ημερήσιου Δυναμολογίου</button>
-    </form>
+        </div>
+    </fieldset>
+    
+    <fieldset class="fieldset-container">
+        <legend>Ειδικές Περιπτώσεις</legend>
+        <div class="category-content">
+            <table id="special-cases-table">
+                <thead>
+                    <tr>
+                        <th>Α/Α</th>
+                        <th>Στοιχεία Στρατιώτη</th>
+                        <th>Είδος Άδειας</th>
+                        <th>Διάρκεια</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Στοιχεία θα συμπληρωθούν από το JS -->
+                </tbody>
+            </table>
+        </div>
+    </fieldset>
+    
 </div>
 
 <script>
-    // Ανανέωση της ημερομηνίας με την τρέχουσα ημερομηνία
-    const currentDate = new Date().toLocaleDateString('el-GR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-    document.getElementById('current-date').textContent = currentDate;
+    document.addEventListener('DOMContentLoaded', function () {
+        // Function to calculate absences and present soldiers
+        function calculateAbsencesAndPresent() {
+            const rows = document.querySelectorAll("#soldier-table tbody tr").length;
+            document.getElementById('dynamis_lochou').textContent = rows;
+
+            // Μετρούμε τις απουσίες από τις Μεταβολές / Υπηρεσίες
+            const serviceSelects = document.querySelectorAll("#soldier-table select");
+            let absences = 0, timitikes = 0, loipesAdeies = 0, ypiresiaka = 0, apospathseis = 0, ey = 0;
+            const absenceKeywords = ["Απόσπαση", "Κανονική Άδεια", "Τιμητική Άδεια", "Αγροτική Άδεια", "Αναρρωτική Άδεια", "Φοιτητική Άδεια", "Άδεια Ορκομωσίας", "Αιμοδοτική Άδεια", "Υπηρεσιακό"];
+            const timitikesKeywords = ["Τιμητική Άδεια"];
+            const loipesAdeiesKeywords = ["Κανονική Άδεια", "Αγροτική Άδεια", "Αναρρωτική Άδεια", "Φοιτητική Άδεια", "Άδεια Ορκομωσίας", "Αιμοδοτική Άδεια"];
+            const ypiresiakaKeywords = ["Υπηρεσιακό"];
+            const apospathseisKeywords = ["Απόσπαση"];
+            const eyKeywords = ["ΕΥ"];
+
+            serviceSelects.forEach(function (select) {
+                if (absenceKeywords.includes(select.value)) {
+                    absences++;
+                }
+                if (timitikesKeywords.includes(select.value)) {
+                    timitikes++;
+                }
+                if (loipesAdeiesKeywords.includes(select.value)) {
+                    loipesAdeies++;
+                }
+                if (ypiresiakaKeywords.includes(select.value)) {
+                    ypiresiaka++;
+                }
+                if (apospathseisKeywords.includes(select.value)) {
+                    apospathseis++;
+                }
+                if (eyKeywords.includes(select.value)) {
+                    ey++;
+                }
+            });
+
+            document.getElementById('apousies').textContent = absences;
+            document.getElementById('timitikes').textContent = timitikes;
+            document.getElementById('loipes_adeies').textContent = loipesAdeies;
+            document.getElementById('ypiresiaka').textContent = ypiresiaka;
+            document.getElementById('apospathseis').textContent = apospathseis;
+            document.getElementById('ey').textContent = ey;
+            document.getElementById('synolo').textContent = timitikes + loipesAdeies + ypiresiaka + apospathseis + ey;
+
+            // Υπολογισμός παρουσιών (Δύναμη - Απουσίες)
+            const presentCount = rows - absences;
+            document.getElementById('parousies').textContent = presentCount;
+        }
+
+        // Function to update the "Κατάσταση Εξοδούχων" table
+        function updateExodouxoiTable() {
+            const soldierRows = document.querySelectorAll("#soldier-table tbody tr");
+            const exodouxoiTableBody = document.querySelector("#exodouxoi-table tbody");
+            exodouxoiTableBody.innerHTML = ''; // Καθαρίζουμε τον πίνακα
+
+            let counter = 1;
+            soldierRows.forEach(function (row) {
+                const soldierDetails = row.querySelector('td:nth-child(2)').textContent; // Στοιχεία Στρατιώτη
+                const yp = row.querySelector('input[name="ypiresiako"]').value;
+                const di = row.querySelector('input[name="dianyktereysi"]').value;
+
+                if (yp.trim() !== '' && di.trim() !== '') {  // Ελέγχουμε αν και τα δύο πεδία είναι συμπληρωμένα
+                    const newRow = document.createElement('tr');
+                    newRow.innerHTML = `
+                        <td>${counter++}</td>
+                        <td>${soldierDetails}</td>
+                        <td>${yp}</td>
+                        <td>${di}</td>
+                    `;
+                    exodouxoiTableBody.appendChild(newRow);
+                }
+            });
+        }
+
+        // Function to update the "Κατάσταση Αδειούχων" table
+        function updateAdeiouxoiTable() {
+            const soldierRows = document.querySelectorAll("#soldier-table tbody tr");
+            const adeiouxoiTableBody = document.querySelector("#adeiouxoi-table tbody");
+            adeiouxoiTableBody.innerHTML = ''; // Καθαρίζουμε τον πίνακα
+
+            const validLeaveTypes = ["Κανονική Άδεια", "Αγροτική Άδεια", "Αιμοδοτική Άδεια", "Αναρρωτική Άδεια", "Φοιτητική Άδεια"];
+            let counter = 1;
+
+            soldierRows.forEach(function (row) {
+                const soldierDetails = row.querySelector('td:nth-child(2)').textContent; // Στοιχεία Στρατιώτη
+                const leaveType = row.querySelector('select').value;
+                const apo = row.querySelector('input[name="apo"]').value;
+                const eos = row.querySelector('input[name="eos"]').value;
+
+                if (validLeaveTypes.includes(leaveType)) {  // Ελέγχουμε αν το είδος άδειας είναι ένα από τα έγκυρα
+                    const newRow = document.createElement('tr');
+                    newRow.innerHTML = `
+                        <td>${counter++}</td>
+                        <td>${soldierDetails}</td>
+                        <td>${leaveType}</td>
+                        <td>${apo}</td>
+                        <td>${eos}</td>
+                    `;
+                    adeiouxoiTableBody.appendChild(newRow);
+                }
+            });
+        }
+
+        // Function to update the "Κατάσταση Τιμητικών Αδειούχων" table
+        function updateTimitikonAdeiouxonTable() {
+            const soldierRows = document.querySelectorAll("#soldier-table tbody tr");
+            const timitikoiAdeiouxoiTableBody = document.querySelector("#timitikon-adeiouxon-table tbody");
+            timitikoiAdeiouxoiTableBody.innerHTML = ''; // Καθαρίζουμε τον πίνακα
+
+            const validLeaveTypes = ["Τιμητική Άδεια", "Άδεια Ορκομωσίας"];
+            let counter = 1;
+
+            soldierRows.forEach(function (row) {
+                const soldierDetails = row.querySelector('td:nth-child(2)').textContent; // Στοιχεία Στρατιώτη
+                const leaveType = row.querySelector('select').value;
+                const diarkeia = row.querySelector('input[name="diarkeia"]').value;
+
+                if (validLeaveTypes.includes(leaveType)) {  // Ελέγχουμε αν το είδος άδειας είναι Τιμητική ή Ορκομωσίας
+                    const newRow = document.createElement('tr');
+                    newRow.innerHTML = `
+                        <td>${counter++}</td>
+                        <td>${soldierDetails}</td>
+                        <td>${leaveType}</td>
+                        <td>${diarkeia}</td>
+                    `;
+                    timitikoiAdeiouxoiTableBody.appendChild(newRow);
+                }
+            });
+        }
+
+        // Function to update the "Ειδικές Περιπτώσεις" table
+        function updateEidikesPeriptoseisTable() {
+            const soldierRows = document.querySelectorAll("#soldier-table tbody tr");
+            const eidikesPeriptoseisTableBody = document.querySelector("#eidikes-periptoseis-table tbody");
+            eidikesPeriptoseisTableBody.innerHTML = ''; // Καθαρίζουμε τον πίνακα
+
+            const validLeaveTypes = ["Απόσπαση", "ΕΥ"];
+            let counter = 1;
+
+            soldierRows.forEach(function (row) {
+                const soldierDetails = row.querySelector('td:nth-child(2)').textContent; // Στοιχεία Στρατιώτη
+                const leaveType = row.querySelector('select').value;
+                const diarkeia = row.querySelector('input[name="diarkeia"]').value;
+
+                if (validLeaveTypes.includes(leaveType)) {  // Ελέγχουμε αν το είδος άδειας είναι Απόσπαση ή ΕΥ
+                    const newRow = document.createElement('tr');
+                    newRow.innerHTML = `
+                        <td>${counter++}</td>
+                        <td>${soldierDetails}</td>
+                        <td>${leaveType}</td>
+                        <td>${diarkeia}</td>
+                    `;
+                    eidikesPeriptoseisTableBody.appendChild(newRow);
+                }
+            });
+        }
+
+        // Αρχικός υπολογισμός
+        calculateAbsencesAndPresent();
+
+        // Προσθέτουμε event listener για να παρακολουθούμε τις αλλαγές στα dropdowns
+        const serviceSelects = document.querySelectorAll("#soldier-table select");
+        serviceSelects.forEach(function (select) {
+            select.addEventListener('change', function () {
+                calculateAbsencesAndPresent();
+                updateExodouxoiTable(); // Κλήση για ενημέρωση των εξοδούχων
+                updateAdeiouxoiTable(); // Κλήση για ενημέρωση των αδειούχων
+                updateTimitikonAdeiouxonTable(); // Κλήση για ενημέρωση των τιμητικών αδειούχων
+                updateEidikesPeriptoseisTable(); // Κλήση για ενημέρωση των ειδικών περιπτώσεων
+            });
+        });
+
+        // Προσθέτουμε event listener για τις αλλαγές στα πεδία "Υπηρεσιακό", "Διανυκτέρευση", "Από", "Έως"
+        const inputs = document.querySelectorAll("#soldier-table input[type='text']");
+        inputs.forEach(function (input) {
+            input.addEventListener('input', function () {
+                updateExodouxoiTable();
+                updateAdeiouxoiTable();
+                updateTimitikonAdeiouxonTable();
+                updateEidikesPeriptoseisTable();
+            });
+        });
+
+        // Αρχική κλήση για την ενημέρωση των πινάκων
+        updateExodouxoiTable();
+        updateAdeiouxoiTable();
+        updateTimitikonAdeiouxonTable();
+        updateEidikesPeriptoseisTable();
+    });
 </script>
+
 
 {% endblock %}

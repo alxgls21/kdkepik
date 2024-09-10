@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Τηλεφωνικοί Κατάλογοι{% endblock %}
+{% block title %}ΚΔΚ | ΤΦ ΚΑΤΑΛΟΓΟΙ{% endblock %}
 
 {% block extra_head %}
     <link rel="stylesheet" href="{% static 'css/katalogoi.css' %}">
@@ -15,14 +15,145 @@
 </div>
 <div class="main-content">
     <h1>Τηλεφωνικοί Κατάλογοι</h1>
-    <div class="button-container">
-        <button class="button-86" role="button" onclick="location.href='{% static 'docs/call_close_ierarxia.pdf' %}'">Κλειστό Τηλεφωνικό</button>
-        <button class="button-86" role="button" onclick="location.href='#'">Τηλεφωνικός Κατάλογος ΕΨΑΔ</button>
-        <button class="button-86" role="button" onclick="location.href='{% static 'docs/call_vosip.pdf' %}'">Τηλεφωνικός Κατάλογος VOSIP</button>
-        <button class="button-86" role="button" onclick="location.href='#'">Τηλεφωνικός Κατάλογος ΕΡΜΗ</button>
-        <button class="button-86" role="button" onclick="location.href='{% static 'docs/call_harp.pdf' %}'">Τηλεφωνικός Κατάλογος HARP</button>
-        <button class="button-86" role="button" onclick="location.href='#'">Τηλεφωνικός Κατάλογος Δρομολογητών</button>
-        <button class="button-86" role="button" onclick="location.href='{% static 'docs/call_bices.pdf' %}'">Τηλεφωνικός Κατάλογος BICES</button>
-    </div>    
+
+    <!-- Μπάρα Αναζήτησης -->
+    <div class="search-container">
+        <input type="text" id="search" placeholder="Αναζήτηση..." onkeyup="searchTable()">
+        <ul id="resultsList" style="display:none; list-style-type: none; background-color: #fff; border: 1px solid #ccc; padding: 10px; max-height: 200px; overflow-y: auto;"></ul>
+    </div>
+    <!-- HARP Directory -->
+    <fieldset class="fieldset-container">
+        <legend onclick="toggleFieldset(this)">Τηλεφωνικός Κατάλογος HARP</legend>
+        <div class="category-content" style="display: none;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Επιτελείο - Σχηματισμός</th>
+                        <th>Α/Α (ανα σχηματισμό)</th>
+                        <th>Ανταποκριτής</th>
+                        <th>Αριθμός SIP</th>
+                        <th>Συσκευή</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in harp_entries %}
+                    <tr>
+                        <td>{{ entry.epiteleio_sximatismos }}</td>
+                        <td>{{ entry.aa_ana_sximatismo }}</td>
+                        <td>{{ entry.antapokritis }}</td>
+                        <td>{{ entry.arithmos_sip }}</td>
+                        <td>{{ entry.syskeyi }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </fieldset>
+
+    <!-- VOSIP Directory -->
+    <fieldset class="fieldset-container">
+        <legend onclick="toggleFieldset(this)">Τηλεφωνικός Κατάλογος VoSIP</legend>
+        <div class="category-content" style="display: none;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Επιτελείο - Σχηματισμός</th>
+                        <th>Χρήστης</th>
+                        <th>Αριθμός VoSIP</th>
+                        <th>Παρατηρήσεις</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in vosip_entries %}
+                    <tr>
+                        <td>{{ entry.epiteleio_sximatismos }}</td>
+                        <td>{{ entry.xristis }}</td>
+                        <td>{{ entry.arithmos_vosip }}</td>
+                        <td>{{ entry.paratiriseis }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </fieldset>
+
+    <!-- Κλειστό Τηλεφωνικό -->
+    <fieldset class="fieldset-container">
+        <legend onclick="toggleFieldset(this)">Κλειστό Τηλεφωνικό</legend>
+        <div class="category-content" style="display: none;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Κατηγορία</th>
+                        <th>Στοιχεία</th>
+                        <th>Νούμερο</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in klisto_entries %}
+                    <tr>
+                        <td>{{ entry.category }}</td>
+                        <td>{{ entry.stoixeia }}</td>
+                        <td>{{ entry.number }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </fieldset>
+
 </div>
+
+<script>
+    // Λειτουργία αναζήτησης
+    function searchTable() {
+        const searchValue = document.getElementById("search").value.toLowerCase();
+        const resultsList = document.getElementById("resultsList");
+        resultsList.innerHTML = "";
+        let resultsFound = false;
+
+        const tables = document.querySelectorAll("table");
+        tables.forEach(table => {
+            const rows = table.getElementsByTagName("tr");
+            for (let i = 1; i < rows.length; i++) {  // Αγνοούμε την κεφαλίδα
+                let rowText = rows[i].innerText.toLowerCase();
+                if (rowText.includes(searchValue)) {
+                    resultsFound = true;
+                    const resultItem = document.createElement("li");
+                    resultItem.textContent = rows[i].innerText;
+                    resultItem.onclick = function () {
+                        rows[i].scrollIntoView({ behavior: 'smooth' });
+                        rows[i].style.backgroundColor = "#ffff99";  // Highlight
+                        setTimeout(() => rows[i].style.backgroundColor = "", 2000);  // Αφαιρεί το highlight μετά από 2 δευτερόλεπτα
+                        resultsList.style.display = 'none';  // Απόκρυψη λίστας μετά την επιλογή
+                    };
+                    resultsList.appendChild(resultItem);
+                }
+            }
+        });
+
+        // Εμφάνιση ή απόκρυψη των αποτελεσμάτων
+        if (resultsFound) {
+            resultsList.style.display = "block";
+        } else {
+            resultsList.style.display = "none";
+        }
+    }
+
+    // Λειτουργία για απόκρυψη όταν κάνεις κλικ εκτός της μπάρας αναζήτησης
+    document.addEventListener('click', function(event) {
+        const searchInput = document.getElementById('search');
+        const resultsList = document.getElementById('resultsList');
+        if (!searchInput.contains(event.target)) {
+            resultsList.style.display = 'none';
+        }
+    });
+
+    // Λειτουργία για άνοιγμα/κλείσιμο των πεδίων (fieldset)
+    function toggleFieldset(legendElement) {
+        const content = legendElement.nextElementSibling;
+        content.style.display = content.style.display === 'none' ? 'block' : 'none';
+    }
+</script>>
+
 {% endblock %}

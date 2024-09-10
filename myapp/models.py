@@ -37,8 +37,8 @@ class DidesCategory(models.Model):
         return f'{self.name} ({self.get_category_display()}, {self.get_application_display()})'
 
     class Meta:
-        verbose_name = _('ΔΙΔΕΣ')
-        verbose_name_plural = _('ΔΙΔΕΣ')
+        verbose_name = _('Πεδία Ελέγχου | ΔΙΔΕΣ')
+        verbose_name_plural = _('Πεδία Ελέγχου | ΔΙΔΕΣ')
 
 class HarpCategory(models.Model):
     name = models.CharField(_('Όνομα'), max_length=100)
@@ -49,8 +49,8 @@ class HarpCategory(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = _('HARP')
-        verbose_name_plural = _('HARP')
+        verbose_name = _('Πεδία Ελέγχου | HARP')
+        verbose_name_plural = _('Πεδία Ελέγχου | HARP')
 
 class AdmeCategory(models.Model):
     name = models.CharField(_('Όνομα'), max_length=100)
@@ -61,8 +61,8 @@ class AdmeCategory(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = _('ΑΔΜΕ')
-        verbose_name_plural = _('ΑΔΜΕ')
+        verbose_name = _('Πεδία Ελέγχου | ΑΔΜΕ')
+        verbose_name_plural = _('Πεδία Ελέγχου | ΑΔΜΕ')
 
 class OfficerServiceReport(models.Model):
     rank = models.CharField(_('Βαθμός'), max_length=50)
@@ -71,62 +71,104 @@ class OfficerServiceReport(models.Model):
     phone_number = models.CharField(_('Τηλ Επικοινωνίας'), max_length=15)
 
     class Meta:
-        verbose_name = _('Αξιωματικός Υπηρεσίας ΚΕΠΙΚ')
-        verbose_name_plural = _('Αξιωματικοί Υπηρεσίας ΚΕΠΙΚ')
+        verbose_name = _('Οργάνωση | Αξιωματικός Υπηρεσίας ΚΕΠΙΚ')
+        verbose_name_plural = _('Οργάνωση | Αξιωματικοί Υπηρεσίας ΚΕΠΙΚ')
 
     def __str__(self):
         return f'{self.rank} {self.last_name} {self.first_name}'
     
 class Soldier(models.Model):
-    RANK_CHOICES = [
+    # Επιλογές για dropdowns
+    VATHMOS_CHOICES = [
         ('ΣΤΡ(ΔΒ)', 'ΣΤΡ(ΔΒ)'),
+        ('ΣΤΡ(ΠΖ)', 'ΣΤΡ(ΠΖ)'),
+        ('ΣΤΡ(ΠΒ)', 'ΣΤΡ(ΠΒ)'),
+        ('ΣΤΡ(ΤΘ)', 'ΣΤΡ(ΤΘ)'),
+        ('ΣΤΡ(ΠΖ)', 'ΣΤΡ(ΠΖ)'),
     ]
 
-    rank = models.CharField(_('Βαθμός'), max_length=50, choices=RANK_CHOICES)
-    asm = models.CharField(_('ΑΣΜ'), max_length=50)
-    enlistment_esso = models.CharField(_('ΕΣΣΟ Κατάταξης'), max_length=50)
-    last_name = models.CharField(_('Επώνυμο'), max_length=100)
-    first_name = models.CharField(_('Όνομα'), max_length=100)
-    discharge_date = models.DateField(_('Ημερομηνία Απολύσεως'))
+    GRAMMATIKES_GNOSEIS_CHOICES = [
+        ('Απόφοιτος Λυκείου', 'Απόφοιτος Λυκείου'),
+        ('Απόφοιτος ΑΕΙ', 'Απόφοιτος ΑΕΙ'),
+        ('Απόφοιτος ΤΕΙ', 'Απόφοιτος ΤΕΙ'),
+        ('Ενεργός ΑΕΙ', 'Ενεργός ΑΕΙ'),
+        ('Ενεργός ΤΕΙ', 'Ενεργός ΤΕΙ'),
+        ('Απόφοιτος ΙΕΚ', 'Απόφοιτος ΙΕΚ'),
+        ('Ενεργός ΙΕΚ', 'Ενεργός ΙΕΚ'),
+    ]
+
+    SOMATIKI_IKANOTITA_CHOICES = [
+        ('Ι1', 'Ι1'),
+        ('Ι2', 'Ι2'),
+        ('Ι3', 'Ι3'),
+        ('Ι3 Άοπλο', 'Ι3 Άοπλο'),
+        ('Ι4', 'Ι4'),
+    ]
     
-    physical_ability = models.CharField(_('Σωματική Ικανότητα'), max_length=50, blank=True, null=True)
-    birth_year = models.IntegerField(_('Έτος Γέννησης'), blank=True, null=True)
-    birth_place = models.CharField(_('Τόπος Γέννησης'), max_length=100, blank=True, null=True)
-    father_name = models.CharField(_('Όνομα Πατέρα'), max_length=100, blank=True, null=True)
-    father_occupation = models.CharField(_('Επάγγελμα Πατέρα'), max_length=100, blank=True, null=True)
-    mother_name = models.CharField(_('Όνομα Μητέρας'), max_length=100, blank=True, null=True)
-    mother_occupation = models.CharField(_('Επάγγελμα Μητέρας'), max_length=100, blank=True, null=True)
-    origin_place = models.CharField(_('Τόπος Καταγωγής'), max_length=100, blank=True, null=True)
-    residence_place = models.CharField(_('Τόπος Διαμονής'), max_length=100, blank=True, null=True)
-    area = models.CharField(_('Περιοχή'), max_length=100, blank=True, null=True)
-    street = models.CharField(_('Οδός'), max_length=100, blank=True, null=True)
-    street_number = models.CharField(_('Αριθμός'), max_length=10, blank=True, null=True)
-    phone_number_home = models.CharField(_('Σταθερό Τηλέφωνο'), max_length=20, blank=True, null=True)
-    phone_number_mobile = models.CharField(_('Κινητό Τηλέφωνο'), max_length=20, blank=True, null=True)
-    relative_phone = models.CharField(_('Τηλέφωνο Συγγενών'), max_length=20, blank=True, null=True)
-    relative_relation = models.CharField(_('Ιδιότητα Συγγενή'), max_length=100, blank=True, null=True)
-    occupation = models.CharField(_('Επάγγελμα'), max_length=100, blank=True, null=True)
-    special_skills = models.CharField(_('Ειδικές Γνώσεις'), max_length=100, blank=True, null=True)
-    education = models.CharField(_('Γραμματικές Γνώσεις'), max_length=100, blank=True, null=True)
-    foreign_languages = models.CharField(_('Ξένες Γλώσσες'), max_length=100, blank=True, null=True)
-    unit_entry_date = models.DateField(_('Ημ. Εισόδου στην Μονάδα'), blank=True, null=True)
-    service_duration = models.IntegerField(_('Διάρκεια θητείας (μήνες)'), blank=True, null=True)
-    health_status = models.CharField(_('Κατάσταση Υγείας'), max_length=100, blank=True, null=True)
-    blood_type = models.CharField(_('Ομάδα Αίματος'), max_length=10, blank=True, null=True)
-    marital_status = models.CharField(_('Οικογενειακή Κατάσταση'), max_length=100, blank=True, null=True)
-    siblings_number = models.IntegerField(_('Αριθμός Αδελφών'), blank=True, null=True)
-    economic_status = models.CharField(_('Οικονομική Κατάσταση'), max_length=100, blank=True, null=True)
-    concerns = models.TextField(_('Προβλήματα που απασχολούν'), blank=True, null=True)
-    penalties = models.TextField(_('Ποινές'), blank=True, null=True)
-    leaves = models.TextField(_('Άδειες'), blank=True, null=True)
+    POSTO_CHOICES = [
+        ('HARP', 'HARP'),
+        ('Helpdesk', 'Helpdesk'),
+        ('Διαχείριση Δικτύων / Κυκλωμάτων', 'Διαχείριση Δικτύων / Κυκλωμάτων'),
+        ('Τηλέτυπα', 'Τηλέτυπα'),
+        ('Τηλεφωνικό', 'Τηλεφωνικό'),
+        ('Τμήμα ΟΤΕ', 'Τμήμα ΟΤΕ'),
+        ('ΥΕΣΑ', 'ΥΕΣΑ'),
+    ]
+
+    # Προσωπικά Στοιχεία
+    eponymo = models.CharField(max_length=100, verbose_name="ΕΠΩΝΥΜΟ", null=True, blank=True)
+    onoma = models.CharField(max_length=100, verbose_name="ΟΝΟΜΑ", null=True, blank=True)
+    etos_genniseos = models.IntegerField(verbose_name="ΕΤΟΣ ΓΕΝΝΗΣΕΩΣ", null=True, blank=True)
+    topos_genniseos = models.CharField(max_length=100, verbose_name="ΤΟΠΟΣ ΓΕΝΝΗΣΕΩΣ", null=True, blank=True)
+    onoma_patros = models.CharField(max_length=100, verbose_name="ΟΝΟΜΑ ΠΑΤΕΡΑ", null=True, blank=True)
+    epaggelma_patros = models.CharField(max_length=100, verbose_name="ΕΠΑΓΓΕΛΜΑ ΠΑΤΕΡΑ", null=True, blank=True)
+    onoma_mitros = models.CharField(max_length=100, verbose_name="ΟΝΟΜΑ ΜΗΤΕΡΑΣ", null=True, blank=True)
+    epaggelma_mitros = models.CharField(max_length=100, verbose_name="ΕΠΑΓΓΕΛΜΑ ΜΗΤΕΡΑΣ", null=True, blank=True)
+    tilefono_kinito = models.CharField(max_length=10, verbose_name="ΤΗΛ. ΚΙΝΗΤΟ", null=True, blank=True)
+    tilefono_stathero = models.CharField(max_length=10, verbose_name="ΤΗΛ. ΣΤΑΘΕΡΟ", null=True, blank=True)
+    tilefono_oikeiou = models.CharField(max_length=10, verbose_name="ΤΗΛΕΦΩΝΟ ΟΙΚΕΙΟΥ", null=True, blank=True)
+    oikeiou_sxesi = models.CharField(max_length=100, verbose_name="ΣΧΕΣΗ ΜΕ ΤΟΝ ΟΙΚΕΙΟ", null=True, blank=True)
+    topos_katagogis = models.CharField(max_length=255, verbose_name="ΤΟΠΟΣ ΚΑΤΑΓΩΓΗΣ", null=True, blank=True)
+    topos_diamonis = models.CharField(max_length=255, verbose_name="ΤΟΠΟΣ ΔΙΑΜΟΝΗΣ", null=True, blank=True)
+    periochi = models.CharField(max_length=100, verbose_name="ΠΕΡΙΟΧΗ", null=True, blank=True)
+    odos_arithmos = models.CharField(max_length=255, verbose_name="ΟΔΟΣ ΚΑΙ ΑΡΙΘΜΟΣ", null=True, blank=True)
+    oikogeneiaki_katastasi = models.CharField(max_length=100, verbose_name="ΟΙΚΟΓ. ΚΑΤΑΣΤΑΣΗ", null=True, blank=True)
+    arithmos_adelfon = models.CharField(max_length=100, verbose_name="ΑΡΙΘΜΟΣ ΑΔΕΛΦΩΝ – ΦΥΛΛΟ", null=True, blank=True)
+    oikonomiki_katastasi = models.CharField(max_length=100, verbose_name="ΟΙΚΟΝ. ΚΑΤΑΣΤΑΣΗ", null=True, blank=True)
+    provlimata_pou_apasxoloun = models.TextField(blank=True, null=True, verbose_name="ΠΡΟΒΛΗΜΑΤΑ ΠΟΥ ΑΠΑΣΧΟΛΟΥΝ")
+
+    # Εκπαίδευση - Επάγγελμα
+    epaggelma_politis = models.CharField(max_length=100, verbose_name="ΕΠΑΓΓΕΛΜΑ ΩΣ ΠΟΛΙΤΗΣ", null=True, blank=True)
+    grammatikes_gnoseis = models.CharField(max_length=50, choices=GRAMMATIKES_GNOSEIS_CHOICES, verbose_name="ΓΡΑΜΜΑΤΙΚΕΣ ΓΝΩΣΕΙΣ", null=True, blank=True)
+    eidikes_grammatikes_gnoseis = models.CharField(max_length=255, verbose_name="ΕΙΔΙΚΕΣ ΓΝΩΣΕΙΣ", null=True, blank=True)
+    deksiotites = models.TextField(blank=True, null=True, verbose_name="ΔΕΞΙΟΤΗΤΕΣ")
+    xenes_glosses = models.CharField(max_length=255, verbose_name="ΞΕΝΕΣ ΓΛΩΣΣΕΣ", null=True, blank=True)
+
+    # Στρατιωτικά Στοιχεία
+    asm = models.PositiveIntegerField(verbose_name="ΑΣΜ", default=0)
+    vathmos = models.CharField(max_length=10, choices=VATHMOS_CHOICES, verbose_name="ΒΑΘΜΟΣ", null=True, blank=True)
+    esso_katataksis = models.CharField(max_length=10, verbose_name="ΕΣΣΟ ΚΑΤΑΤΑΞΗΣ", null=True, blank=True)
+    diarkeia_thiteias = models.IntegerField(verbose_name="ΔΙΑΡΚΕΙΑ ΘΗΤΕΙΑΣ (ΜΗΝΕΣ)", null=True, blank=True)
+    imerominia_eisodou_monada = models.DateField(verbose_name="ΗΜ. ΕΙΣΟΔΟΥ ΣΤΗΝ ΜΟΝΑΔΑ", null=True, blank=True)
+    imerominia_strateusis = models.DateField(verbose_name="ΗΜ. ΣΤΡΑΤΕΥΣΗΣ", null=True, blank=True)
+    imerominia_apolysis = models.DateField(verbose_name="ΗΜ. ΑΠΟΛΥΣΕΩΣ", null=True, blank=True)
+    poines = models.TextField(verbose_name="ΠΟΙΝΕΣ", null=True, blank=True)
+    adeies = models.TextField(verbose_name="ΑΔΕΙΕΣ", null=True, blank=True)
+    posto = models.CharField(max_length=100, verbose_name="ΠΟΣΤΟ", choices=POSTO_CHOICES, null=True, blank=True)
+    genikes_paratiriseis = models.TextField(verbose_name="ΓΕΝΙΚΕΣ ΠΑΡΑΤΗΡΗΣΕΙΣ", null=True, blank=True)
+
+    # Στοιχεία Υγείας
+    somatiki_ikanotita = models.CharField(max_length=10, choices=SOMATIKI_IKANOTITA_CHOICES, verbose_name="ΣΩΜΑΤΙΚΗ ΙΚΑΝΟΤΗΤΑ", null=True, blank=True)
+    katastasi_ygeias = models.CharField(max_length=100, verbose_name="ΚΑΤΑΣΤΑΣΗ ΥΓΕΙΑΣ", null=True, blank=True)
+    omada_aimatos = models.CharField(max_length=3, verbose_name="ΟΜΑΔΑ ΑΙΜΑΤΟΣ", null=True, blank=True)
+    paratiriseis_ygeias = models.TextField(blank=True, null=True, verbose_name="ΠΑΡΑΤΗΡΗΣΕΙΣ ΥΓΕΙΑΣ")
 
     def __str__(self):
-        return f'{self.rank} {self.last_name} {self.first_name}'
+        return f"{self.eponymo} {self.onoma}"
 
     class Meta:
-        verbose_name = _('Στρατιώτης')
-        verbose_name_plural = _('Στρατιώτες')
-
+        verbose_name = _('Οργάνωση | Στρατιώτης')
+        verbose_name_plural = _('Οργάνωση | Στρατιώτες')
 
 class AxypKepikServiceReport(models.Model):
     pdf = models.FileField(upload_to='pdfs/', blank=True, null=True)
@@ -145,6 +187,10 @@ class AxypKepikServiceReport(models.Model):
             return f"Αναφορά ΑΞΥΠ της {datetime.now().strftime('%d-%m-%Y')}"
         return "Αναφορά ΑΞΥΠ χωρίς ημερομηνία"
     
+    class Meta:
+        verbose_name = _('Αναφορά | Αναφορά Αξιωματικού Υπηρεσίας')
+        verbose_name_plural = _('Αναφορές | Αναφορές Αξιωματικού Υπηρεσίας')
+    
 class OplitiServiceReport(models.Model):
     pdf = models.FileField(upload_to='opliti_reports/', blank=True, null=True)
 
@@ -161,9 +207,10 @@ class OplitiServiceReport(models.Model):
         if self.pdf:
             return f"Αναφορά Οπλίτη της {datetime.now().strftime('%d-%m-%Y')}"
         return "Αναφορά Οπλίτη χωρίς ημερομηνία"
-    
-from django.db import models
-from django.utils.translation import gettext_lazy as _
+
+    class Meta:
+        verbose_name = _('Αναφορά | Αναφορά Οπλίτη Υπηρεσίας')
+        verbose_name_plural = _('Αναφορές | Αναφορές Οπλιτών Υπηρεσίας')
 
 class AxypCodesCategory(models.Model):
     # Κατηγορίες για το "ΕΙΔΟΣ"
@@ -204,8 +251,8 @@ class AxypCodesCategory(models.Model):
         return f'{self.item_type}'
 
     class Meta:
-        verbose_name = _('Κωδικός ΑΞΥΠ')
-        verbose_name_plural = _('Κωδικοί ΑΞΥΠ')
+        verbose_name = _('Κωδικοί ΑΞΥΠ | Όλοι')
+        verbose_name_plural = _('Κωδικοί ΑΞΥΠ | Όλοι')
 
 class ServiceReportSummary(models.Model):
     report_date = models.DateField()
@@ -217,40 +264,153 @@ class ServiceReportSummary(models.Model):
     def __str__(self):
         return f"Αναφορά {self.report_date} - Γενικό Σύνολο: {self.total_general}"
 
-from django.db import models
-
 class AxypCodesComputers(AxypCodesCategory):
     class Meta:
         proxy = True
-        verbose_name = "Υπολογιστές"
-        verbose_name_plural = "Υπολογιστές"
+        verbose_name = "Κωδικοί ΑΞΥΠ | Υπολογιστές"
+        verbose_name_plural = "Κωδικοί ΑΞΥΠ | Υπολογιστές"
 
 class AxypCodesPyrseia(AxypCodesCategory):
     class Meta:
         proxy = True
-        verbose_name = "Πυρσεία"
-        verbose_name_plural = "Πυρσεία"
+        verbose_name = "Κωδικοί ΑΞΥΠ | Πυρσεία"
+        verbose_name_plural = "Κωδικοί ΑΞΥΠ | Πυρσεία"
 
 class AxypCodesApplications(AxypCodesCategory):
     class Meta:
         proxy = True
-        verbose_name = "Λοιπές Εφαρμογές"
-        verbose_name_plural = "Λοιπές Εφαρμογές"
+        verbose_name = "Κωδικοί ΑΞΥΠ | Λοιπές Εφαρμογές"
+        verbose_name_plural = "Κωδικοί ΑΞΥΠ | Λοιπές Εφαρμογές"
 
 class AxypCodesStaff(AxypCodesCategory):
     class Meta:
         proxy = True
-        verbose_name = "Στελέχη"
-        verbose_name_plural = "Στελέχη"
+        verbose_name = "Κωδικοί ΑΞΥΠ | Στελέχη"
+        verbose_name_plural = "Κωδικοί ΑΞΥΠ | Στελέχη"
 
 class AxypCodesUsefulPhones(AxypCodesCategory):
     class Meta:
         proxy = True
-        verbose_name = "Χρήσιμα Τηλέφωνα"
-        verbose_name_plural = "Χρήσιμα Τηλέφωνα"
+        verbose_name = "Κωδικοί ΑΞΥΠ | Χρήσιμα Τηλέφωνα"
+        verbose_name_plural = "Κωδικοί ΑΞΥΠ | Χρήσιμα Τηλέφωνα"
 
 class AxypCodesPhoneCodes(AxypCodesCategory):
     class Meta:
         proxy = True
-        verbose_name = "Κωδικοί Λειτουργίας Τηλεφώνου"
-        verbose_name_plural = "Κωδικοί Λειτουργίας Τηλεφώνου"
+        verbose_name = "Κωδικοί ΑΞΥΠ | Κωδικοί Λειτουργίας Τηλεφώνου"
+        verbose_name_plural = "Κωδικοί ΑΞΥΠ | Κωδικοί Λειτουργίας Τηλεφώνου"
+        
+class KlistoTilefoniko(models.Model):
+    CATEGORIES = [
+        ('ΥΠΕΘΑ', 'ΥΠΕΘΑ'),
+        ('ΓΕΕΘΑ', 'ΓΕΕΘΑ'),
+        ('ΓΕΣ', 'ΓΕΣ'),
+        ('ΓΕΝ', 'ΓΕΝ'),
+        ('ΓΕΑ', 'ΓΕΑ'),
+        ('ΚΥΠΡΟΣ', 'ΚΥΠΡΟΣ'),
+    ]
+
+    category = models.CharField(max_length=10, choices=CATEGORIES, verbose_name="Κατηγορία")
+    stoixeia = models.CharField(max_length=255, verbose_name="Στοιχεία")
+    number = models.CharField(max_length=4, verbose_name="Νούμερο")
+
+    def __str__(self):
+        return f"{self.category} - {self.stoixeia}"
+
+    class Meta:
+        verbose_name = _('Κατάλογος | Κλειστό Τηλεφωνικό')
+        verbose_name_plural = _('Κατάλογος | Κλειστό Τηλεφωνικό')
+
+class VOSIPTelephoneDirectory(models.Model):
+    EPITELEIO_CHOICES = [
+        ('ΓΕΕΘΑ/ΔΕΠ', 'ΓΕΕΘΑ/ΔΕΠ'),
+        ('ΓΕΣ', 'ΓΕΣ'),
+        ('1 ΣΤΡΑΤΙΑ', '1 ΣΤΡΑΤΙΑ'),
+        ('ΑΣΔΕΝ', 'ΑΣΔΕΝ'),
+        ('ΑΣΔΥΣ', 'ΑΣΔΥΣ'),
+        ('Γ΄ ΣΣ', 'Γ΄ ΣΣ'),
+        ('Δ΄ ΣΣ', 'Δ΄ ΣΣ'),
+        ('Ι ΜΠ', 'Ι ΜΠ'),
+        ('ΔΔΕΕ', 'ΔΔΕΕ'),
+        ('ΙΙ Μ/Κ ΜΠ', 'ΙΙ Μ/Κ ΜΠ'),
+        ('XII M/K MΠ', 'XII M/K MΠ'),
+        ('XVI M/K MΠ', 'XVI M/K MΠ'),
+        ('ΧΧ ΤΘΜ', 'ΧΧ ΤΘΜ'),
+        ('95 ΑΔΤΕ', '95 ΑΔΤΕ'),
+        ('98 ΑΔΤΕ', '98 ΑΔΤΕ'),
+        ('3 Μ/Κ ΤΑΞ', '3 Μ/Κ ΤΑΞ'),
+        ('7 Μ/Κ ΤΑΞ', '7 Μ/Κ ΤΑΞ'),
+        ('30 Μ/Κ ΤΑΞ', '30 Μ/Κ ΤΑΞ'),
+        ('31 Μ/Κ ΤΑΞ', '31 Μ/Κ ΤΑΞ'),
+        ('33 Μ/Κ ΤΑΞ', '33 Μ/Κ ΤΑΞ'),
+        ('34 Μ/Κ ΤΑΞ', '34 Μ/Κ ΤΑΞ'),
+        ('50 Μ/Κ ΤΑΞ', '50 Μ/Κ ΤΑΞ'),
+        ('8 Μ/Π ΤΑΞ', '8 Μ/Π ΤΑΞ'),
+        ('9 Μ/Π ΤΑΞ', '9 Μ/Π ΤΑΞ'),
+        ('29 Μ/Π ΤΑΞ', '29 Μ/Π ΤΑΞ'),
+        ('5 ΤΑΞΠΖ', '5 ΤΑΞΠΖ'),
+        ('1 ΤΑΞΚΔ-ΑΛ', '1 ΤΑΞΚΔ-ΑΛ'),
+        ('32 ΤΑΞΠΝ', '32 ΤΑΞΠΝ'),
+        ('71 Α/Μ ΤΑΞ', '71 Α/Μ ΤΑΞ'),
+        ('ΧΧΙ ΤΘΤ', 'ΧΧΙ ΤΘΤ'),
+        ('ΧΧΙΙΙ ΤΘΤ', 'ΧΧΙΙΙ ΤΘΤ'),
+        ('ΧΧΙV ΤΘΤ', 'ΧΧΙV ΤΘΤ'),
+        ('ΧΧV ΤΘΤ', 'ΧΧV ΤΘΤ'),
+        ('1Η ΤΑΞΑΣ', '1Η ΤΑΞΑΣ'),
+        ('79 ΑΔΤΕ', '79 ΑΔΤΕ'),
+        ('80 ΑΔΤΕ', '80 ΑΔΤΕ'),
+        ('96 ΑΔΤΕ', '96 ΑΔΤΕ'),
+        ('88 ΣΔΙ', '88 ΣΔΙ'),
+        ('ΤΔ/21 Μ/Κ ΣΠ', 'ΤΔ/21 Μ/Κ ΣΠ'),
+        ('ΤΔ/41 ΣΠ', 'ΤΔ/41 ΣΠ'),
+        ('1 ΣΠ', '1 ΣΠ'),
+        ('10 ΣΠ', '10 ΣΠ'),
+        ('15 ΣΠ', '15 ΣΠ'),
+        ('ΕΛΔΥΚ', 'ΕΛΔΥΚ'),
+        ('487 ΤΔΒ', '487 ΤΔΒ'),
+    ]
+        
+    epiteleio_sximatismos = models.CharField(max_length=255, choices=EPITELEIO_CHOICES, verbose_name="Επιτελείο - Σχηματισμός")
+    xristis = models.CharField(max_length=255, verbose_name="Χρήστης")
+    arithmos_vosip = models.CharField(max_length=255, blank=True, null=True, verbose_name="Αριθμός VoSIP")
+    paratiriseis = models.TextField(blank=True, null=True, verbose_name="Παρατηρήσεις")
+
+    def __str__(self):
+        return f"{self.epiteleio_sximatismos} - {self.xristis}"
+
+    class Meta:
+        verbose_name = _('Κατάλογος | VOSIP')
+        verbose_name_plural = _('Κατάλογος | VOSIP')
+
+class HARPDirectory(models.Model):
+    # Define the choices for Επιτελείο - Σχηματισμός
+    EPITELEIO_CHOICES = [
+        ('ΥΠΕΘΑ', 'ΥΠΕΘΑ'),
+        ('ΓΕΕΘΑ', 'ΓΕΕΘΑ'),
+        ('ΓΕΣ', 'ΓΕΣ'),
+        ('1η ΣΤΡΑΤΙΑ', '1η ΣΤΡΑΤΙΑ'),
+        ('ΓΣΣ', 'ΓΣΣ'),
+        ('ΔΣΣ', 'ΔΣΣ'),
+        ('ΑΣΔΕΝ', 'ΑΣΔΕΝ'),
+        ('ΑΣΔΥΣ', 'ΑΣΔΥΣ'),
+        ('I ΜΠ', 'I ΜΠ'),
+        ('ΓΕΝ', 'ΓΕΝ'),
+        ('ΓΕΑ', 'ΓΕΑ'),
+    ]
+
+    epiteleio_sximatismos = models.CharField(
+        max_length=255, 
+        choices=EPITELEIO_CHOICES,
+        verbose_name='Επιτελείο - Σχηματισμός'
+    )
+    aa_ana_sximatismo = models.CharField(max_length=255, verbose_name='Α/Α (ανα σχηματισμό)')
+    antapokritis = models.CharField(max_length=255, verbose_name='Ανταποκριτής')
+    arithmos_sip = models.CharField(max_length=255, verbose_name='Αριθμός SIP')
+    syskeyi = models.CharField(max_length=255, verbose_name='Συσκευή')
+
+    def __str__(self):
+        return f"{self.epiteleio_sximatismos} - {self.antapokritis}"
+
+    class Meta:
+        verbose_name = 'Κατάλογος | HARP'
+        verbose_name_plural = 'Κατάλογος | HARP'
