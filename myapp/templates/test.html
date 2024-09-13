@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .leave-sheet {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 10px;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0 auto;
+            padding: 20px;
+            page-break-after: always;
+        }
+        .leave-sheet div {
+            border: 1px solid black;
+            padding: 15px;
+        }
+        .header, .footer {
+            font-weight: bold;
+        }
+        .content {
+            font-size: 14px;
+        }
+    </style>
+    <title>Φύλλο Άδειας Διανυκτέρευσης</title>
+</head>
+<body>
+    <div class="leave-sheet">
+        {% for leave in leave_passes %}
+        <div>
+            <p class="header">487 ΤΑΒ</p>
+            <p class="header">1ος Λόχος</p>
+            <p class="header">K.0025/1ο ΕΓ</p>
+            <h3 class="header">ΦΥΛΛΟ ΑΔΕΙΑΣ ΔΙΑΝΥΚΤΕΡΕΥΣΕΩΣ</h3>
+            <p class="content">Επιτρέπουμε στον ΣΤΡ(ΑΒ) {{ leave.soldier.last_name }} {{ leave.soldier.first_name }} να διανυκτερεύσει σήμερα εκτός στρατοπέδου.</p>
+            <p class="content"><strong>ΩΡΑ ΕΞΟΔΟΥ:</strong> {{ leave.leave_time }}</p>
+            <p class="content"><strong>ΩΡΑ ΕΠΙΣΤΡΟΦΗΣ:</strong> {{ leave.return_time }}</p>
+            <p class="content">Αθήνα, {{ current_date }}</p>
+            <p class="content">Υπογραφή Διοικητή: ____________</p>
+            <p class="footer">ΤΗΛ ΑΥΔΜ: 210-6555678</p>
+            <p class="footer">ΤΟ ΚΡΑΝΟΣ – ΖΩΝΗ ΣΩΖΟΥΝ ΖΩΕΣ</p>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
