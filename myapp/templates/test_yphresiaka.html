@@ -2,17 +2,17 @@
 <html lang="el">
 <head>
     <meta charset="UTF-8">
-    <title>Εξοδόχαρτα</title>
+    <title>Υπηρεσιακά</title>
     <style>
         body {
             font-family: Arial, sans-serif;
         }
 
-        .exodocharto-container {
-            float: left;  /* Χρησιμοποιούμε float για καλύτερο έλεγχο των σειρών */
+        .yphresiako-container {
+            float: left;
             border: 1px solid black;
             width: 12cm;
-            height: 5.5cm;
+            height: 6cm;
             margin: 8px;
             padding: 4px;
             display: inline-block;
@@ -24,13 +24,13 @@
 
         .header-left {
             float: left;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
         }
 
         .header-right {
             float: right;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
         }
 
@@ -40,31 +40,34 @@
 
         h2 {
             text-align: center;
-            font-size: 16px;
+            font-size: 14px;
             color: red;
             font-weight: bold;
         }
 
         .centered {
             text-align: center;
+            font-size: 12px;
         }
 
         .section {
-            margin-top: 8px;
+            margin-top: 6px;
         }
 
         .section-left {
             float: left;
             width: 50%;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
         }
 
         .section-right {
             float: right;
             width: 50%;
-            font-size: 13px;
+            font-size: 14px;
             text-align: right;
+            margin-top: -20px; /* Κάνει το κείμενο να πάει πιο χαμηλά */
+            margin-right: 50px; /* Ελαφρά μετακίνηση προς τα αριστερά */
         }
 
         .footer {
@@ -89,48 +92,42 @@
 </head>
 <body>
 
-    <h1>Εξοδόχαρτα</h1>
+    <h1 style="display:none;">Υπηρεσιακά</h1> <!-- Κρυφό, για να μην εκτυπώνεται η επικεφαλίδα -->
 
-    {% for soldier in soldiers %}
-    <div class="exodocharto-container">
+    {% for soldier_with_time in soldiers_with_times %}
+    <div class="yphresiako-container">
         <!-- Header -->
         <div class="header-left">
             487 ΤΔΒ<br>
             1ος Λόχος
         </div>
-        <div class="header-right">
-            Κ.0025/1ο ΕΓ
-        </div>
+
         <div class="clear"></div>
 
         <!-- Title -->
-        <h2>ΦΥΛΛΟ ΑΔΕΙΑΣ ΔΙΑΝΥΚΤΕΡΕΥΣΕΩΣ</h2>
+        <h2>ΥΠΗΡΕΣΙΑΚΟ ΣΗΜΕΙΩΜΑ</h2>
 
         <!-- Content -->
         <div class="centered">
-            Επιτρέπουμε στον {{ soldier.vathmos }} {{ soldier.eponymo }} {{ soldier.onoma }} να διανυκτερεύσει σήμερα σπίτι του.
+            Επιτρέπουμε στον {{ soldier_with_time.soldier.vathmos }} {{ soldier_with_time.soldier.eponymo }} {{ soldier_with_time.soldier.onoma }} την έξοδό του από το στρατόπεδο και την κυκλοφορία του στην πόλη, σήμερα.
         </div>
 
-        <!-- Διάταξη Ώρας Εξόδου και Πληροφοριών -->
+        <!-- Διάταξη Ώρας και Πληροφοριών -->
         <div class="section">
             <div class="section-left">
-                <strong>ΏΡΑ ΕΞΟΔΟΥ:</strong> {{ exit_time }}
+                <strong>Από:</strong> {{ soldier_with_time.selected_time }} <br>
+                <strong>Έως:</strong> {{ soldier_with_time.auto_exit_time }}<br><br>
+                Αθήνα, {{ exit_date }}
             </div>
 
             <div class="section-right">
-                Αθήνα, {{ exit_date }}<br>
-                {{ officer.rank }} {{ officer.last_name }} {{ officer.first_name }}<br>
-                {{ role }}
+                -Ο-<br>
+                Δ Ι Ο Ι Κ Η Τ Η Σ
             </div>
         </div>
 
         <div class="clear"></div>
 
-        <!-- Footer -->
-        <div class="footer">
-            <p>ΤΗΛ ΑΔΥΜ: 210-6555678</p>
-            <p class="bold">ΤΟ ΚΡΑΝΟΣ – ΖΩΝΗ ΣΩΖΟΥΝ ΖΩΕΣ</p>
-        </div>
     </div>
 
     {% if forloop.counter|divisibleby:4 %}

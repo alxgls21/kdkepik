@@ -17,5 +17,12 @@ urlpatterns = [
     path('dides/', views.dides_view, name='dides'),
     path('katastaseis/', views.katastaseis_view, name='katastaseis'),
     path('posta/', views.posta_view, name='posta'),
+    path('print_posta/', views.print_posta_view, name='print_posta_view'),
     path('passwords/', views.passwords_view, name='passwords_view'),  # Προσθήκη του νέου URL για το passwords_view
+    path('exodoxarta/', views.exodoxarta_view, name='exodoxarta'),
+    path('test-exodocharta/', views.test_exodocharta_view, name='test_exodocharta'),
+    path('yphresiaka/', views.yphresiaka_view, name='yphresiaka'),  # Προσθήκη για το yphresiaka_view
+    path('test-yphresiaka/', views.test_yphresiaka_view, name='test_yphresiaka'),  # Προσθήκη για το test_yphresiaka_view
+    path('adeioxarta/', views.adeioxarta_view, name='adeioxarta'),
+    path('test_adeioxarta/', views.adeioxarta_view, name='test_adeioxarta'),  # Διαδρομή για το test view
 ]

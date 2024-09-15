@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from io import BytesIO
 import pdfkit
 import tempfile
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.utils.translation import gettext as _
 from django.utils.formats import date_format
 import locale
@@ -567,8 +567,31 @@ def katastaseis_view(request):
 
 
 def posta_view(request):
-    soldiers = Soldier.objects.all()
-    return render(request, 'posta.html', {'soldiers': soldiers})
+    if request.method == 'POST':
+        # Παίρνουμε την ημερομηνία από τη φόρμα
+        service_date = request.POST.get('service_date')
+
+        # Φορμάρουμε την ημερομηνία και ελέγχουμε αν είναι καθημερινή ή Σαββατοκύριακο
+        if service_date:
+            formatted_date = datetime.strptime(service_date, '%Y-%m-%d').strftime('%d %B %Y')
+            date_object = datetime.strptime(service_date, '%Y-%m-%d')
+            # Ελέγχει αν είναι Σαββατοκύριακο (5 = Σάββατο, 6 = Κυριακή)
+            if date_object.weekday() >= 5:
+                day_type = 'Σαββατοκύριακο'
+            else:
+                day_type = 'Καθημερινή'
+        else:
+            formatted_date = 'Χωρίς Ημερομηνία'
+            day_type = 'Άγνωστο'
+
+        context = {
+            'soldiers': Soldier.objects.all(),
+            'service_date': formatted_date,  # Ημερομηνία για τον τίτλο
+            'day_type': day_type  # Κατηγοριοποίηση αν είναι καθημερινή ή ΣΚ
+        }
+        return render(request, 'posta.html', context)
+
+    return render(request, 'posta.html', {'soldiers': Soldier.objects.all(), 'service_date': 'Χωρίς Ημερομηνία', 'day_type': 'Άγνωστο'})
 
 def passwords_view(request):
     # Φόρτωση δεδομένων ανά κατηγορία από τη βάση δεδομένων
@@ -607,3 +630,415 @@ def katalogoi_view(request):
     }
     
     return render(request, 'katalogoi.html', context)
+
+def print_posta_view(request):
+    if request.method == 'POST':
+        soldiers_data = []
+        services_data = []
+        exodouxoi_data = []
+        adeies_data = []
+
+        # Παίρνουμε την ημερομηνία από το POST
+        service_date = request.POST.get('service_date')
+
+        # Φορμάρουμε την ημερομηνία και ελέγχουμε αν είναι καθημερινή ή Σαββατοκύριακο
+        if service_date:
+            formatted_date = datetime.strptime(service_date, '%Y-%m-%d').strftime('%d %B %Y')
+            date_object = datetime.strptime(service_date, '%Y-%m-%d')
+            # Ελέγχει αν είναι Σαββατοκύριακο (5 = Σάββατο, 6 = Κυριακή)
+            if date_object.weekday() >= 5:
+                day_type = 'Σαββατοκύριακο'
+            else:
+                day_type = 'Καθημερινή'
+        else:
+            formatted_date = 'Χωρίς Ημερομηνία'
+            day_type = 'Άγνωστο'
+
+        # Συλλογή δεδομένων από τη φόρμα
+        soldiers = zip(
+            request.POST.getlist('soldier_name[]'),
+            request.POST.getlist('posto[]'),
+            request.POST.getlist('ypiresiako[]'),
+            request.POST.getlist('dianyktereysi[]'),
+            request.POST.getlist('metavoles[]'),
+            request.POST.getlist('apo[]'),
+            request.POST.getlist('eos[]'),
+            request.POST.getlist('kathariotites[]')
+        )
+
+        for soldier in soldiers:
+            soldiers_data.append({
+                'soldier_name': soldier[0],
+                'posto': soldier[1],
+                'ypiresiako': soldier[2],
+                'dianyktereysi': soldier[3],
+                'metavoles': soldier[4],
+                'apo': soldier[5],
+                'eos': soldier[6],
+                'kathariotites': soldier[7],
+            })
+
+        # Υπολογισμοί για τα γενικά στοιχεία λόχου
+        dynamis_lochou = len(soldiers_data)
+        apousies = sum(1 for s in soldiers_data if s['metavoles'])
+        parousies = dynamis_lochou - apousies
+
+        # Υπολογισμοί για τα ειδικά στοιχεία λόχου
+        timitikes = sum(1 for s in soldiers_data if s['metavoles'] == "Τιμητική Άδεια")
+        loipes_adeies = sum(1 for s in soldiers_data if s['metavoles'] in ["Κανονική Άδεια", "Αγροτική Άδεια", "Αιμοδοτική Άδεια", "Αναρρωτική Άδεια", "Φοιτητική Άδεια", "Άδεια Ορκομωσίας"])
+        ypiresiaka = sum(1 for s in soldiers_data if s['metavoles'] == "Υπηρεσιακό")
+        apospathseis = sum(1 for s in soldiers_data if s['metavoles'] == "Απόσπαση")
+        ey = sum(1 for s in soldiers_data if s['metavoles'] == "ΕΥ")
+        synolo = timitikes + loipes_adeies + ypiresiaka + apospathseis + ey
+
+        # Υπηρεσίες σήμερα και εφεδρικοί
+        for soldier in soldiers_data:
+            if soldier['metavoles'] in ["ΤΗΠ", "ΤΦ", "Θ", "ΟΥ", "ΕΝ", "Εφεδρικός"]:
+                services_data.append({
+                    'soldier_name': soldier['soldier_name'],
+                    'metavoli': soldier['metavoles'],
+                })
+
+        # Κατάσταση εξοδούχων
+        for soldier in soldiers_data:
+            if soldier['ypiresiako'] and soldier['dianyktereysi']:
+                exodouxoi_data.append({
+                    'soldier_name': soldier['soldier_name'],
+                    'ypiresiako': soldier['ypiresiako'],
+                    'dianyktereysi': soldier['dianyktereysi'],
+                })
+
+        # Κατάσταση αδειούχων
+        for soldier in soldiers_data:
+            if soldier['metavoles'] in ["Τιμητική Άδεια", "Κανονική Άδεια", "Αγροτική Άδεια", "Αιμοδοτική Άδεια", "Αναρρωτική Άδεια", "Φοιτητική Άδεια"]:
+                adeies_data.append({
+                    'soldier_name': soldier['soldier_name'],
+                    'eidos_adeias': soldier['metavoles'],
+                    'apo': soldier['apo'],
+                    'eos': soldier['eos'],
+                })
+
+        # Δημιουργία του context για το template
+        context = {
+            'soldiers': soldiers_data,
+            'dynamis_lochou': dynamis_lochou,
+            'apousies': apousies,
+            'parousies': parousies,
+            'timitikes': timitikes,
+            'loipes_adeies': loipes_adeies,
+            'ypiresiaka': ypiresiaka,
+            'apospathseis': apospathseis,
+            'ey': ey,
+            'synolo': synolo,
+            'services': services_data,
+            'exodouxoi': exodouxoi_data,
+            'adeies': adeies_data,
+            'service_date': formatted_date,  # Περνάμε την ημερομηνία στο context
+            'day_type': day_type  # Καθημερινή ή Σαββατοκύριακο
+        }
+
+        # Δημιουργία του HTML από το template
+        html_string = render_to_string('Print_posta.html', context)
+
+        # Αποθήκευση του HTML σε προσωρινό αρχείο
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.html') as temp_html_file:
+            temp_html_file.write(html_string.encode('utf-8'))
+            temp_html_file_path = temp_html_file.name
+
+        # Ανίχνευση του λειτουργικού συστήματος και διαμόρφωση του pdfkit
+        if platform.system() == 'Windows':
+            wkhtmltopdf_path = os.path.join('myapp', 'bin', 'wkhtmltopdf.exe')
+        elif platform.system() == 'Darwin':  # macOS
+            wkhtmltopdf_path = os.path.join('myapp', 'bin', 'wkhtmltopdf')
+        else:
+            raise Exception("Unsupported OS")
+
+        pdfkit_config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
+
+        # Δημιουργία του PDF από το προσωρινό αρχείο
+        pdf = pdfkit.from_file(temp_html_file_path, False, configuration=pdfkit_config, options={
+            'no-stop-slow-scripts': '',
+            'disable-smart-shrinking': '',
+            'enable-local-file-access': '',
+            'orientation': 'Landscape'  # Καθορίζει την οριζόντια εκτύπωση
+        })
+
+        # Επιστροφή του PDF ως απάντηση HTTP
+        return HttpResponse(pdf, content_type='application/pdf')
+
+    return render(request, 'posta.html')
+
+def test_exodocharta_view(request):
+    if request.method == 'POST':
+        # Παίρνουμε τους επιλεγμένους στρατιώτες
+        selected_soldiers_ids = request.POST.getlist('selected_soldiers')
+        soldiers = Soldier.objects.filter(id__in=selected_soldiers_ids)
+        
+        # Παίρνουμε τον επιλεγμένο αξιωματικό και ιδιότητα
+        officer = OfficerServiceReport.objects.get(id=request.POST.get('officer'))
+        role = request.POST.get('role')
+        
+        # Παίρνουμε την ημερομηνία και την ώρα εξόδου
+        exit_date = request.POST.get('exit_date')  # Αρχικά παίρνουμε την τιμή ως string
+        exit_time = request.POST.get('exit_time')
+
+        # Μετατρέπουμε την ημερομηνία σε format dd/mm/yyyy
+        formatted_exit_date = datetime.strptime(exit_date, '%Y-%m-%d').strftime('%d/%m/%Y')
+
+        context = {
+            'soldiers': soldiers,
+            'officer': officer,
+            'role': role,
+            'exit_date': formatted_exit_date,  # Χρησιμοποιούμε την μορφοποιημένη ημερομηνία
+            'exit_time': exit_time,
+        }
+        
+        return render(request, 'test.html', context)
+
+    # Σε περίπτωση GET, επιστρέφουμε το exodoxarta.html
+    soldiers = Soldier.objects.all().order_by('eponymo')
+    officers = OfficerServiceReport.objects.all().order_by('last_name')
+    return render(request, 'exodoxarta.html', {'soldiers': soldiers, 'officers': officers})
+
+def exodoxarta_view(request):
+    if request.method == 'POST':
+        # Λήψη των στρατιωτών και του αξιωματικού που επιλέχθηκαν
+        selected_soldiers_ids = request.POST.getlist('selected_soldiers')
+        selected_soldiers = Soldier.objects.filter(id__in=selected_soldiers_ids)
+        selected_officer_id = request.POST.get('officer')
+        selected_officer = OfficerServiceReport.objects.get(id=selected_officer_id)
+        selected_role = request.POST.get('role')  # Λήψη της επιλεγμένης ιδιότητας
+        exit_date = request.POST.get('exit_date')  # Λήψη της ημερομηνίας
+        exit_time = request.POST.get('exit_time')  # Λήψη της ώρας εξόδου
+
+        # Προσθήκη των επιλεγμένων στο context για χρήση στο exodocharta_template
+        context = {
+            'selected_soldiers': selected_soldiers,
+            'selected_officer': selected_officer,
+            'selected_role': selected_role,
+            'exit_date': exit_date,  # Προσθήκη της ημερομηνίας
+            'exit_time': exit_time,  # Προσθήκη της ώρας εξόδου
+        }
+
+        # Render το template για να εμφανιστούν τα εξοδόχαρτα
+        return render(request, 'test.html', context)
+
+    # Φόρτωση στρατιωτών και αξιωματικών
+    soldiers = Soldier.objects.all().order_by('eponymo')  # Ταξινόμηση κατά επώνυμο
+    officers = OfficerServiceReport.objects.all()
+
+    return render(request, 'exodoxarta.html', {'soldiers': soldiers, 'officers': officers})
+
+def yphresiaka_view(request):
+    if request.method == 'POST':
+        # Παίρνουμε τους επιλεγμένους στρατιώτες
+        selected_soldiers_ids = request.POST.getlist('selected_soldiers')
+        soldiers = Soldier.objects.filter(id__in=selected_soldiers_ids)
+        
+        # Σταθερή ιδιότητα "Δ Ι Ο Ι Κ Η Τ Η Σ"
+        role = "Δ Ι Ο Ι Κ Η Τ Η Σ"
+        
+        # Παίρνουμε την ημερομηνία εξόδου
+        exit_date = request.POST.get('exit_date')
+        formatted_exit_date = datetime.strptime(exit_date, '%Y-%m-%d').strftime('%d/%m/%Y')
+
+        # Υπολογισμός της αυτόματης ώρας εξόδου με βάση την ημερομηνία
+        selected_date = datetime.strptime(exit_date, '%Y-%m-%d')
+        day_of_week = selected_date.weekday()  # 0 = Δευτέρα, 6 = Κυριακή
+        if day_of_week == 6:  # Κυριακή
+            auto_exit_time = '10:00'
+        elif day_of_week == 5:  # Σάββατο
+            auto_exit_time = '12:00'
+        else:  # Καθημερινές
+            auto_exit_time = '14:30'
+        
+        # Παίρνουμε την ώρα που επιλέγεται για κάθε στρατιώτη
+        soldiers_with_times = []
+        for soldier in soldiers:
+            selected_time = request.POST.get(f'time_{soldier.id}', None)  # Ώρα για κάθε στρατιώτη
+            if selected_time:
+                soldiers_with_times.append({
+                    'soldier': soldier,
+                    'selected_time': selected_time,  # Η επιλεγμένη ώρα για κάθε στρατιώτη
+                    'auto_exit_time': auto_exit_time  # Αυτόματα υπολογισμένη ώρα εξόδου
+                })
+
+        # Προσθήκη των δεδομένων στο context
+        context = {
+            'soldiers_with_times': soldiers_with_times,
+            'role': role,
+            'exit_date': formatted_exit_date,
+            'auto_exit_time': auto_exit_time  # Αυτόματα υπολογισμένη ώρα εξόδου για την αναφορά
+        }
+
+        # Render το template για εμφάνιση των υπηρεσιακών
+        return render(request, 'test_yphresiaka.html', context)
+
+    # Σε περίπτωση GET, επιστρέφουμε το yphresiaka.html
+    soldiers = Soldier.objects.all().order_by('eponymo')
+    time_choices = ['06:30', '07:00', '07:30', '08:00', '08:30', '09:00', '09:30', 
+                    '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', 
+                    '13:30', '14:00']
+
+    return render(request, 'yphresiaka.html', {'soldiers': soldiers, 'time_choices': time_choices})
+
+def test_yphresiaka_view(request):
+    if request.method == 'POST':
+        # Παίρνουμε τους επιλεγμένους στρατιώτες
+        selected_soldiers_ids = request.POST.getlist('selected_soldiers')
+        soldiers = Soldier.objects.filter(id__in=selected_soldiers_ids)
+        
+        # Σταθερή ιδιότητα "Δ Ι Ο Ι Κ Η Τ Η Σ"
+        role = "Δ Ι Ο Ι Κ Η Τ Η Σ"
+        
+        # Παίρνουμε την ημερομηνία εξόδου
+        exit_date = request.POST.get('exit_date')
+        formatted_exit_date = datetime.strptime(exit_date, '%Y-%m-%d').strftime('%d/%m/%Y')
+
+        # Υπολογισμός της ώρας εξόδου με βάση την ημερομηνία
+        selected_date = datetime.strptime(exit_date, '%Y-%m-%d')
+        day_of_week = selected_date.weekday()  # 0 = Δευτέρα, 6 = Κυριακή
+        if day_of_week == 6:  # Κυριακή
+            auto_exit_time = '10:00'
+        elif day_of_week == 5:  # Σάββατο
+            auto_exit_time = '12:00'
+        else:  # Καθημερινές
+            auto_exit_time = '14:30'
+        
+        # Παίρνουμε την ώρα για κάθε στρατιώτη
+        soldiers_with_times = []
+        for soldier in soldiers:
+            selected_time = request.POST.get(f'time_{soldier.id}', None)  # Ώρα που επιλέχθηκε για κάθε στρατιώτη
+            if selected_time:
+                soldiers_with_times.append({
+                    'soldier': soldier,
+                    'selected_time': selected_time,  # Ώρα που επιλέχθηκε για τον στρατιώτη
+                    'auto_exit_time': auto_exit_time  # Αυτόματα υπολογισμένη ώρα εξόδου
+                })
+
+        # Προσθήκη δεδομένων στο context
+        context = {
+            'soldiers_with_times': soldiers_with_times,
+            'role': role,
+            'exit_date': formatted_exit_date,
+            'auto_exit_time': auto_exit_time  # Αυτόματα υπολογισμένη ώρα εξόδου για την αναφορά
+        }
+        
+        # Render το template για τα υπηρεσιακά
+        return render(request, 'test_yphresiaka.html', context)
+
+    # Σε περίπτωση GET, επιστρέφουμε το yphresiaka.html
+    soldiers = Soldier.objects.all().order_by('eponymo')
+    return render(request, 'yphresiaka.html', {'soldiers': soldiers})
+
+from datetime import datetime, timedelta
+from django.shortcuts import render
+from .models import Soldier
+
+def adeioxarta_view(request):
+    if request.method == 'POST':
+        # Παίρνουμε τους επιλεγμένους στρατιώτες
+        selected_soldiers_ids = request.POST.getlist('selected_soldiers')
+        soldiers = Soldier.objects.filter(id__in=selected_soldiers_ids)
+        
+        # Παίρνουμε την σταθερή ιδιότητα "Δ Ι Ο Ι Κ Η Τ Η Σ"
+        role = "Δ Ι Ο Ι Κ Η Τ Η Σ"
+        
+        # Παίρνουμε την ημερομηνία "Αρχομένης"
+        start_date = request.POST.get('start_date')
+        formatted_start_date = datetime.strptime(start_date, '%Y-%m-%d').strftime('%d/%m/%Y')
+        
+        # Παίρνουμε τη διάρκεια σε ημέρες
+        duration = int(request.POST.get('duration'))
+
+        # Υπολογισμός ημερομηνίας λήξης
+        start_date_obj = datetime.strptime(start_date, '%Y-%m-%d')
+        end_date_obj = start_date_obj + timedelta(days=duration)
+        formatted_end_date = end_date_obj.strftime('%d/%m/%Y')
+
+        # Παίρνουμε την ημερομηνία εκτύπωσης
+        print_date = request.POST.get('print_date')
+        formatted_print_date = datetime.strptime(print_date, '%Y-%m-%d').strftime('%d/%m/%Y')
+
+        # Παίρνουμε τον τύπο άδειας για κάθε στρατιώτη
+        soldiers_with_leaves = []
+        for soldier in soldiers:
+            leave_type = request.POST.get(f'leave_type_{soldier.id}', None)  # Ο τύπος άδειας για κάθε στρατιώτη
+            if leave_type:
+                soldiers_with_leaves.append({
+                    'soldier': soldier,
+                    'leave_type': leave_type,  # Ο τύπος άδειας
+                    'start_date': formatted_start_date,  # Ημερομηνία έναρξης
+                    'end_date': formatted_end_date,  # Ημερομηνία λήξης
+                    'print_date': formatted_print_date  # Ημερομηνία εκτύπωσης
+                })
+
+        # Προσθήκη δεδομένων στο context
+        context = {
+            'soldiers_with_leaves': soldiers_with_leaves,
+            'role': role,
+            'start_date': formatted_start_date,
+            'end_date': formatted_end_date,
+            'duration': duration,
+            'print_date': formatted_print_date  # Προσθήκη της ημερομηνίας εκτύπωσης στο context
+        }
+        
+        # Render το template για εμφάνιση των αδειοχάρτων
+        return render(request, 'test_adeioxarta.html', context)
+
+    # Σε περίπτωση GET, επιστρέφουμε το adeioxarta.html
+    soldiers = Soldier.objects.all().order_by('eponymo')
+    
+    # Προσθήκη του εύρους της διάρκειας (1-18) στο context
+    duration_range = range(1, 19)
+
+    return render(request, 'adeioxarta.html', {'soldiers': soldiers, 'duration_range': duration_range})
+
+def test_adeioxarta_view(request):
+    if request.method == 'POST':
+        # Παίρνουμε τους επιλεγμένους στρατιώτες
+        selected_soldiers_ids = request.POST.getlist('selected_soldiers')
+        soldiers = Soldier.objects.filter(id__in=selected_soldiers_ids)
+        
+        # Παίρνουμε την σταθερή ιδιότητα "Δ Ι Ο Ι Κ Η Τ Η Σ"
+        role = "Δ Ι Ο Ι Κ Η Τ Η Σ"
+        
+        # Παίρνουμε την ημερομηνία "Αρχομένης"
+        start_date = request.POST.get('start_date')
+        formatted_start_date = datetime.strptime(start_date, '%Y-%m-%d').strftime('%d/%m/%Y')
+        
+        # Παίρνουμε τη διάρκεια σε ημέρες
+        duration = int(request.POST.get('duration'))
+
+        # Υπολογισμός ημερομηνίας λήξης
+        start_date_obj = datetime.strptime(start_date, '%Y-%m-%d')
+        end_date_obj = start_date_obj + timedelta(days=duration)
+        formatted_end_date = end_date_obj.strftime('%d/%m/%Y')
+
+        # Παίρνουμε τον τύπο άδειας για κάθε στρατιώτη
+        soldiers_with_leaves = []
+        for soldier in soldiers:
+            leave_type = request.POST.get(f'leave_type_{soldier.id}', None)  # Ο τύπος άδειας για κάθε στρατιώτη
+            if leave_type:
+                soldiers_with_leaves.append({
+                    'soldier': soldier,
+                    'leave_type': leave_type,  # Ο τύπος άδειας
+                    'start_date': formatted_start_date,  # Ημερομηνία έναρξης
+                    'end_date': formatted_end_date  # Ημερομηνία λήξης
+                })
+
+        # Προσθήκη δεδομένων στο context
+        context = {
+            'soldiers_with_leaves': soldiers_with_leaves,
+            'role': role,
+            'start_date': formatted_start_date,
+            'end_date': formatted_end_date,
+            'duration': duration,
+        }
+        
+        # Render το template για εμφάνιση των αδειοχάρτων
+        return render(request, 'test_adeioxarta.html', context)
+
+    # Σε περίπτωση GET, επιστρέφουμε το adeioxarta.html
+    soldiers = Soldier.objects.all().order_by('eponymo')
+    return render(request, 'adeioxarta.html', {'soldiers': soldiers})

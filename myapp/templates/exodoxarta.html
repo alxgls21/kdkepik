@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}ΚΔΚ | Εξοδόχαρτα{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/exodoxarta.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="video-background">
+    <video autoplay muted loop>
+        <source src="{% static 'img/index_back.webm' %}" type="video/webm">
+    </video>
+</div>
+
+<div class="main-content">
+    <h1>Επιλέξτε Στρατιώτες για Εξοδόχαρτο</h1>
+
+    <!-- Φόρμα επιλογής στρατιωτών για εξοδόχαρτα -->
+    <form method="POST" action="{% url 'test_exodocharta' %}">
+        {% csrf_token %}
+    
+        <h1>Επιλέξτε Στρατιώτες, Αξιωματικό και Ημερομηνία Εξόδου</h1>
+    
+        <!-- Λίστα στρατιωτών με checkboxes -->
+        <fieldset class="fieldset-container">
+        <legend>Στρατιώτες</legend>
+        <div class="category-content">
+            {% for soldier in soldiers %}
+            <div>
+                <input type="checkbox" id="soldier_{{ soldier.id }}" name="selected_soldiers" value="{{ soldier.id }}">
+                <label for="soldier_{{ soldier.id }}">{{ soldier.vathmos }} {{ soldier.eponymo }} {{ soldier.onoma }}</label>
+            </div>
+            {% endfor %}
+        </div>
+    </fieldset>
+    
+        <!-- Dropdown για επιλογή Αξιωματικού -->
+        <fieldset class="fieldset-container">
+            <legend>Επιλογή Αξιωματικού Υπηρεσίας</legend>
+            <div class="category-content">
+                <select name="officer" required>
+                    <option value="">Επιλέξτε Αξιωματικό</option>
+                    {% for officer in officers %}
+                    <option value="{{ officer.id }}">{{ officer.rank }} {{ officer.last_name }} {{ officer.first_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </fieldset>
+    
+        <!-- Dropdown για επιλογή Ιδιότητας -->
+        <fieldset class="fieldset-container">
+            <legend>Ιδιότητα</legend>
+            <div class="category-content">
+                <select name="role" required>
+                    <option value="">Επιλέξτε Ιδιότητα</option>
+                    <option value="Διοικητής 1ου Λόχου">Διοικητής 1ου Λόχου</option>
+                    <option value="Για τον απουσιάζοντα Διοικητή">Για τον απουσιάζοντα Διοικητή</option>
+                </select>
+            </div>
+        </fieldset>
+    
+        <!-- Επιλογή Ημερομηνίας -->
+        <fieldset class="fieldset-container">
+            <legend>Ημερομηνία Εξόδου</legend>
+            <div class="category-content">
+                <input type="date" id="exit_date" name="exit_date" required>
+            </div>
+        </fieldset>
+    
+        <!-- Ώρα Εξόδου (υπολογίζεται αυτόματα) -->
+        <fieldset class="fieldset-container">
+            <legend>Ώρα Εξόδου</legend>
+            <div class="category-content">
+                <input type="text" id="exit_time" name="exit_time" readonly>
+            </div>
+        </fieldset>
+    
+        <!-- Υποβολή φόρμας -->
+        <button type="submit">Δημιουργία Εξοδόχαρτων</button>
+    </form>
+    
+    <script>
+        document.getElementById('exit_date').addEventListener('change', function() {
+            const selectedDate = new Date(this.value);
+            const dayOfWeek = selectedDate.getDay(); // 0 = Κυριακή, 1 = Δευτέρα, ..., 6 = Σάββατο
+            let exitTime = '';
+    
+            if (dayOfWeek === 0) {  // Κυριακή
+                exitTime = '10:00';
+            } else if (dayOfWeek === 6) {  // Σάββατο
+                exitTime = '12:00';
+            } else {  // Καθημερινές
+                exitTime = '14:30';
+            }
+    
+            document.getElementById('exit_time').value = exitTime;
+        });
+    </script>
+    
+</div>
+
+{% endblock %}

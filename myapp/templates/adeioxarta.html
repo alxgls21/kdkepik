@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}ΚΔΚ | Αδειοχαρτα{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/adeioxarta.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="video-background">
+    <video autoplay muted loop>
+        <source src="{% static 'img/index_back.webm' %}" type="video/webm">
+    </video>
+</div>
+
+<div class="main-content">
+    <h1>Επιλέξτε Στρατιώτες για Άδεια</h1>
+
+    <!-- Φόρμα επιλογής στρατιωτών για Αδειοχαρτα -->
+    <form method="POST" action="{% url 'test_adeioxarta' %}">
+        {% csrf_token %}
+    
+        <h1>Επιλέξτε Στρατιώτες, Τύπο Άδειας, Διάρκεια και Ημερομηνία</h1>
+    
+        <!-- Λίστα στρατιωτών με checkboxes και επιλογή τύπου άδειας -->
+        <fieldset class="fieldset-container">
+            <legend>Στρατιώτες</legend>
+            <div class="category-content">
+                {% for soldier in soldiers %}
+                <div>
+                    <input type="checkbox" id="soldier_{{ soldier.id }}" name="selected_soldiers" value="{{ soldier.id }}" onchange="toggleLeaveOptions(this, {{ soldier.id }})">
+                    <label for="soldier_{{ soldier.id }}">{{ soldier.vathmos }} {{ soldier.eponymo }} {{ soldier.onoma }}</label>
+
+                    <!-- Dropdown για επιλογή τύπου άδειας, αρχικά κρυφό -->
+                    <select name="leave_type_{{ soldier.id }}" id="leave_type_{{ soldier.id }}" class="leave-type" style="display:none;">
+                        <option value="">Επιλέξτε Τύπο Άδειας</option>
+                        <option value="ΑΓΡΟΤΙΚΗ">ΑΓΡΟΤΙΚΗ</option>
+                        <option value="ΑΙΜΟΔΟΤΙΚΗ">ΑΙΜΟΔΟΤΙΚΗ</option>
+                        <option value="Ε.Τ.Α. ΠΑΡΑΜΕΘΩΡΙΟΥ">Ε.Τ.Α. ΠΑΡΑΜΕΘΩΡΙΟΥ</option>
+                        <option value="ΕΙΔΙΚΟΥ ΣΚΟΠΟΥ">ΕΙΔΙΚΟΥ ΣΚΟΠΟΥ</option>
+                        <option value="ΚΑΝΟΝΙΚΗ">ΚΑΝΟΝΙΚΗ</option>
+                        <option value="ΤΙΜΗΤΙΚΗ">ΤΙΜΗΤΙΚΗ</option>
+                        <option value="ΕΜΒΟΛΙΑΣΜΟΥ">ΕΜΒΟΛΙΑΣΜΟΥ</option>
+                        <option value="ΕΠΑΝΑΠΑΤΡΙΣΜΟΥ">ΕΠΑΝΑΠΑΤΡΙΣΜΟΥ</option>
+                        <option value="ΟΡΚΟΜΩΣΙΑΣ">ΟΡΚΟΜΩΣΙΑΣ</option>
+                        <option value="ΦΟΙΤΗΤΙΚΗ">ΦΟΙΤΗΤΙΚΗ</option>
+                    </select>
+                </div>
+                {% endfor %}
+            </div>
+        </fieldset>
+
+        <!-- Επιλογή Διάρκειας -->
+        <fieldset class="fieldset-container">
+            <legend>Διάρκεια (ημέρες)</legend>
+            <div class="category-content">
+                <select name="duration" id="duration" required>
+                    {% for day in duration_range %}
+                    <option value="{{ day }}">{{ day }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </fieldset>
+
+        <!-- Επιλογή ημερομηνίας Αρχομένης -->
+        <fieldset class="fieldset-container">
+            <legend>Αρχομένης</legend>
+            <div class="category-content">
+                <input type="date" id="start_date" name="start_date" required>
+            </div>
+        </fieldset>
+
+        <!-- Αυτόματη εμφάνιση Λήξης -->
+        <fieldset class="fieldset-container">
+            <legend>Λήγει την</legend>
+            <div class="category-content">
+                <input type="text" id="end_date" name="end_date" readonly>
+            </div>
+        </fieldset>
+
+        <!-- Σταθερή επιλογή "Δ Ι Ο Ι Κ Η Τ Η Σ" -->
+        <fieldset class="fieldset-container">
+            <legend>Ιδιότητα</legend>
+            <div class="category-content">
+                <p>Δ Ι Ο Ι Κ Η Τ Η Σ</p>
+                <input type="hidden" name="role" value="Δ Ι Ο Ι Κ Η Τ Η Σ">
+            </div>
+        </fieldset>
+
+        <!-- Επιλογή ημερομηνίας Εκτύπωσης -->
+        <fieldset class="fieldset-container">
+            <legend>Ημερομηνία Εκτύπωσης</legend>
+            <div class="category-content">
+                <input type="date" id="print_date" name="print_date" required>
+            </div>
+        </fieldset>
+
+        <!-- Υποβολή φόρμας -->
+        <button type="submit">Δημιουργία Αδειοχαρτων</button>
+    </form>
+
+    <!-- JavaScript για εμφάνιση και απόκρυψη επιλογών και αυτόματο υπολογισμό λήξης άδειας -->
+    <script>
+        function toggleLeaveOptions(checkbox, soldierId) {
+            var leaveType = document.getElementById('leave_type_' + soldierId);
+            if (checkbox.checked) {
+                leaveType.style.display = 'inline-block';
+            } else {
+                leaveType.style.display = 'none';
+            }
+        }
+
+        // Αυτόματος υπολογισμός λήξης άδειας με βάση την ημερομηνία έναρξης και τη διάρκεια
+        document.getElementById('start_date').addEventListener('change', calculateEndDate);
+        document.getElementById('duration').addEventListener('change', calculateEndDate);
+
+        function calculateEndDate() {
+            const startDate = new Date(document.getElementById('start_date').value);
+            const duration = parseInt(document.getElementById('duration').value);
+
+            if (startDate && !isNaN(duration)) {
+                const endDate = new Date(startDate);
+                endDate.setDate(startDate.getDate() + duration); // Υπολογισμός λήξης
+                document.getElementById('end_date').value = endDate.toISOString().split('T')[0];
+            }
+        }
+    </script>
+</div>
+
+{% endblock %}

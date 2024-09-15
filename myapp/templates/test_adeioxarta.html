@@ -2,17 +2,17 @@
 <html lang="el">
 <head>
     <meta charset="UTF-8">
-    <title>Εξοδόχαρτα</title>
+    <title>Αδειοχαρτα</title>
     <style>
         body {
             font-family: Arial, sans-serif;
         }
 
-        .exodocharto-container {
-            float: left;  /* Χρησιμοποιούμε float για καλύτερο έλεγχο των σειρών */
+        .adeioxarto-container {
+            float: left;
             border: 1px solid black;
             width: 12cm;
-            height: 5.5cm;
+            height: 7cm;
             margin: 8px;
             padding: 4px;
             display: inline-block;
@@ -24,13 +24,13 @@
 
         .header-left {
             float: left;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
         }
 
         .header-right {
             float: right;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
         }
 
@@ -40,31 +40,41 @@
 
         h2 {
             text-align: center;
-            font-size: 16px;
+            font-size: 18px;
             color: red;
             font-weight: bold;
         }
 
         .centered {
             text-align: center;
+            font-size: 12px;
         }
 
         .section {
-            margin-top: 8px;
+            margin-top: 6px;
         }
 
         .section-left {
             float: left;
             width: 50%;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
+            margin-top: 20px;
         }
 
         .section-right {
             float: right;
             width: 50%;
-            font-size: 13px;
+            font-size: 12px;
             text-align: right;
+            margin-top: 40px;
+        }
+
+        /* Κεντράρισμα του -Ο- και Δ Ι Ο Ι Κ Η Τ Η Σ */
+        .commander-signature {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .footer {
@@ -89,48 +99,47 @@
 </head>
 <body>
 
-    <h1>Εξοδόχαρτα</h1>
+    <h1 style="display:none;">Αδειοχαρτα</h1> <!-- Κρυφό, για να μην εκτυπώνεται η επικεφαλίδα -->
 
-    {% for soldier in soldiers %}
-    <div class="exodocharto-container">
+    {% for soldier_with_leave in soldiers_with_leaves %}
+    <div class="adeioxarto-container">
         <!-- Header -->
         <div class="header-left">
             487 ΤΔΒ<br>
             1ος Λόχος
         </div>
         <div class="header-right">
-            Κ.0025/1ο ΕΓ
+            Κ.0022/1ο ΕΓ
         </div>
         <div class="clear"></div>
 
         <!-- Title -->
-        <h2>ΦΥΛΛΟ ΑΔΕΙΑΣ ΔΙΑΝΥΚΤΕΡΕΥΣΕΩΣ</h2>
+        <h2>{{ soldier_with_leave.leave_type }}</h2>
 
         <!-- Content -->
         <div class="centered">
-            Επιτρέπουμε στον {{ soldier.vathmos }} {{ soldier.eponymo }} {{ soldier.onoma }} να διανυκτερεύσει σήμερα σπίτι του.
+            Χορηγούμε στον {{ soldier_with_leave.soldier.vathmos }} {{ soldier_with_leave.soldier.eponymo }} {{ soldier_with_leave.soldier.onoma }} άδεια απουσίας <strong>{{ soldier_with_leave.leave_type }}</strong>.
         </div>
 
-        <!-- Διάταξη Ώρας Εξόδου και Πληροφοριών -->
+        <!-- Διάταξη Ημερομηνιών και Πληροφοριών -->
         <div class="section">
             <div class="section-left">
-                <strong>ΏΡΑ ΕΞΟΔΟΥ:</strong> {{ exit_time }}
+                <strong>Διάρκειας:</strong> {{ duration }}  ημερών<br>
+                <strong>Αρχομένης από:</strong> {{ soldier_with_leave.start_date }} <br>
+                <strong>Λήγει την:</strong> {{ soldier_with_leave.end_date }}<br><br>
+                Αθήνα, {{ print_date }} <!-- Ημερομηνία Εκτύπωσης -->
             </div>
 
             <div class="section-right">
-                Αθήνα, {{ exit_date }}<br>
-                {{ officer.rank }} {{ officer.last_name }} {{ officer.first_name }}<br>
-                {{ role }}
+                <div class="commander-signature">
+                    <span>-Ο-</span>
+                    <span>Δ Ι Ο Ι Κ Η Τ Η Σ</span>
+                </div>
             </div>
         </div>
 
         <div class="clear"></div>
 
-        <!-- Footer -->
-        <div class="footer">
-            <p>ΤΗΛ ΑΔΥΜ: 210-6555678</p>
-            <p class="bold">ΤΟ ΚΡΑΝΟΣ – ΖΩΝΗ ΣΩΖΟΥΝ ΖΩΕΣ</p>
-        </div>
     </div>
 
     {% if forloop.counter|divisibleby:4 %}

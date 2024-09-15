@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}ΚΔΚ | Υπηρεσιακά{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/yphresiaka.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="video-background">
+    <video autoplay muted loop>
+        <source src="{% static 'img/index_back.webm' %}" type="video/webm">
+    </video>
+</div>
+
+<div class="main-content">
+    <h1>Επιλέξτε Στρατιώτες για Υπηρεσιακό</h1>
+
+    <!-- Φόρμα επιλογής στρατιωτών για Υπηρεσιακό -->
+    <form method="POST" action="{% url 'test_yphresiaka' %}">
+        {% csrf_token %}
+    
+        <h1>Επιλέξτε Στρατιώτες και Ημερομηνία</h1>
+    
+        <!-- Λίστα στρατιωτών με checkboxes και επιλογή ώρας -->
+        <fieldset class="fieldset-container">
+            <legend>Στρατιώτες</legend>
+            <div class="category-content">
+                {% for soldier in soldiers %}
+                <div>
+                    <input type="checkbox" id="soldier_{{ soldier.id }}" name="selected_soldiers" value="{{ soldier.id }}" onchange="toggleTimePicker(this, {{ soldier.id }})">
+                    <label for="soldier_{{ soldier.id }}">{{ soldier.vathmos }} {{ soldier.eponymo }} {{ soldier.onoma }}</label>
+                    
+                    <!-- Dropdown για επιλογή ώρας, αρχικά κρυφό -->
+                    <select name="time_{{ soldier.id }}" id="time_{{ soldier.id }}" class="time-picker" style="display:none;">
+                        <option value="">Επιλέξτε Ώρα</option>
+                        {% for hour in time_choices %}
+                        <option value="{{ hour }}">{{ hour }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {% endfor %}
+            </div>
+        </fieldset>
+
+        <!-- Σταθερή επιλογή "Δ Ι Ο Ι Κ Η Τ Η Σ" -->
+        <fieldset class="fieldset-container">
+            <legend>Ιδιότητα</legend>
+            <div class="category-content">
+                <p>Δ Ι Ο Ι Κ Η Τ Η Σ</p>
+                <input type="hidden" name="role" value="Δ Ι Ο Ι Κ Η Τ Η Σ">
+            </div>
+        </fieldset>
+    
+        <!-- Επιλογή Ημερομηνίας -->
+        <fieldset class="fieldset-container">
+            <legend>Ημερομηνία</legend>
+            <div class="category-content">
+                <input type="date" id="exit_date" name="exit_date" required>
+            </div>
+        </fieldset>
+    
+        <!-- Ώρα Εξόδου (υπολογίζεται αυτόματα) -->
+        <fieldset class="fieldset-container">
+            <legend>Ώρα Εξόδου</legend>
+            <div class="category-content">
+                <input type="text" id="exit_time" name="exit_time" readonly>
+            </div>
+        </fieldset>
+    
+        <!-- Υποβολή φόρμας -->
+        <button type="submit">Δημιουργία Υπηρεσιακών</button>
+    </form>
+
+    <!-- JavaScript για εμφάνιση και απόκρυψη επιλογής ώρας και αυτόματο υπολογισμό της ώρας εξόδου -->
+    <script>
+        function toggleTimePicker(checkbox, soldierId) {
+            var timePicker = document.getElementById('time_' + soldierId);
+            if (checkbox.checked) {
+                timePicker.style.display = 'inline-block';
+            } else {
+                timePicker.style.display = 'none';
+            }
+        }
+
+        document.getElementById('exit_date').addEventListener('change', function() {
+            const selectedDate = new Date(this.value);
+            const dayOfWeek = selectedDate.getDay(); // 0 = Κυριακή, 1 = Δευτέρα, ..., 6 = Σάββατο
+            let exitTime = '';
+    
+            if (dayOfWeek === 0) {  // Κυριακή
+                exitTime = '10:00';
+            } else if (dayOfWeek === 6) {  // Σάββατο
+                exitTime = '12:00';
+            } else {  // Καθημερινές
+                exitTime = '14:30';
+            }
+    
+            document.getElementById('exit_time').value = exitTime;
+        });
+    </script>
+    
+</div>
+
+{% endblock %}
