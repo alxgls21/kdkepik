@@ -180,3 +180,38 @@ footer {
     bottom: 0;
     left: 0;
 }
+
+/* Στοίχιση στρατιωτών με Flexbox */
+.soldiers-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Κεντράρισμα του περιεχομένου */
+    gap: 15px; /* Απόσταση μεταξύ των στοιχείων */
+}
+
+.soldier-item {
+    display: flex;
+    align-items: center; /* Ευθυγραμμίζει το checkbox με το label */
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    width: 250px; /* Πλάτος κάθε κάρτας */
+}
+
+.soldier-item input[type="checkbox"] {
+    margin-right: 10px; /* Απόσταση μεταξύ του checkbox και του label */
+}
+
+.soldier-item:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Ελαφρύ hover effect */
+}
+
+.soldier-item label {
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase; /* Κεφαλαία γράμματα */
+}

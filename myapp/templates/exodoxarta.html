@@ -25,17 +25,17 @@
     
         <!-- Λίστα στρατιωτών με checkboxes -->
         <fieldset class="fieldset-container">
-        <legend>Στρατιώτες</legend>
-        <div class="category-content">
-            {% for soldier in soldiers %}
-            <div>
-                <input type="checkbox" id="soldier_{{ soldier.id }}" name="selected_soldiers" value="{{ soldier.id }}">
-                <label for="soldier_{{ soldier.id }}">{{ soldier.vathmos }} {{ soldier.eponymo }} {{ soldier.onoma }}</label>
+            <legend>Στρατιώτες</legend>
+            <div class="category-content soldiers-grid">
+                {% for soldier in soldiers %}
+                <div class="soldier-item">
+                    <input type="checkbox" id="soldier_{{ soldier.id }}" name="selected_soldiers" value="{{ soldier.id }}">
+                    <label for="soldier_{{ soldier.id }}">{{ soldier.vathmos }} {{ soldier.eponymo }} {{ soldier.onoma }}</label>
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
-        </div>
-    </fieldset>
-    
+        </fieldset>
+        
         <!-- Dropdown για επιλογή Αξιωματικού -->
         <fieldset class="fieldset-container">
             <legend>Επιλογή Αξιωματικού Υπηρεσίας</legend>

@@ -1,31 +1,104 @@
 /* Γενικό στυλ για τη σελίδα */
 html, body {
-    height: 100%; /* Καθώς πρέπει το html και το body να καλύπτουν όλο το ύψος */
+    height: 100%;
     margin: 0;
     padding: 0;
+    font-family: Arial, sans-serif;
+    color: white;
 }
 
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #1b1b1b;
-    color: white;
     display: flex;
-    flex-direction: column; /* Η σελίδα λειτουργεί ως Flexbox container */
-    min-height: 100vh; /* Καλύπτει τουλάχιστον το ύψος του παραθύρου */
+    flex-direction: column;
+    min-height: 100vh;
 }
 
-.header {
-    background-color: rgba(0, 0, 0, 0.8);
-    padding: 20px;
+/* Στυλ για το header */
+header {
+    color: #fff;
+    padding: 10px 0;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+}
+
+header nav ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0;
+    width: 100%;
+}
+
+header nav ul li {
+    position: relative;
+    margin-right: 10px;
+}
+
+header nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: block;
+    border-radius: 5px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+header nav ul li a:hover {
+    background-color: #575757;
+}
+
+/* Στυλ για το dropdown menu */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    width: 100%;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 3;
+    border-radius: 5px;
+    opacity: 0;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    border-radius: 5px;
+    text-align: left;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+    border-radius: 5px;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+    opacity: 1;
+    transform: scaleY(1);
+    width: 100%;
+    min-width: 100px;
 }
 
 .main-content {
     padding: 20px;
     text-align: center;
-    flex: 1; /* Η περιοχή του περιεχομένου μεγαλώνει για να καλύψει τον διαθέσιμο χώρο */
 }
 
 .video-background {
@@ -49,127 +122,68 @@ video {
     margin-bottom: 20px;
 }
 
-/* Fieldset container styling */
-.fieldset-container {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-    flex: 1;
-}
-
-/* Flexbox container για να εμφανιστούν οι πίνακες δίπλα-δίπλα */
-.tables-container {
-    display: flex;
-    justify-content: space-between;
+/* Cards container styling */
+.soldiers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
-    width: 100%;
-    padding: 20px 0;
+    padding: 20px;
+    margin: 0 auto;
 }
 
-/* Διαμόρφωση των fieldsets για να είναι δίπλα-δίπλα */
-.tables-container fieldset {
-    flex: 1;
-    margin: 0;
-    width: 45%;
-    min-width: 300px;
-}
-
-/* Πίνακες */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
-
-th, td {
-    padding: 12px 15px;
-    border: 1px solid #ddd;
+/* Soldier card styling */
+.soldier-card {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 20px;
+    border-radius: 10px;
     text-align: left;
-}
-
-th {
-    background-color: #444;
-    color: #fff;
-}
-
-td {
-    background-color: rgba(255, 255, 255, 0.562);
-}
-
-/* Dropdown menu */
-header {
-    color: #fff;
-    padding: 10px 0;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     position: relative;
-    z-index: 1;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-header nav ul {
-    list-style-type: none;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0;
+.soldier-card:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+/* Checkbox styling */
+.soldier-card input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+/* Label styling */
+.soldier-card label {
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Dropdown styling */
+.soldier-card select {
+    margin-top: 10px;
     width: 100%;
+    padding: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
 }
 
-header nav ul li {
-    position: relative;
-    margin-right: 20px;
+.soldier-card select option {
+    background-color: #1b1b1b;
+    color: white;
 }
 
-header nav ul li a {
-    color: #fff;
-    text-decoration: none;
-    padding: 10px 20px;
-    display: block;
-    border-radius: 10px;
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .soldiers-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
-header nav ul li a:hover {
-    background-color: #575757;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 9999;
-    border-radius: 10px;
-    opacity: 0;
-    transform: scaleY(0);
-    transform-origin: top;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    border-radius: 10px;
-}
-
-.dropdown-content a:hover {
-    background-color: #f1f1f1;
-    border-radius: 10px;
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-    opacity: 1;
-    transform: scaleY(1);
-}
-
-/* Στυλ για το footer */
+/* Footer styling */
 footer {
     color: #fff;
     text-align: center;

@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Επιλοχίας 1ου Λόχου{% endblock %}
+{% block title %}ΚΔΚ | Επιλοχίας 1ου Λόχου{% endblock %}
 
 {% block extra_head %}
-    <link rel="stylesheet" href="{% static 'css/epilochias.css' %}">
+    <link rel="stylesheet" href="{% static 'css/anafora_aks_ipiresias.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -16,9 +16,20 @@
 <div class="main-content">
     <h1>Επιλοχίας 1ου Λόχου</h1>
     <div class="button-container">
-        <button onclick="location.href='{% url 'ipiresies' %}'">Μηνιαίες Υπηρεσίες</button>
-        <button onclick="location.href='#'">Οδηγίες Επιλοχία</button>
-        <button onclick="location.href='#'">Ημερήσια Πόστα</button>
+        <!-- Κουμπί για Εξοδόχαρτα -->
+        <button class="button-80" role="button" onclick="location.href='{% url 'exodoxarta' %}'">Εξοδόχαρτα</button>
+        
+        <!-- Κουμπί για Υπηρεσιακό Σημείωμα -->
+        <button class="button-80" role="button" onclick="location.href='{% url 'yphresiaka' %}'">Υπηρεσιακό Σημείωμα</button>
+        
+        <!-- Κουμπί για Φύλλα Άδειας -->
+        <button class="button-80" role="button" onclick="location.href='{% url 'adeioxarta' %}'">Φύλλα Άδειας</button>
+        
+        <!-- Κουμπί για Ημερήσια Πόστα -->
+        <button class="button-80" role="button" onclick="location.href='{% url 'posta' %}'">Ημερήσια Πόστα</button>
+        
+        <!-- Κουμπί για Οδηγίες Επιλοχία -->
+        <button class="button-80" role="button" onclick="location.href='#'">Οδηγίες Επιλοχία</button>
     </div>
 </div>
 {% endblock %}

@@ -26,9 +26,9 @@
         <!-- Λίστα στρατιωτών με checkboxes και επιλογή ώρας -->
         <fieldset class="fieldset-container">
             <legend>Στρατιώτες</legend>
-            <div class="category-content">
+            <div class="category-content soldiers-grid">
                 {% for soldier in soldiers %}
-                <div>
+                <div class="soldier-item">
                     <input type="checkbox" id="soldier_{{ soldier.id }}" name="selected_soldiers" value="{{ soldier.id }}" onchange="toggleTimePicker(this, {{ soldier.id }})">
                     <label for="soldier_{{ soldier.id }}">{{ soldier.vathmos }} {{ soldier.eponymo }} {{ soldier.onoma }}</label>
                     
@@ -43,7 +43,7 @@
                 {% endfor %}
             </div>
         </fieldset>
-
+        
         <!-- Σταθερή επιλογή "Δ Ι Ο Ι Κ Η Τ Η Σ" -->
         <fieldset class="fieldset-container">
             <legend>Ιδιότητα</legend>

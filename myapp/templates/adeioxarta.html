@@ -26,14 +26,12 @@
         <!-- Λίστα στρατιωτών με checkboxes και επιλογή τύπου άδειας -->
         <fieldset class="fieldset-container">
             <legend>Στρατιώτες</legend>
-            <div class="category-content">
+            <div class="soldiers-grid">
                 {% for soldier in soldiers %}
-                <div>
-                    <input type="checkbox" id="soldier_{{ soldier.id }}" name="selected_soldiers" value="{{ soldier.id }}" onchange="toggleLeaveOptions(this, {{ soldier.id }})">
+                <div class="soldier-card">
+                    <input type="checkbox" id="soldier_{{ soldier.id }}" name="selected_soldiers" value="{{ soldier.id }}">
                     <label for="soldier_{{ soldier.id }}">{{ soldier.vathmos }} {{ soldier.eponymo }} {{ soldier.onoma }}</label>
-
-                    <!-- Dropdown για επιλογή τύπου άδειας, αρχικά κρυφό -->
-                    <select name="leave_type_{{ soldier.id }}" id="leave_type_{{ soldier.id }}" class="leave-type" style="display:none;">
+                    <select name="leave_type_{{ soldier.id }}" id="leave_type_{{ soldier.id }}" class="leave-type">
                         <option value="">Επιλέξτε Τύπο Άδειας</option>
                         <option value="ΑΓΡΟΤΙΚΗ">ΑΓΡΟΤΙΚΗ</option>
                         <option value="ΑΙΜΟΔΟΤΙΚΗ">ΑΙΜΟΔΟΤΙΚΗ</option>
@@ -50,7 +48,7 @@
                 {% endfor %}
             </div>
         </fieldset>
-
+        
         <!-- Επιλογή Διάρκειας -->
         <fieldset class="fieldset-container">
             <legend>Διάρκεια (ημέρες)</legend>
