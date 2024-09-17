@@ -119,6 +119,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+LOGIN_REDIRECT_URL = 'index'  # Ανακατεύθυνση μετά το login
+LOGIN_URL = 'login'  # Ανακατεύθυνση στη σελίδα login αν δεν έχει συνδεθεί ο χρήστης
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'myapp', 'static'),
 ]

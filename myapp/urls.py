@@ -1,9 +1,11 @@
 from django.urls import path
 from django.views.generic import TemplateView
 from . import views  # Εισάγουμε όλες τις views από το views.py
+from django.contrib.auth.views import LoginView
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', LoginView.as_view(template_name='login.html'), name='login'),
+    path('index/', views.index, name='index'),
     path('ypersyndesmos/', views.ypersyndesmos_view, name='ypersyndesmos'),
     path('anafora_aks_ipiresias/', views.anafora_aks_ipiresias, name='anafora_aks_ipiresias'),
     path('epilochias/', views.epilochias_view, name='epilochias'),
@@ -25,4 +27,5 @@ urlpatterns = [
     path('test-yphresiaka/', views.test_yphresiaka_view, name='test_yphresiaka'),  # Προσθήκη για το test_yphresiaka_view
     path('adeioxarta/', views.adeioxarta_view, name='adeioxarta'),
     path('test_adeioxarta/', views.adeioxarta_view, name='test_adeioxarta'),  # Διαδρομή για το test view
+    path('login/', LoginView.as_view(template_name='login.html'), name='login'),
 ]

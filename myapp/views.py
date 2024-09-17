@@ -16,8 +16,9 @@ import platform
 from django.urls import reverse
 from django.shortcuts import redirect
 from .forms import SoldierForm, SummaryForm
+from django.contrib.auth.decorators import login_required
 
-
+@login_required
 def index(request):
     return render(request, 'index.html')
 
