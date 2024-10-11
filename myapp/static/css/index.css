@@ -3,14 +3,17 @@ html, body {
     height: 100%; /* Καθιστά το html και το body να καταλαμβάνουν όλο το ύψος */
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
 }
 
 body {
     font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
     display: flex;
-    flex-direction: column; /* Flexbox layout για sticky footer */
+    flex-direction: column;
     min-height: 100vh; /* Καλύπτει τουλάχιστον το ύψος του παραθύρου */
 }
 
@@ -161,11 +164,9 @@ footer {
     color: #fff;
     text-align: center;
     padding: 10px 0;
-    position: fixed;
-    bottom: 0;
     width: 100%;
     z-index: 2; /* Βεβαιώνει ότι το footer είναι πάνω από το video */
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0);
 }
 
 /* Στυλ για τις εικόνες */
@@ -180,4 +181,9 @@ footer {
     width: 150px;
     height: auto;
     margin: 0 10px;
+}
+
+/* Προσθήκη box-sizing για αποφυγή overflows */
+*, *::before, *::after {
+    box-sizing: border-box;
 }

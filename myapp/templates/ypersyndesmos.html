@@ -11,114 +11,155 @@
 <div class="video-background">
     <video autoplay muted loop>
         <source src="{% static 'img/index_back.webm' %}" type="video/webm">
+        Your browser does not support the video tag.
     </video>
 </div>
 <div class="main-content">
     <h1>Πεδία Ελέγχου</h1>
 
     <!-- ΔΙΔΕΣ -->
-    <fieldset class="fieldset-container">
-        <legend onclick="toggleFieldset(this)">ΔΙΔΕΣ</legend>
-        <div class="category-content" style="display: none;">
+    <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false">
+            ΔΙΔΕΣ <span class="accordion-icon">+</span>
+        </button>
+        <div class="accordion-content" hidden>
             <h3 class="subcategory-title">Αδιαβάθμητο Δίκτυο DCE</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Όνομα</th>
-                        <th>IP Address</th>
-                        <th>Εποπτικό Μέσο</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for entry in unclassified_network %}
-                    <tr>
-                        <td>{{ entry.name }}</td>
-                        <td>{{ entry.ip_address }}</td>
-                        <td>{{ entry.supervisory_tool }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Όνομα</th>
+                            <th>IP Address</th>
+                            <th>Εποπτικό Μέσο</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in unclassified_network %}
+                        <tr>
+                            <td>{{ entry.name }}</td>
+                            <td>{{ entry.ip_address }}</td>
+                            <td>{{ entry.supervisory_tool }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
 
             <h3 class="subcategory-title">Διαβαθμισμένο Δίκτυο DTE</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Όνομα</th>
-                        <th>IP Address</th>
-                        <th>Εποπτικό Μέσο</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for entry in classified_network %}
-                    <tr>
-                        <td>{{ entry.name }}</td>
-                        <td>{{ entry.ip_address }}</td>
-                        <td>{{ entry.supervisory_tool }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Όνομα</th>
+                            <th>IP Address</th>
+                            <th>Εποπτικό Μέσο</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in classified_network %}
+                        <tr>
+                            <td>{{ entry.name }}</td>
+                            <td>{{ entry.ip_address }}</td>
+                            <td>{{ entry.supervisory_tool }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </fieldset>
+    </div>
 
     <!-- HARP -->
-    <fieldset class="fieldset-container">
-        <legend onclick="toggleFieldset(this)">HARP</legend>
-        <div class="category-content" style="display: none;">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Όνομα</th>
-                        <th>IP Address</th>
-                        <th>Εποπτικό Μέσο</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for entry in harp_categories %}
-                    <tr>
-                        <td>{{ entry.name }}</td>
-                        <td>{{ entry.ip_address }}</td>
-                        <td>{{ entry.supervisory_tool }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+    <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false">
+            HARP <span class="accordion-icon">+</span>
+        </button>
+        <div class="accordion-content" hidden>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Όνομα</th>
+                            <th>IP Address</th>
+                            <th>Εποπτικό Μέσο</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in harp_categories %}
+                        <tr>
+                            <td>{{ entry.name }}</td>
+                            <td>{{ entry.ip_address }}</td>
+                            <td>{{ entry.supervisory_tool }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </fieldset>
+    </div>
 
     <!-- ΑΔΜΕ -->
-    <fieldset class="fieldset-container">
-        <legend onclick="toggleFieldset(this)">ΑΔΜΕ</legend>
-        <div class="category-content" style="display: none;">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Όνομα</th>
-                        <th>IP Address</th>
-                        <th>Εποπτικό Μέσο</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for entry in adme_categories %}
-                    <tr>
-                        <td>{{ entry.name }}</td>
-                        <td>{{ entry.ip_address }}</td>
-                        <td>{{ entry.supervisory_tool }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+    <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false">
+            ΑΔΜΕ <span class="accordion-icon">+</span>
+        </button>
+        <div class="accordion-content" hidden>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Όνομα</th>
+                            <th>IP Address</th>
+                            <th>Εποπτικό Μέσο</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in adme_categories %}
+                        <tr>
+                            <td>{{ entry.name }}</td>
+                            <td>{{ entry.ip_address }}</td>
+                            <td>{{ entry.supervisory_tool }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </fieldset>
-
+    </div>
 </div>
 
 <script>
-    function toggleFieldset(legendElement) {
-        const content = legendElement.nextElementSibling;
-        content.style.display = content.style.display === 'none' ? 'block' : 'none';
-    }
-</script>
+    function toggleAccordion(button) {
+        const content = button.nextElementSibling;
+        const icon = button.querySelector('.accordion-icon');
+        const isExpanded = button.getAttribute('aria-expanded') === 'true';
 
+        // Κλείσιμο όλων των accordions
+        document.querySelectorAll('.accordion-header').forEach(btn => {
+            btn.setAttribute('aria-expanded', 'false');
+            btn.querySelector('.accordion-icon').textContent = '+';
+            btn.nextElementSibling.setAttribute('hidden', '');
+        });
+
+        // Άνοιγμα του επιλεγμένου accordion αν δεν ήταν ήδη ανοιχτό
+        if (!isExpanded) {
+            button.setAttribute('aria-expanded', 'true');
+            icon.textContent = '-';
+            content.removeAttribute('hidden');
+        }
+    }
+
+    // Προσθήκη event listeners στα accordion headers
+    document.querySelectorAll('.accordion-header').forEach(button => {
+        button.addEventListener('click', () => toggleAccordion(button));
+
+        // Υποστήριξη πληκτρολογίου
+        button.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                toggleAccordion(button);
+            }
+        });
+    });
+</script>
 {% endblock %}

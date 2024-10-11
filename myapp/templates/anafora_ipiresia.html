@@ -26,7 +26,7 @@
             <p>
                 <label for="officer">Αξιωματικός Υπηρεσίας ΚΕΠΙΚ:</label>
                 <select name="officer" id="officer">
-                    {% for officer in officers %}
+                    {% for officer in officers|dictsort:"last_name" %}
                     <option value="{{ officer.id }}">{{ officer.rank }} {{ officer.last_name }} {{ officer.first_name }}</option>
                     {% endfor %}
                 </select>
@@ -66,8 +66,8 @@
             <p>
                 <label for="tele_center">Υπεύθυνος Τηλεφωνικού Κέντρου:</label>
                 <select name="tele_center" id="tele_center">
-                    {% for soldier in soldiers %}
-                        <option value="{{ soldier.id }}">{{ soldier.rank }} {{ soldier.last_name }} {{ soldier.first_name }}</option>
+                    {% for soldier in soldiers|dictsort:"eponymo" %}
+                        <option value="{{ soldier.id }}">{{ soldier.vathmos }} {{ soldier.eponymo }} {{ soldier.onoma }}</option>
                     {% endfor %}
                 </select>
             </p>
@@ -101,8 +101,8 @@
             <p>
                 <label for="tele_register">Υπεύθυνος Καταχώρισης Τηλετύπων:</label>
                 <select name="tele_register" id="tele_register">
-                    {% for soldier in soldiers %}
-                        <option value="{{ soldier.id }}">{{ soldier.rank }} {{ soldier.last_name }} {{ soldier.first_name }}</option>
+                    {% for soldier in soldiers|dictsort:"eponymo" %}
+                        <option value="{{ soldier.id }}">{{ soldier.vathmos }} {{ soldier.eponymo }} {{ soldier.onoma }}</option>
                     {% endfor %}
                 </select>
             </p>
@@ -287,7 +287,7 @@
             <p>
                 <label for="commander_kepik">Δκτης ΚΕΠΙΚ:</label>
                 <select name="commander_kepik" id="commander_kepik">
-                    {% for officer in officers %}
+                    {% for officer in officers|dictsort:"last_name" %}
                         <option value="{{ officer.id }}">{{ officer.rank }} {{ officer.last_name }} {{ officer.first_name }}</option>
                     {% endfor %}
                 </select>
@@ -295,7 +295,7 @@
             <p>
                 <label for="officer_duty">ΑΞΥΠ ΚΕΠΙΚ:</label>
                 <select name="officer_duty" id="officer_duty">
-                    {% for officer in officers %}
+                    {% for officer in officers|dictsort:"last_name" %}
                         <option value="{{ officer.id }}">{{ officer.rank }} {{ officer.last_name }} {{ officer.first_name }}</option>
                     {% endfor %}
                 </select>
@@ -303,7 +303,7 @@
             <p>
                 <label for="commander">ΔΚΤΗΣ:</label>
                 <select name="commander" id="commander">
-                    {% for officer in officers %}
+                    {% for officer in officers|dictsort:"last_name" %}
                         <option value="{{ officer.id }}">{{ officer.rank }} {{ officer.last_name }} {{ officer.first_name }}</option>
                     {% endfor %}
                 </select>

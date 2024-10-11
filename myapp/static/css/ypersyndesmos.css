@@ -1,31 +1,20 @@
 /* Γενικό στυλ για τη σελίδα */
 html, body {
-    height: 100%; /* Καθώς πρέπει το html και το body να καλύπτουν όλο το ύψος */
+    height: 100%; /* Καθιστά το html και το body να καταλαμβάνουν όλο το ύψος */
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
 }
 
 body {
     font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #1b1b1b;
-    color: white;
     display: flex;
-    flex-direction: column; /* Η σελίδα λειτουργεί ως Flexbox container */
+    flex-direction: column;
     min-height: 100vh; /* Καλύπτει τουλάχιστον το ύψος του παραθύρου */
-}
-
-.header {
-    background-color: rgba(0, 0, 0, 0.8);
-    padding: 20px;
-    text-align: center;
-}
-
-.main-content {
-    padding: 20px;
-    text-align: center;
-    flex: 1; /* Η περιοχή του περιεχομένου μεγαλώνει για να καλύψει τον διαθέσιμο χώρο */
 }
 
 .video-background {
@@ -35,61 +24,16 @@ body {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    z-index: -1;
+    z-index: -1; /* Βεβαιώνει ότι το video είναι πίσω από όλα τα στοιχεία */
 }
 
 video {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover; /* Το video καλύπτει πλήρως την οθόνη χωρίς παραμόρφωση */
 }
 
-.main-content h1 {
-    font-size: 2.5em;
-    margin-bottom: 20px;
-}
-
-/* Fieldset container styling */
-.fieldset-container {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    padding: 20px;
-    width: 70%; /* Πλάτος στο 70% της οθόνης */
-    margin: 20px auto; /* Κεντράρισμα */
-    text-align: center;
-}
-
-.fieldset-container legend {
-    cursor: pointer;
-    font-size: 1.5em;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: #ffffff;
-}
-
-/* Πίνακες */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
-
-th, td {
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    text-align: left;
-}
-
-th {
-    background-color: #444;
-    color: #fff;
-}
-
-td {
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
-/* Dropdown menu */
+/* Στυλ για το header */
 header {
     color: #fff;
     padding: 10px 0;
@@ -98,14 +42,14 @@ header {
     align-items: center;
     justify-content: center;
     position: relative;
-    z-index: 1;
+    z-index: 2; /* Βεβαιώνει ότι το header είναι πάνω από το video */
 }
 
 header nav ul {
     list-style-type: none;
     padding: 0;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     margin: 0;
     width: 100%;
@@ -113,29 +57,32 @@ header nav ul {
 
 header nav ul li {
     position: relative;
-    margin-right: 20px;
+    margin-right: 10px;
 }
 
 header nav ul li a {
     color: #fff;
     text-decoration: none;
-    padding: 10px 20px;
+    padding: 10px 15px;
     display: block;
-    border-radius: 10px;
+    border-radius: 5px;
+    text-align: center;
+    white-space: nowrap; /* Εξασφαλίζει ότι το κείμενο δεν "σπάει" */
 }
 
 header nav ul li a:hover {
     background-color: #575757;
 }
 
+/* Στυλ για dropdown menu */
 .dropdown-content {
     display: none;
     position: absolute;
     background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 9999;
-    border-radius: 10px;
+    width: 100%; /* Κάνει το dropdown να έχει το ίδιο πλάτος με το γονικό */
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 3; /* Βεβαιώνει ότι το dropdown είναι πάνω από το header */
+    border-radius: 5px;
     opacity: 0;
     transform: scaleY(0);
     transform-origin: top;
@@ -147,18 +94,139 @@ header nav ul li a:hover {
     padding: 12px 16px;
     text-decoration: none;
     display: block;
-    border-radius: 10px;
+    border-radius: 5px;
+    text-align: left; /* Τοποθέτηση του κειμένου αριστερά */
+    white-space: normal; /* Επιτρέπει στο κείμενο να σπάει σε πολλές γραμμές */
+    word-wrap: break-word; /* Σπάει μεγάλες λέξεις αν χρειαστεί */
 }
 
 .dropdown-content a:hover {
     background-color: #f1f1f1;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 .dropdown:hover .dropdown-content {
     display: block;
     opacity: 1;
     transform: scaleY(1);
+    width: 100%; /* Εξασφαλίζει ότι το dropdown έχει το ίδιο πλάτος με το γονικό */
+    min-width: 100px; /* Ορίζει ένα ελάχιστο πλάτος για το dropdown */
+}
+
+/* Στυλ για το κύριο περιεχόμενο */
+.main-content {
+    margin: 20px;
+    text-align: center;
+    color: white;
+    position: relative;
+    z-index: 1;
+    flex: 1; /* Εξασφαλίζει ότι το περιεχόμενο καλύπτει το κενό χώρο και σπρώχνει το footer */
+}
+
+/* Styling για το Accordion */
+.accordion-item {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    margin: 20px auto;
+    width: 80%; /* Προσαρμόστε το πλάτος ανάλογα με τις ανάγκες σας */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.accordion-header {
+    background-color: rgba(180, 199, 221, 0.171);
+    color: #fff;
+    padding: 15px 20px;
+    font-size: 1.5em;
+    text-align: left;
+    border: none;
+    width: 100%;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.accordion-header:focus {
+    outline: 2px solid #af4c4c;
+}
+
+.accordion-icon {
+    font-size: 1em;
+}
+
+/* Styling για το περιεχόμενο του Accordion */
+.accordion-content {
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 15px 20px;
+    border-top: 1px solid #444;
+    border-radius: 0 0 10px 10px;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+}
+
+/* Responsive Tables */
+.table-responsive {
+    overflow-x: auto;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 12px 15px;
+    border: 1px solid #dddddd34;
+    text-align: left;
+}
+
+th {
+    background-color: #444;
+    color: #fff;
+}
+
+td {
+    background-color: rgba(22, 21, 21, 0.425);
+}
+
+/* Styling για τους τίτλους υποκατηγοριών */
+.subcategory-title {
+    margin-top: 20px;
+    font-size: 1.2em;
+    color: #c43d3d;
+    text-align: left;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .accordion-item {
+        width: 95%;
+    }
+
+    .accordion-header {
+        font-size: 1.2em;
+        padding: 10px 15px;
+    }
+
+    .subcategory-title {
+        font-size: 1em;
+    }
+
+    th, td {
+        padding: 8px 10px;
+    }
+}
+
+/* Optional: Hover Effects για τα Accordion Headers */
+.accordion-header:hover {
+    background-color: #575757;
+}
+
+/* Προσθήκη box-sizing για αποφυγή overflows */
+*, *::before, *::after {
+    box-sizing: border-box;
 }
 
 /* Στυλ για το footer */
@@ -167,8 +235,25 @@ footer {
     text-align: center;
     padding: 10px 0;
     width: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    position: relative;
-    bottom: 0;
-    left: 0;
+    z-index: 2; /* Βεβαιώνει ότι το footer είναι πάνω από το video */
+    background: rgba(0, 0, 0, 0);
+}
+
+/* Στυλ για τις εικόνες */
+.images {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.images img {
+    width: 150px;
+    height: auto;
+    margin: 0 10px;
+}
+
+/* Προσθήκη box-sizing για αποφυγή overflows */
+*, *::before, *::after {
+    box-sizing: border-box;
 }
