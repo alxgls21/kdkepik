@@ -7,7 +7,7 @@ html, body {
 }
 
 *, *::before, *::after {
-    box-sizing: inherit;
+    box-sizing: border-box;
 }
 
 body {
@@ -42,7 +42,7 @@ header {
     align-items: center;
     justify-content: center;
     position: relative;
-    z-index: 2; /* Βεβαιώνει ότι το header είναι πάνω από το video */
+    z-index: 3; /* Βεβαιώνει ότι το header είναι πάνω από το video */
 }
 
 header nav ul {
@@ -81,7 +81,7 @@ header nav ul li a:hover {
     background-color: #f9f9f9;
     width: 100%; /* Κάνει το dropdown να έχει το ίδιο πλάτος με το γονικό */
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    z-index: 3; /* Βεβαιώνει ότι το dropdown είναι πάνω από το header */
+    z-index: 4; /* Βεβαιώνει ότι το dropdown είναι πάνω από το header */
     border-radius: 5px;
     opacity: 0;
     transform: scaleY(0);
@@ -115,17 +115,12 @@ header nav ul li a:hover {
 
 /* Main Content Styling */
 .main-content {
-    margin: 80px 20px 20px 20px; /* Adjust top margin to avoid overlap with fixed header */
+    margin: 20px;
     text-align: center;
     color: white;
     position: relative;
     z-index: 1;
-    flex: 1; /* Εξασφαλίζει ότι το περιεχόμενο μεγαλώνει και σπρώχνει το footer στο κάτω μέρος */
-}
-
-.main-content h1 {
-    font-size: 2.5em;
-    margin-bottom: 20px;
+    flex: 1; /* Εξασφαλίζει ότι το περιεχόμενο καλύπτει το κενό χώρο και σπρώχνει το footer */
 }
 
 /* Button Styling */
@@ -138,32 +133,32 @@ header nav ul li a:hover {
 }
 
 .button-80 {
-    background: rgba(255, 255, 255, 0.6);
-    border: none;
-    border-radius: 10px;
-    color: #212121;
+    padding: 20px 60px;
+    border-radius: 50px;
     cursor: pointer;
-    font-family: Arial, sans-serif;
-    font-size: 1.125rem;
-    font-weight: 700;
-    padding: 0.875rem 1.125rem;
-    transition: transform 0.2s, background-color 0.3s, color 0.3s, box-shadow 0.3s;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 0;
+    background-color: rgba(255, 255, 255, 0.842);
+    box-shadow: rgb(0 0 0 / 5%) 0 0 8px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 15px;
+    transition: all 0.5s ease;
 }
 
 .button-80:hover {
-    transform: scale(1.05);
-    background: rgba(38, 46, 38, 0.8); /* Πράσινο χρώμα κατά το hover */
-    color: #fff;
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+    letter-spacing: 3px;
+    background-color: hsl(221, 46%, 58%);
+    color: hsl(0, 0%, 100%);
+    box-shadow: rgba(41, 113, 196, 0.664) 0px 7px 29px 0px;
 }
 
 .button-80:active {
-    transform: scale(1.02) translateY(2px);
-}
-
-.button-80:focus {
-    outline: 2px solid #af4f4c;
+    letter-spacing: 2px;
+    background-color: hsl(209, 35%, 43%);
+    color: hsl(0, 0%, 100%);
+    box-shadow: rgba(52, 103, 161, 0) 0px 0px 0px 0px;
+    transform: translateY(10px);
+    transition: 100ms;
 }
 
 /* Footer Styling */
@@ -176,7 +171,7 @@ footer {
     position: relative;
     bottom: 0;
     left: 0;
-    z-index: 1;
+    z-index: 3;
 }
 
 /* Responsive Design */

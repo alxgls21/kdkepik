@@ -10,32 +10,87 @@
 {% block content %}
 <div class="video-background">
     <video autoplay muted loop>
-        <source src="{% static 'img/index_back.webm' %}" type="video/webm">
+        <source src="{% static 'img/back_kepik.webm' %}" type="video/webm">
     </video>
 </div>
 <div class="main-content">
     <h1>Οδηγίες Επικοινωνιακών Συστημάτων</h1>
 
-    <fieldset class="button-container">
-        <legend>CRONOS</legend>
-        <button class="button-86" role="button" onclick="location.href='{% static 'docs/cronos_readme.pdf' %}'">Οδηγίες CRONOS</button>
-    </fieldset>
+    <!-- CRONOS Accordion -->
+    <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false">
+            CRONOS <span class="accordion-icon">+</span>
+        </button>
+        <div class="accordion-content" hidden>
+            <div class="button-container">
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/cronos_readme.pdf' %}'">Οδηγίες CRONOS</button>
+            </div>
+        </div>
+    </div>
 
-    <fieldset class="button-container">
-        <legend>AIFS</legend>
-        <button class="button-86" role="button" onclick="location.href='{% static 'docs/aifs_readme_eleftherou_keimenou.pdf' %}'">AIFS Ελευθέρου Κειμένου</button>
-        <button class="button-86" role="button" onclick="location.href='{% static 'docs/aifs_readme_imerologia_delete.pdf' %}'">AIFS Διαγραφή Ημερολογίων</button>
-        <button class="button-86" role="button" onclick="location.href='{% static 'docs/aifs_readme_kathari_ekkinisi.pdf' %}'">AIFS Καθαρή Εκκίνηση</button>
-        <button class="button-86" role="button" onclick="location.href='{% static 'docs/aifs_readme_katharismos_maskon_simaton.pdf' %}'">AIFS Καθαρισμός Μασκών</button>
-        <button class="button-86" role="button" onclick="location.href='{% static 'docs/aifs_readme_odigies_apostolis.pdf' %}'">AIFS Οδηγίες Αποστολής</button>
-        <button class="button-86" role="button" onclick="location.href='{% static 'docs/aifs_readme_sfalma_simaton.pdf' %}'">AIFS Σφάλμα Σημάτων</button>
-        <button class="button-86" role="button" onclick="location.href='{% static 'docs/aifs_readme_simata_elegxou.pdf' %}'">AIFS Σήματα Ελέγχου</button>
-    </fieldset>
+    <!-- AIFS Accordion -->
+    <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false">
+            AIFS <span class="accordion-icon">+</span>
+        </button>
+        <div class="accordion-content" hidden>
+            <div class="button-container">
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/aifs_readme_eleftherou_keimenou.pdf' %}'">AIFS Ελευθέρου Κειμένου</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/aifs_readme_imerologia_delete.pdf' %}'">AIFS Διαγραφή Ημερολογίων</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/aifs_readme_kathari_ekkinisi.pdf' %}'">AIFS Καθαρή Εκκίνηση</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/aifs_readme_katharismos_maskon_simaton.pdf' %}'">AIFS Καθαρισμός Μασκών</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/aifs_readme_odigies_apostolis.pdf' %}'">AIFS Οδηγίες Αποστολής</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/aifs_readme_sfalma_simaton.pdf' %}'">AIFS Σφάλμα Σημάτων</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/aifs_readme_simata_elegxou.pdf' %}'">AIFS Σήματα Ελέγχου</button>
+            </div>
+        </div>
+    </div>
 
-    <fieldset class="button-container">
-        <legend>ΣΔΑ - ΠΥΡΣΕΙΑ</legend>
-        <button class="button-86" role="button" onclick="location.href='{% static 'docs/sda_pyrseia_readme.pdf' %}'">Οδηγίες ΣΔΑ - ΠΥΡΣΕΙΑ</button>
-    </fieldset>
-
+    <!-- ΣΔΑ - ΠΥΡΣΕΙΑ Accordion -->
+    <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false">
+            ΣΔΑ - ΠΥΡΣΕΙΑ <span class="accordion-icon">+</span>
+        </button>
+        <div class="accordion-content" hidden>
+            <div class="button-container">
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/sda_pyrseia_readme.pdf' %}'">Οδηγίες ΣΔΑ - ΠΥΡΣΕΙΑ</button>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+    function toggleAccordion(button) {
+        const content = button.nextElementSibling;
+        const icon = button.querySelector('.accordion-icon');
+        const isExpanded = button.getAttribute('aria-expanded') === 'true';
+
+        // Κλείσιμο όλων των accordions
+        document.querySelectorAll('.accordion-header').forEach(btn => {
+            btn.setAttribute('aria-expanded', 'false');
+            btn.querySelector('.accordion-icon').textContent = '+';
+            btn.nextElementSibling.setAttribute('hidden', '');
+        });
+
+        // Άνοιγμα του επιλεγμένου accordion αν δεν ήταν ήδη ανοιχτό
+        if (!isExpanded) {
+            button.setAttribute('aria-expanded', 'true');
+            icon.textContent = '-';
+            content.removeAttribute('hidden');
+        }
+    }
+
+    // Προσθήκη event listeners στα accordion headers
+    document.querySelectorAll('.accordion-header').forEach(button => {
+        button.addEventListener('click', () => toggleAccordion(button));
+
+        // Υποστήριξη πληκτρολογίου
+        button.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                toggleAccordion(button);
+            }
+        });
+    });
+</script>
 {% endblock %}

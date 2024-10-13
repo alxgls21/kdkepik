@@ -10,9 +10,10 @@
 {% block content %}
 <div class="video-background">
     <video autoplay muted loop>
-        <source src="{% static 'img/index_back.webm' %}" type="video/webm">
+        <source src="{% static 'img/back_kepik.webm' %}" type="video/webm">
     </video>
 </div>
+
 <div class="main-content">
     <h1>Κέντρο Διαχείρισης ΚΕΠΙΚ</h1>
     <div class="images">
@@ -20,4 +21,12 @@
         <img src="{% static 'img/tdb.png' %}" alt="TDB">
     </div>
 </div>
+
+<div class="user-info-footer">
+    <span>Καλώς ήρθες, {{ user.username }}</span>
+    <a href="{% url 'logout' %}">
+        <img src="{% static 'img/power_off.png' %}" alt="Αποσύνδεση" title="Αποσύνδεση" class="logout-icon">
+    </a>
+</div>
+
 {% endblock %}

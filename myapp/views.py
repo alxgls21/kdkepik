@@ -1,22 +1,24 @@
 from django.shortcuts import render, redirect
 from django.db.models import Sum
 from django.template.loader import render_to_string
-from .models import DidesCategory, HarpCategory, AdmeCategory, OfficerServiceReport, Soldier, AxypKepikServiceReport, OplitiServiceReport, ServiceReportSummary, AxypCodesCategory  
+from .models import DidesCategory, HarpCategory, AdmeCategory, OfficerServiceReport, Soldier, AxypKepikServiceReport, OplitiServiceReport, ServiceReportSummary, AxypCodesCategory 
 from django.core.files.base import ContentFile
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from io import BytesIO
 import pdfkit
 import tempfile
 from datetime import datetime, timedelta
 from django.utils.translation import gettext as _
 from django.utils.formats import date_format
-import locale
 import os
 import platform
 from django.urls import reverse
-from django.shortcuts import redirect
-from .forms import SoldierForm, SummaryForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout  # Προσθέστε αυτήν την εισαγωγή στην αρχή του αρχείου
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')  # Ανακατεύθυνση στη σελίδα σύνδεσης μετά την αποσύνδεση
 
 @login_required
 def index(request):

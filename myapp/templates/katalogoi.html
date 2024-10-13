@@ -10,21 +10,18 @@
 {% block content %}
 <div class="video-background">
     <video autoplay muted loop>
-        <source src="{% static 'img/index_back.webm' %}" type="video/webm">
+        <source src="{% static 'img/back_kepik.webm' %}" type="video/webm">
     </video>
 </div>
 <div class="main-content">
     <h1>Τηλεφωνικοί Κατάλογοι</h1>
 
-    <!-- Μπάρα Αναζήτησης -->
-    <div class="search-container">
-        <input type="text" id="search" placeholder="Αναζήτηση..." onkeyup="searchTable()">
-        <ul id="resultsList" style="display:none; list-style-type: none; background-color: #fff; border: 1px solid #ccc; padding: 10px; max-height: 200px; overflow-y: auto;"></ul>
-    </div>
     <!-- HARP Directory -->
-    <fieldset class="fieldset-container">
-        <legend onclick="toggleFieldset(this)">Τηλεφωνικός Κατάλογος HARP</legend>
-        <div class="category-content" style="display: none;">
+    <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false">
+            Τηλεφωνικός Κατάλογος HARP <span class="accordion-icon">+</span>
+        </button>
+        <div class="accordion-content" hidden>
             <table>
                 <thead>
                     <tr>
@@ -48,12 +45,14 @@
                 </tbody>
             </table>
         </div>
-    </fieldset>
+    </div>
 
-    <!-- VOSIP Directory -->
-    <fieldset class="fieldset-container">
-        <legend onclick="toggleFieldset(this)">Τηλεφωνικός Κατάλογος VoSIP</legend>
-        <div class="category-content" style="display: none;">
+    <!-- VoSIP Directory -->
+    <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false">
+            Τηλεφωνικός Κατάλογος VoSIP <span class="accordion-icon">+</span>
+        </button>
+        <div class="accordion-content" hidden>
             <table>
                 <thead>
                     <tr>
@@ -75,12 +74,14 @@
                 </tbody>
             </table>
         </div>
-    </fieldset>
+    </div>
 
     <!-- Κλειστό Τηλεφωνικό -->
-    <fieldset class="fieldset-container">
-        <legend onclick="toggleFieldset(this)">Κλειστό Τηλεφωνικό</legend>
-        <div class="category-content" style="display: none;">
+    <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false">
+            Κλειστό Τηλεφωνικό <span class="accordion-icon">+</span>
+        </button>
+        <div class="accordion-content" hidden>
             <table>
                 <thead>
                     <tr>
@@ -100,60 +101,43 @@
                 </tbody>
             </table>
         </div>
-    </fieldset>
+    </div>
 
 </div>
 
 <script>
-    // Λειτουργία αναζήτησης
-    function searchTable() {
-        const searchValue = document.getElementById("search").value.toLowerCase();
-        const resultsList = document.getElementById("resultsList");
-        resultsList.innerHTML = "";
-        let resultsFound = false;
+    function toggleAccordion(button) {
+        const content = button.nextElementSibling;
+        const icon = button.querySelector('.accordion-icon');
+        const isExpanded = button.getAttribute('aria-expanded') === 'true';
 
-        const tables = document.querySelectorAll("table");
-        tables.forEach(table => {
-            const rows = table.getElementsByTagName("tr");
-            for (let i = 1; i < rows.length; i++) {  // Αγνοούμε την κεφαλίδα
-                let rowText = rows[i].innerText.toLowerCase();
-                if (rowText.includes(searchValue)) {
-                    resultsFound = true;
-                    const resultItem = document.createElement("li");
-                    resultItem.textContent = rows[i].innerText;
-                    resultItem.onclick = function () {
-                        rows[i].scrollIntoView({ behavior: 'smooth' });
-                        rows[i].style.backgroundColor = "#ffff99";  // Highlight
-                        setTimeout(() => rows[i].style.backgroundColor = "", 2000);  // Αφαιρεί το highlight μετά από 2 δευτερόλεπτα
-                        resultsList.style.display = 'none';  // Απόκρυψη λίστας μετά την επιλογή
-                    };
-                    resultsList.appendChild(resultItem);
-                }
-            }
+        // Κλείσιμο όλων των accordions
+        document.querySelectorAll('.accordion-header').forEach(btn => {
+            btn.setAttribute('aria-expanded', 'false');
+            btn.querySelector('.accordion-icon').textContent = '+';
+            btn.nextElementSibling.setAttribute('hidden', '');
         });
 
-        // Εμφάνιση ή απόκρυψη των αποτελεσμάτων
-        if (resultsFound) {
-            resultsList.style.display = "block";
-        } else {
-            resultsList.style.display = "none";
+        // Άνοιγμα του επιλεγμένου accordion αν δεν ήταν ήδη ανοιχτό
+        if (!isExpanded) {
+            button.setAttribute('aria-expanded', 'true');
+            icon.textContent = '-';
+            content.removeAttribute('hidden');
         }
     }
 
-    // Λειτουργία για απόκρυψη όταν κάνεις κλικ εκτός της μπάρας αναζήτησης
-    document.addEventListener('click', function(event) {
-        const searchInput = document.getElementById('search');
-        const resultsList = document.getElementById('resultsList');
-        if (!searchInput.contains(event.target)) {
-            resultsList.style.display = 'none';
-        }
+    // Προσθήκη event listeners στα accordion headers
+    document.querySelectorAll('.accordion-header').forEach(button => {
+        button.addEventListener('click', () => toggleAccordion(button));
+
+        // Υποστήριξη πληκτρολογίου
+        button.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                toggleAccordion(button);
+            }
+        });
     });
-
-    // Λειτουργία για άνοιγμα/κλείσιμο των πεδίων (fieldset)
-    function toggleFieldset(legendElement) {
-        const content = legendElement.nextElementSibling;
-        content.style.display = content.style.display === 'none' ? 'block' : 'none';
-    }
-</script>>
+</script>
 
 {% endblock %}

@@ -5,84 +5,117 @@
 
 {% block extra_head %}
     <link rel="stylesheet" href="{% static 'css/dides.css' %}">
-    <style>
-        .fieldset-container legend {
-            cursor: pointer;
-        }
-    </style>
 {% endblock %}
 
 {% block content %}
 <div class="video-background">
     <video autoplay muted loop>
-        <source src="{% static 'img/index_back.webm' %}" type="video/webm">
+        <source src="{% static 'img/back_kepik.webm' %}" type="video/webm">
     </video>
 </div>
 <div class="main-content">
     <h1>ΔΙΔΕΣ ΟΔΗΓΙΕΣ</h1>
 
-    <fieldset class="fieldset-container">
-        <legend>Οδηγίες</legend>
-        <div class="button-container">
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/router_switch_config.pdf' %}'">ΔΙΔΕΣ - Παραμετροποίηση Δρομολογητών - Μεταγωγέων</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/initial_conf_mikrotik_router.pdf' %}'">ΔΙΔΕΣ - Αρχική Παραμετροποίηση Mikrotik Router</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/logout_didme.pdf' %}'">ΔΙΔΜΕ - Διαδικασία Αποσύνδεσης</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/issabel_readme.pdf' %}'">ISSABEL</button>
+    <!-- Οδηγίες (Πρώτο Accordion - Πάντα Ανοιχτό) -->
+    <div class="accordion-item">
+        <div class="accordion-header always-open" aria-expanded="true">
+            Οδηγίες <span class="accordion-icon">-</span>
         </div>
-    </fieldset>
-
-    <fieldset class="fieldset-container">
-        <legend onclick="toggleFieldset(this)">CISCO - Mikrotik (Βοηθήματα)</legend>
-        <div class="button-container" style="display:none;">
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/BGP.pdf' %}'">Cisco-Mikrotik | Πρωτόκολλο Border Gateway Μέρος 1ο</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/cheatsheet_mikrotik.pdf' %}'">Cisco-Mikrotik | Βοηθητικό Εγχειρίδιο Mikrotik</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/Cisco_IOS_Versions.pdf' %}'">Cisco-Mikrotik | Έκδοση Λογισμικού Cisco IOS</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/cisco-ios-quick-reference-cheat-sheet-2-1.pdf' %}'">Cisco-Mikrotik | Γρήγορη Αναφορά Cisco IOS</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/common_ports.pdf' %}'">Cisco-Mikrotik | Κοινές Θύρες Δικτύου</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/EIGRP.pdf' %}'">Cisco-Mikrotik | Πρωτόκολλο EIGRP</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/First_Hop_Redundancy.pdf' %}'">Cisco-Mikrotik | Πρωτόκολλο Πλεονασμού Πρώτου Άλματος</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/Frame_Mode_MPLS.pdf' %}'">Cisco-Mikrotik | Πρωτόκολλο Frame Mode MPLS</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/IEEE_802.1X.pdf' %}'">Cisco-Mikrotik | Πρότυπο IEEE 802.1X</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/IEEE_802.11_WLAN.pdf' %}'">Cisco-Mikrotik | Πρότυπο IEEE 802.11 WLAN</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/IOS_Interior_Routing_Protocols.pdf' %}'">Cisco-Mikrotik | Εσωτερικά Πρωτόκολλα Δρομολόγησης IOS</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/IOS_IPv4_Access_Lists.pdf' %}'">Cisco-Mikrotik | Λίστες Πρόσβασης IPv4 στο IOS</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/IOS_Zone-Based_Firewall.pdf' %}'">Cisco-Mikrotik | Τείχος Προστασίας Βασισμένο σε Ζώνες</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/IPsec.pdf' %}'">Cisco-Mikrotik | Πρωτόκολλο Ασφάλειας IPsec</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/IPv4_Multicast.pdf' %}'">Cisco-Mikrotik | Πολυεκπομπή IPv4</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/IPv4_Subnetting.pdf' %}'">Cisco-Mikrotik | Διαμερισματοποίηση IPv4</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/IPv6.pdf' %}'">Cisco-Mikrotik | Πρωτόκολλο IPv6</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/IS-IS.pdf' %}'">Cisco-Mikrotik | Πρωτόκολλο IS-IS</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/Markdown.pdf' %}'">Cisco-Mikrotik | Εγχειρίδιο Markdown</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/MediaWiki.pdf' %}'">Cisco-Mikrotik | Εγχειρίδιο MediaWiki</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/mikrotik_basic.pdf' %}'">Cisco-Mikrotik | Βασικό Εγχειρίδιο Mikrotik</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/NAT.pdf' %}'">Cisco-Mikrotik | Πρωτόκολλο NAT</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/OSPF.pdf' %}'">Cisco-Mikrotik | Πρωτόκολλο OSPF</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/physical_terminations.pdf' %}'">Cisco-Mikrotik | Φυσικές Τερματικές Συνδέσεις</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/PPP.pdf' %}'">Cisco-Mikrotik | Πρωτόκολλο PPP</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/QoS.pdf' %}'">Cisco-Mikrotik | Ποιότητα Υπηρεσίας (QoS)</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/RIP.pdf' %}'">Cisco-Mikrotik | Πρωτόκολλο RIP</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/rl_cheatsheet.pdf' %}'">Cisco-Mikrotik | Εγχειρίδιο Γρήγορης Αναφοράς</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/ROSv7-Filters-Cheat-Sheet-1.pdf' %}'">Cisco-Mikrotik | Φίλτρα ROSv7</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/scapy.pdf' %}'">Cisco-Mikrotik | Εγχειρίδιο Scapy</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/Spanning_Tree.pdf' %}'">Cisco-Mikrotik | Πρωτόκολλο Spanning Tree</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/tcpdump.pdf' %}'">Cisco-Mikrotik | Εγχειρίδιο tcpdump</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/theleran_cisco-ios-cli.pdf' %}'">Cisco-Mikrotik | Διεπαφή Γραμμής Εντολών Cisco IOS</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/VLANs.pdf' %}'">Cisco-Mikrotik | Εγχειρίδιο VLANs</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/VOIP_Basics.pdf' %}'">Cisco-Mikrotik | Βασικές Αρχές VOIP</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/Wireshark_Display_Filters.pdf' %}'">Cisco-Mikrotik | Φίλτρα Εμφάνισης Wireshark</button>                       
+        <div class="accordion-content">
+            <div class="button-container">
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/router_switch_config.pdf' %}'">ΔΙΔΕΣ - Παραμετροποίηση Δρομολογητών - Μεταγωγέων</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/initial_conf_mikrotik_router.pdf' %}'">ΔΙΔΕΣ - Αρχική Παραμετροποίηση Mikrotik Router</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/logout_didme.pdf' %}'">ΔΙΔΜΕ - Διαδικασία Αποσύνδεσης</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/issabel_readme.pdf' %}'">ISSABEL</button>
+            </div>
         </div>
-    </fieldset>
+    </div>
 
+    <!-- CISCO - Mikrotik (Βοηθήματα) (Δεύτερο Accordion) -->
+    <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false">
+            CISCO - Mikrotik (Βοηθήματα) <span class="accordion-icon">+</span>
+        </button>
+        <div class="accordion-content" hidden>
+            <div class="button-container">
+                <!-- Όλα τα κουμπιά όπως τα είχατε -->
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/BGP.pdf' %}'">Cisco-Mikrotik | Πρωτόκολλο Border Gateway Μέρος 1ο</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/cheatsheet_mikrotik.pdf' %}'">Cisco-Mikrotik | Βοηθητικό Εγχειρίδιο Mikrotik</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/Cisco_IOS_Versions.pdf' %}'">Cisco-Mikrotik | Έκδοση Λογισμικού Cisco IOS</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/cisco-ios-quick-reference-cheat-sheet-2-1.pdf' %}'">Cisco-Mikrotik | Γρήγορη Αναφορά Cisco IOS</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/common_ports.pdf' %}'">Cisco-Mikrotik | Κοινές Θύρες Δικτύου</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/EIGRP.pdf' %}'">Cisco-Mikrotik | Πρωτόκολλο EIGRP</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/First_Hop_Redundancy.pdf' %}'">Cisco-Mikrotik | Πρωτόκολλο Πλεονασμού Πρώτου Άλματος</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/Frame_Mode_MPLS.pdf' %}'">Cisco-Mikrotik | Πρωτόκολλο Frame Mode MPLS</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/IEEE_802.1X.pdf' %}'">Cisco-Mikrotik | Πρότυπο IEEE 802.1X</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/IEEE_802.11_WLAN.pdf' %}'">Cisco-Mikrotik | Πρότυπο IEEE 802.11 WLAN</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/IOS_Interior_Routing_Protocols.pdf' %}'">Cisco-Mikrotik | Εσωτερικά Πρωτόκολλα Δρομολόγησης IOS</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/IOS_IPv4_Access_Lists.pdf' %}'">Cisco-Mikrotik | Λίστες Πρόσβασης IPv4 στο IOS</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/IOS_Zone-Based_Firewall.pdf' %}'">Cisco-Mikrotik | Τείχος Προστασίας Βασισμένο σε Ζώνες</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/IPsec.pdf' %}'">Cisco-Mikrotik | Πρωτόκολλο Ασφάλειας IPsec</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/IPv4_Multicast.pdf' %}'">Cisco-Mikrotik | Πολυεκπομπή IPv4</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/IPv4_Subnetting.pdf' %}'">Cisco-Mikrotik | Διαμερισματοποίηση IPv4</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/IPv6.pdf' %}'">Cisco-Mikrotik | Πρωτόκολλο IPv6</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/IS-IS.pdf' %}'">Cisco-Mikrotik | Πρωτόκολλο IS-IS</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/Markdown.pdf' %}'">Cisco-Mikrotik | Εγχειρίδιο Markdown</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/MediaWiki.pdf' %}'">Cisco-Mikrotik | Εγχειρίδιο MediaWiki</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/mikrotik_basic.pdf' %}'">Cisco-Mikrotik | Βασικό Εγχειρίδιο Mikrotik</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/NAT.pdf' %}'">Cisco-Mikrotik | Πρωτόκολλο NAT</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/OSPF.pdf' %}'">Cisco-Mikrotik | Πρωτόκολλο OSPF</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/physical_terminations.pdf' %}'">Cisco-Mikrotik | Φυσικές Τερματικές Συνδέσεις</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/PPP.pdf' %}'">Cisco-Mikrotik | Πρωτόκολλο PPP</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/QoS.pdf' %}'">Cisco-Mikrotik | Ποιότητα Υπηρεσίας (QoS)</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/RIP.pdf' %}'">Cisco-Mikrotik | Πρωτόκολλο RIP</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/rl_cheatsheet.pdf' %}'">Cisco-Mikrotik | Εγχειρίδιο Γρήγορης Αναφοράς</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/ROSv7-Filters-Cheat-Sheet-1.pdf' %}'">Cisco-Mikrotik | Φίλτρα ROSv7</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/scapy.pdf' %}'">Cisco-Mikrotik | Εγχειρίδιο Scapy</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/Spanning_Tree.pdf' %}'">Cisco-Mikrotik | Πρωτόκολλο Spanning Tree</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/tcpdump.pdf' %}'">Cisco-Mikrotik | Εγχειρίδιο tcpdump</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/theleran_cisco-ios-cli.pdf' %}'">Cisco-Mikrotik | Διεπαφή Γραμμής Εντολών Cisco IOS</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/VLANs.pdf' %}'">Cisco-Mikrotik | Εγχειρίδιο VLANs</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/VOIP_Basics.pdf' %}'">Cisco-Mikrotik | Βασικές Αρχές VOIP</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/dides/Cisco_Mikrotik/Wireshark_Display_Filters.pdf' %}'">Cisco-Mikrotik | Φίλτρα Εμφάνισης Wireshark</button>                       
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
-    function toggleFieldset(legendElement) {
-        const buttonContainer = legendElement.nextElementSibling;
-        if (buttonContainer.style.display === "none") {
-            buttonContainer.style.display = "block";
-        } else {
-            buttonContainer.style.display = "none";
+    function toggleAccordion(button) {
+        const content = button.nextElementSibling;
+        const icon = button.querySelector('.accordion-icon');
+        const isExpanded = button.getAttribute('aria-expanded') === 'true';
+
+        // Κλείσιμο όλων των accordions εκτός από το πρώτο
+        document.querySelectorAll('.accordion-header').forEach(btn => {
+            if (!btn.classList.contains('always-open')) {
+                btn.setAttribute('aria-expanded', 'false');
+                btn.querySelector('.accordion-icon').textContent = '+';
+                btn.nextElementSibling.setAttribute('hidden', '');
+            }
+        });
+
+        // Άνοιγμα του επιλεγμένου accordion αν δεν ήταν ήδη ανοιχτό
+        if (!isExpanded) {
+            button.setAttribute('aria-expanded', 'true');
+            icon.textContent = '-';
+            content.removeAttribute('hidden');
         }
     }
+
+    // Προσθήκη event listeners στα accordion headers εκτός από το πρώτο
+    document.querySelectorAll('.accordion-header').forEach(button => {
+        if (!button.classList.contains('always-open')) {
+            button.addEventListener('click', () => toggleAccordion(button));
+
+            // Υποστήριξη πληκτρολογίου
+            button.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    toggleAccordion(button);
+                }
+            });
+        }
+    });
 </script>
 {% endblock %}

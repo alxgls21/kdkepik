@@ -7,7 +7,7 @@ html, body {
 }
 
 *, *::before, *::after {
-    box-sizing: inherit;
+    box-sizing: border-box;
 }
 
 body {
@@ -42,7 +42,7 @@ header {
     align-items: center;
     justify-content: center;
     position: relative;
-    z-index: 2; /* Βεβαιώνει ότι το header είναι πάνω από το video */
+    z-index: 3; /* Βεβαιώνει ότι το header είναι πάνω από το video */
 }
 
 header nav ul {
@@ -81,7 +81,7 @@ header nav ul li a:hover {
     background-color: #f9f9f9;
     width: 100%; /* Κάνει το dropdown να έχει το ίδιο πλάτος με το γονικό */
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    z-index: 3; /* Βεβαιώνει ότι το dropdown είναι πάνω από το header */
+    z-index: 4; /* Βεβαιώνει ότι το dropdown είναι πάνω από το header */
     border-radius: 5px;
     opacity: 0;
     transform: scaleY(0);
@@ -123,49 +123,13 @@ header nav ul li a:hover {
     flex: 1; /* Εξασφαλίζει ότι το περιεχόμενο καλύπτει το κενό χώρο και σπρώχνει το footer */
 }
 
-/* Στυλ για το container των κουμπιών */
-.button-container {
-    display: flex;
-    flex-direction: column; /* Ευθυγράμμιση των κουμπιών κάθετα */
-    align-items: center;
-    gap: 20px; /* Απόσταση μεταξύ των κουμπιών */
-}
-
-/* Στυλ για το κουμπί Button 86 */
-.button-86 {
-    color: white;
-    background-color: #4CAF50;
-    padding: 12px 24px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: center;
-}
-
-.button-86:hover {
-    background-color: #45a049;
-}
-
-/* Στυλ για το field container */
-.field-container {
-    border: 2px solid #4CAF50;
-    padding: 15px;
-    border-radius: 10px;
-    width: 300px;
-    display: flex;
-    flex-direction: column; /* Τοποθέτηση των στοιχείων κάθετα */
-    gap: 10px; /* Απόσταση μεταξύ των στοιχείων */
-    margin-top: 20px;
-}
-
 /* Στυλ για το footer */
 footer {
     color: #fff;
     text-align: center;
     padding: 10px 0;
     width: 100%;
-    z-index: 2; /* Βεβαιώνει ότι το footer είναι πάνω από το video */
+    z-index: 3; /* Βεβαιώνει ότι το footer είναι πάνω από το video */
     background: rgba(0, 0, 0, 0);
 }
 
@@ -174,16 +138,47 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 50px;
+    margin-top: 300px;
 }
 
 .images img {
-    width: 150px;
+    width: 200px;
     height: auto;
-    margin: 0 10px;
+    margin: 0 50px;
+    opacity: 0.4; /* Προσθέτει μόνιμο fade στις εικόνες */
+    transition: opacity 0.5s ease;
 }
 
-/* Προσθήκη box-sizing για αποφυγή overflows */
-*, *::before, *::after {
-    box-sizing: border-box;
+/* Στυλ για την πληροφορία χρήστη και το εικονίδιο αποσύνδεσης */
+.user-info-footer {
+    position: fixed;
+    bottom: 60px;
+    left: 20px;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9em;
+}
+
+.logout-icon {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+
+/* Προσαρμογές για μικρότερες οθόνες */
+@media (max-width: 768px) {
+    header nav ul {
+        flex-direction: column;
+        text-align: center;
+    }
+    header nav ul li {
+        margin-bottom: 10px;
+    }
+    .user-info-footer {
+        bottom: 80px;
+        left: 10px;
+        font-size: 0.8em;
+    }
 }

@@ -84,7 +84,6 @@ class Soldier(models.Model):
         ('ΣΤΡ(ΠΖ)', 'ΣΤΡ(ΠΖ)'),
         ('ΣΤΡ(ΠΒ)', 'ΣΤΡ(ΠΒ)'),
         ('ΣΤΡ(ΤΘ)', 'ΣΤΡ(ΤΘ)'),
-        ('ΣΤΡ(ΠΖ)', 'ΣΤΡ(ΠΖ)'),
     ]
 
     GRAMMATIKES_GNOSEIS_CHOICES = [
@@ -171,26 +170,17 @@ class Soldier(models.Model):
         verbose_name_plural = _('Οργάνωση | Στρατιώτες')
 
 class AxypKepikServiceReport(models.Model):
-    pdf = models.FileField(upload_to='pdfs/', blank=True, null=True)
-
-    def save(self, *args, **kwargs):
-        if self.pdf:
-            # Δημιουργία του νέου ονόματος αρχείου
-            report_date = datetime.now().strftime('%d-%m-%Y')
-            new_filename = f'Αναφορά_ΑΞΥΠ_της_{report_date}.pdf'
-            self.pdf.name = new_filename
-        
-        super(AxypKepikServiceReport, self).save(*args, **kwargs)
+    pdf = models.FileField(upload_to='axyp_anafora/', blank=True, null=True)
 
     def __str__(self):
         if self.pdf:
-            return f"Αναφορά ΑΞΥΠ της {datetime.now().strftime('%d-%m-%Y')}"
+            return f"Αναφορά ΑΞΥΠ: {self.pdf.name}"
         return "Αναφορά ΑΞΥΠ χωρίς ημερομηνία"
     
     class Meta:
         verbose_name = _('Αναφορά | Αναφορά Αξιωματικού Υπηρεσίας')
         verbose_name_plural = _('Αναφορές | Αναφορές Αξιωματικού Υπηρεσίας')
-    
+
 class OplitiServiceReport(models.Model):
     pdf = models.FileField(upload_to='opliti_reports/', blank=True, null=True)
 

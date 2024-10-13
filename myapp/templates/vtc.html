@@ -10,20 +10,72 @@
 {% block content %}
 <div class="video-background">
     <video autoplay muted loop>
-        <source src="{% static 'img/index_back.webm' %}" type="video/webm">
+        <source src="{% static 'img/back_kepik.webm' %}" type="video/webm">
+        Your browser does not support the video tag.
     </video>
 </div>
 <div class="main-content">
     <h1>VOSIP Οδηγίες και Εφαρμογές</h1>
-    <div class="button-container">
-        <button class="button-86" role="button" onclick="location.href='{% static 'docs/iview_CA_certificate.pdf' %}'">Εγκατάσταση Πιστοποιητικού iView CA</button>
-        <button class="button-86" role="button" onclick="location.href='{% static 'docs/install_tech_instructions.pdf' %}'">Τεχνικές Οδηγίες Εγκατάστασης</button>
 
-        <fieldset class="fieldset-container">
-            <legend>Εφαρμογές (WinRAR αρχεία)</legend>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/extension_1_2_0_8.rar' %}'">Extension_1_2_0_8</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/iviewCA.rar' %}'">iviewCA</button>
-        </fieldset>
+    <!-- Οδηγίες -->
+    <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false">
+            Οδηγίες <span class="accordion-icon">+</span>
+        </button>
+        <div class="accordion-content" hidden>
+            <div class="button-container">
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/iview_CA_certificate.pdf' %}'">Εγκατάσταση Πιστοποιητικού iView CA</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/install_tech_instructions.pdf' %}'">Τεχνικές Οδηγίες Εγκατάστασης</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Εφαρμογές -->
+    <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false">
+            Εφαρμογές (WinRAR αρχεία) <span class="accordion-icon">+</span>
+        </button>
+        <div class="accordion-content" hidden>
+            <div class="button-container">
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/extension_1_2_0_8.rar' %}'">Extension_1_2_0_8</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/iviewCA.rar' %}'">iviewCA</button>
+            </div>
+        </div>
     </div>
 </div>
+
+<script>
+    function toggleAccordion(button) {
+        const content = button.nextElementSibling;
+        const icon = button.querySelector('.accordion-icon');
+        const isExpanded = button.getAttribute('aria-expanded') === 'true';
+
+        // Κλείσιμο όλων των accordions
+        document.querySelectorAll('.accordion-header').forEach(btn => {
+            btn.setAttribute('aria-expanded', 'false');
+            btn.querySelector('.accordion-icon').textContent = '+';
+            btn.nextElementSibling.setAttribute('hidden', '');
+        });
+
+        // Άνοιγμα του επιλεγμένου accordion αν δεν ήταν ήδη ανοιχτό
+        if (!isExpanded) {
+            button.setAttribute('aria-expanded', 'true');
+            icon.textContent = '-';
+            content.removeAttribute('hidden');
+        }
+    }
+
+    // Προσθήκη event listeners στα accordion headers
+    document.querySelectorAll('.accordion-header').forEach(button => {
+        button.addEventListener('click', () => toggleAccordion(button));
+
+        // Υποστήριξη πληκτρολογίου
+        button.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                toggleAccordion(button);
+            }
+        });
+    });
+</script>
 {% endblock %}

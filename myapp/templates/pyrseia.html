@@ -10,19 +10,24 @@
 {% block content %}
 <div class="video-background">
     <video autoplay muted loop>
-        <source src="{% static 'img/index_back.webm' %}" type="video/webm">
+        <source src="{% static 'img/back_kepik.webm' %}" type="video/webm">
     </video>
 </div>
 <div class="main-content">
     <h1>ΠΥΡΣΕΙΑ ΟΔΗΓΙΕΣ</h1>
 
-    <fieldset class="fieldset-container">
-        <legend>Οδηγίες</legend>
-        <div class="button-container">
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/pyrseia_instr.pdf' %}'">ΠΥΡΣΕΙΑ - Οδηγίες Διαχειριστή</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/pyrseia_instr_2.pdf' %}'">ΠΥΡΣΕΙΑ - Οδηγίες Διαχειριστή 2</button>
-            <button class="button-86" role="button" onclick="location.href='{% static 'docs/pyrseia_aksyp.pdf' %}'">ΠΥΡΣΕΙΑ - Οδηγίες ΑΞΥΠ</button>
+    <!-- Οδηγίες (Accordion - Πάντα Ανοιχτό) -->
+    <div class="accordion-item">
+        <div class="accordion-header always-open" aria-expanded="true">
+            Οδηγίες <span class="accordion-icon">-</span>
         </div>
-    </fieldset>
+        <div class="accordion-content">
+            <div class="button-container">
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/pyrseia_instr.pdf' %}'">ΠΥΡΣΕΙΑ - Οδηγίες Διαχειριστή</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/pyrseia_instr_2.pdf' %}'">ΠΥΡΣΕΙΑ - Οδηγίες Διαχειριστή 2</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/pyrseia_aksyp.pdf' %}'">ΠΥΡΣΕΙΑ - Οδηγίες ΑΞΥΠ</button>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
