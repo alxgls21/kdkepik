@@ -92,16 +92,13 @@ class KlistoTilefonikoAdmin(admin.ModelAdmin):
     list_display = ('category', 'stoixeia', 'number')
     search_fields = ('stoixeia', 'category')
     
-
 class VOSIPTelephoneDirectoryAdmin(admin.ModelAdmin):
     list_display = ('epiteleio_sximatismos', 'xristis', 'arithmos_vosip', 'paratiriseis')
     search_fields = ('epiteleio_sximatismos', 'xristis', 'arithmos_vosip')
     
-
 class HARPDirectoryAdmin(admin.ModelAdmin):
     list_display = ['epiteleio_sximatismos', 'aa_ana_sximatismo', 'antapokritis', 'arithmos_sip', 'syskeyi']
     search_fields = ['epiteleio_sximatismos', 'antapokritis', 'arithmos_sip']
-
 
 admin.site.register(DidesCategory, DidesCategoryAdmin)
 admin.site.register(HarpCategory, HarpCategoryAdmin)

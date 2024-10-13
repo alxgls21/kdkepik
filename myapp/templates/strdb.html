@@ -1,0 +1,474 @@
+<!-- myapp/templates/strdb.html -->
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <title>Διαχείριση Υπηρεσιών Στρατιωτών</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"/>
+    <!-- DataTables Buttons CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css"/>
+    <style>
+        /* Κλάσεις για τα διαφορετικά είδη υπηρεσιών */
+        .status-ΤΗΠ { background-color: #d4edda; } /* Πράσινο */
+        .status-ΤΦ { background-color: #f8d7da; } /* Κόκκινο */
+        .status-Θ { background-color: #fff3cd; } /* Κίτρινο */
+        .status-ΟΥ { background-color: #d1ecf1; } /* Γαλάζιο */
+        .status-ΕΝ { background-color: #e2e3e5; } /* Γκρι */
+        /* Νέα κλάση για νέα υπηρεσία */
+        .status-ΝΕΟΣ_ΤΥΠΟΣ { background-color: #cce5ff; } /* Μπλε */
+        /* Πρόσθεσε άλλες κλάσεις χρωμάτων αν χρειάζεται */
+        table.dataTable tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+        /* Στυλ για επιλεγμένα κελιά */
+        td.selected {
+            background-color: #cce5ff !important;
+        }
+        /* Βελτίωση διάταξης πίνακα */
+        #strdbTable_wrapper {
+            overflow-x: auto;
+        }
+        /* Στυλ για καλύτερη εμφάνιση */
+        th, td {
+            white-space: nowrap;
+            text-align: center;
+        }
+        /* Στυλ για επεξεργάσιμα κελιά όταν έχουν focus */
+        td.service-cell:focus {
+            outline: 2px solid #007BFF;
+            background-color: #e9f5ff;
+        }
+        /* Στυλ για τις στήλες συνολικών υπηρεσιών */
+        td.total-month, td.total-weekend {
+            font-weight: bold;
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Διαχείριση Υπηρεσιών Στρατιωτών</h2>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="monthSelect">Επιλογή Μήνα:</label>
+                <select class="form-control" id="monthSelect">
+                    <!-- Προσθήκη μηνών -->
+                    <option value="1">Ιανουάριος</option>
+                    <option value="2">Φεβρουάριος</option>
+                    <option value="3">Μάρτιος</option>
+                    <option value="4">Απρίλιος</option>
+                    <option value="5">Μάιος</option>
+                    <option value="6">Ιούνιος</option>
+                    <option value="7">Ιούλιος</option>
+                    <option value="8">Αύγουστος</option>
+                    <option value="9">Σεπτέμβριος</option>
+                    <option value="10">Οκτώβριος</option>
+                    <option value="11">Νοέμβριος</option>
+                    <option value="12">Δεκέμβριος</option>
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="yearSelect">Επιλογή Έτους:</label>
+                <select class="form-control" id="yearSelect">
+                    <!-- Προσθήκη ετών από 2020 έως 2030 -->
+                    {% for year in years %}
+                        <option value="{{ year }}" {% if year == current_year %}selected{% endif %}>{{ year }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="mb-3">
+            <button id="exportCsv" class="btn btn-secondary">Εξαγωγή CSV</button>
+        </div>
+        <table id="strdbTable" class="display table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>ΣΤΟΙΧΕΙΑ ΣΤΡΑΤΙΩΤΩΝ</th>
+                    <!-- Τα headers για τις ημέρες θα προστεθούν δυναμικά -->
+                    <th>ΣΥΝΟΛΟ ΜΗΝΑ</th>
+                    <th>ΣΥΝΟΛΟ ΣΚ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Τα δεδομένα θα προστεθούν δυναμικά -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <!-- DataTables Buttons JS -->
+    <script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.colVis.min.js"></script>
+    <!-- SheetJS for Excel export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- jsPDF for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- jsPDF AutoTable plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            let selectedMonth = $('#monthSelect').val();
+            let selectedYear = $('#yearSelect').val();
+            let table;
+            let numDays = 31; // Αρχική τιμή, θα ενημερωθεί από το backend
+
+            // Undo/Redo stacks
+            let undoStack = [];
+            let redoStack = [];
+
+            let isMouseDown = false;
+            let lastSelected = null;
+
+            // Κλάσεις και χρώματα για τους τύπους υπηρεσιών
+            const serviceTypes = {
+                'ΤΗΠ': 'status-ΤΗΠ',
+                'ΤΦ': 'status-ΤΦ',
+                'Θ': 'status-Θ',
+                'ΟΥ': 'status-ΟΥ',
+                'ΕΝ': 'status-ΕΝ',
+                // Προσθέστε εδώ νέους τύπους υπηρεσιών
+                // 'ΝΕΟΣ_ΤΥΠΟΣ': 'status-ΝΕΟΣ_ΤΥΠΟΣ',
+            };
+
+            const nonServiceTypes = [
+                'ΕΞ',
+                'ΥΠ/ΕΞ',
+                'ΤΙΜ',
+                'ΑΓΡ',
+                'ΚΑ',
+                'ΑΝΑΡ',
+                'ΕΥ',
+                'ΥΠ',
+                'ΟΡΚ',
+                // Προσθέστε εδώ νέες μη υπηρεσίες
+            ];
+
+            // Συνάρτηση για καθαρισμό της επιλογής
+            function clearSelection() {
+                $('td.service-cell').removeClass('selected');
+            }
+
+            // Συνάρτηση για υπολογισμό των Σαββατοκύριακων σε ένα μήνα
+            function calculateWeekends(month, year) {
+                let date = new Date(year, month - 1, 1);
+                let weekends = 0;
+                while (date.getMonth() === month - 1) {
+                    let day = date.getDay();
+                    if (day === 6 || day === 0) { // Σάββατο=6, Κυριακή=0
+                        weekends++;
+                    }
+                    date.setDate(date.getDate() + 1);
+                }
+                return weekends;
+            }
+
+            // Συνάρτηση για λήψη των δεδομένων του πίνακα
+            function fetchTableData(month, year) {
+                $.ajax({
+                    url: "{% url 'get_table_data' %}",
+                    type: "GET",
+                    data: { month: month, year: year },
+                    success: function(response) {
+                        numDays = response.days;
+                        populateTable(response.data, numDays, month, year);
+                    },
+                    error: function(xhr, status, error) {
+                        alert("Σφάλμα κατά την φόρτωση των δεδομένων.");
+                    }
+                });
+            }
+
+            // Συνάρτηση για δημιουργία και ενημέρωση του πίνακα
+            function populateTable(data, numDays, month, year) {
+                if ($.fn.DataTable.isDataTable('#strdbTable')) {
+                    table.destroy();
+                    $('#strdbTable thead tr').find('th:not(:first, :last, :nth-last-child(2))').remove(); // Καθαρισμός headers εκτός από τις πρώτες και τελευταίες δύο
+                    $('#strdbTable tbody').empty();
+                }
+
+                // Προσθήκη headers για τις ημέρες με όνομα ημέρας
+                for (let i = 1; i <= numDays; i++) {
+                    let date = new Date(year, month - 1, i);
+                    let dayName = date.toLocaleDateString('el-GR', { weekday: 'short' }); // Σύντομο όνομα ημέρας
+                    // Προσθήκη στη σωστή θέση (πριν τις στήλες συνολικών)
+                    $('#strdbTable thead tr').find('th').last().before(`<th>${i} (${dayName})</th>`);
+                }
+
+                // Υπολογισμός των Σαββατοκύριακων του μήνα
+                let totalWeekends = calculateWeekends(month, year);
+
+                // Προσθήκη δεδομένων
+                data.forEach(function(row) {
+                    let tableRow = '<tr>';
+                    tableRow += `<td>${row.details}</td>`;
+                    let serviceCount = 0;
+                    for (let i = 1; i <= numDays; i++) {
+                        let service = row.services[i] || '';
+                        let statusClass = serviceTypes[service] || '';
+                        if (serviceTypes.hasOwnProperty(service)) {
+                            serviceCount++;
+                        }
+                        tableRow += `<td contenteditable="true" class="service-cell ${statusClass}" data-soldier-id="${row.id}" data-day="${i}">${service}</td>`;
+                    }
+                    tableRow += `<td class="total-month" data-soldier-id="${row.id}">${serviceCount}</td>`;
+                    tableRow += `<td class="total-weekend">${totalWeekends}</td>`;
+                    tableRow += '</tr>';
+                    $('#strdbTable tbody').append(tableRow);
+                });
+
+                // Επαναφορά του DataTable με Buttons για Column Visibility
+                table = $('#strdbTable').DataTable({
+                    paging: false,
+                    searching: false,
+                    info: false,
+                    scrollX: true,
+                    dom: 'Bfrtip', // Ενεργοποίηση των Buttons στο DOM
+                    buttons: [
+                        'colvis' // Προσθήκη κουμπιού για απόκρυψη/εμφάνιση στηλών
+                    ]
+                });
+
+                // Event listeners για επιλογή πολλαπλών κελιών με κλικ και σύρεμα
+                $('#strdbTable').on('mousedown', 'td.service-cell', function(e) {
+                    clearSelection();
+                    $(this).addClass('selected');
+                    isMouseDown = true;
+                    lastSelected = this;
+                });
+
+                $('#strdbTable').on('mouseover', 'td.service-cell', function(e) {
+                    if (isMouseDown) {
+                        let allCells = $('td.service-cell');
+                        let start = allCells.index($('td.service-cell.selected').first());
+                        let end = allCells.index(this);
+                        let [min, max] = start < end ? [start, end] : [end, start];
+                        clearSelection();
+                        allCells.slice(min, max + 1).addClass('selected');
+                    }
+                });
+
+                $(document).on('mouseup', function(e) {
+                    isMouseDown = false;
+                });
+
+                // Επιλογή με Shift+Click
+                $('#strdbTable').on('click', 'td.service-cell', function(e) {
+                    if (e.shiftKey && lastSelected) {
+                        let allCells = $('td.service-cell');
+                        let start = allCells.index(lastSelected);
+                        let end = allCells.index(this);
+                        let [min, max] = start < end ? [start, end] : [end, start];
+                        clearSelection();
+                        allCells.slice(min, max + 1).addClass('selected');
+                    } else {
+                        if (!e.ctrlKey && !e.metaKey) {
+                            clearSelection();
+                        }
+                        $(this).toggleClass('selected');
+                        lastSelected = this;
+                    }
+                });
+            }
+
+            // Συνάρτηση για αποθήκευση μιας αλλαγής σε ένα κελί
+            function saveCellChange(soldierId, day, serviceType, previousValue) {
+                // Push στην undoStack
+                undoStack.push({
+                    soldierId: soldierId,
+                    day: day,
+                    previousValue: previousValue,
+                    newValue: serviceType
+                });
+                // Καθαρισμός redoStack
+                redoStack = [];
+
+                $.ajax({
+                    url: "{% url 'save_daily_service' %}",
+                    type: "POST",
+                    data: JSON.stringify({
+                        soldier_id: soldierId,
+                        day: day,
+                        service_type: serviceType,
+                        month: selectedMonth,
+                        year: selectedYear
+                    }),
+                    headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+                    contentType: "application/json",
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            // Εφαρμογή χρώματος βάσει τύπου υπηρεσίας
+                            let cell = $(`td[data-soldier-id="${soldierId}"][data-day="${day}"]`);
+                            // Αφαίρεση όλων των πιθανών κλάσεων
+                            Object.values(serviceTypes).forEach(cls => cell.removeClass(cls));
+                            // Προσθήκη της νέας κλάσης
+                            if (serviceTypes.hasOwnProperty(serviceType)) {
+                                cell.addClass(serviceTypes[serviceType]);
+                            }
+
+                            // Ενημέρωση του συνολικού αριθμού υπηρεσιών
+                            updateTotalMonth(soldierId);
+                        } else {
+                            alert("Σφάλμα κατά την αποθήκευση των δεδομένων: " + response.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert("Σφάλμα κατά την αποθήκευση των δεδομένων.");
+                    }
+                });
+            }
+
+            // Συνάρτηση για ενημέρωση του συνολικού αριθμού υπηρεσιών ενός στρατιώτη
+            function updateTotalMonth(soldierId) {
+                let count = 0;
+                $(`td[data-soldier-id="${soldierId}"][data-day]`).each(function() {
+                    let service = $(this).text().trim();
+                    if (serviceTypes.hasOwnProperty(service)) {
+                        count++;
+                    }
+                });
+                $(`td.total-month[data-soldier-id="${soldierId}"]`).text(count);
+            }
+
+            // Αυτόματη αποθήκευση δεδομένων όταν χάνει το focus ένα κελί
+            $('#strdbTable').on('blur', '.service-cell', function() {
+                let soldierId = $(this).data('soldier-id');
+                let day = $(this).data('day');
+                let serviceType = $(this).text().trim();
+                let month = selectedMonth;
+                let year = selectedYear;
+
+                // Αντιστοίχιση του προηγούμενου τιμής για Undo
+                let previousValue = $(this).data('previous') || '';
+
+                // Επαλήθευση τύπου υπηρεσίας
+                if (serviceType && !serviceTypes.hasOwnProperty(serviceType)) {
+                    if (!nonServiceTypes.includes(serviceType)) {
+                        alert(`Άκυρος τύπος υπηρεσίας: ${serviceType}`);
+                        serviceType = '';
+                        $(this).text(''); // Καθαρισμός αν δεν είναι έγκυρος
+                    }
+                }
+
+                // Ενημέρωση του προηγούμενου τιμής
+                $(this).data('previous', serviceType);
+
+                // Αποθήκευση μέσω AJAX
+                saveCellChange(soldierId, day, serviceType, previousValue);
+            });
+
+            // Συνάρτηση για Undo
+            function undo() {
+                if (undoStack.length === 0) return;
+                let lastAction = undoStack.pop();
+                redoStack.push(lastAction);
+
+                let cell = $(`td[data-soldier-id="${lastAction.soldierId}"][data-day="${lastAction.day}"]`);
+                cell.text(lastAction.previousValue);
+                cell.blur(); // Trigger blur event για αποθήκευση
+            }
+
+            // Συνάρτηση για Redo
+            function redo() {
+                if (redoStack.length === 0) return;
+                let lastAction = redoStack.pop();
+                undoStack.push(lastAction);
+
+                let cell = $(`td[data-soldier-id="${lastAction.soldierId}"][data-day="${lastAction.day}"]`);
+                cell.text(lastAction.newValue);
+                cell.blur(); // Trigger blur event για αποθήκευση
+            }
+
+            // Συνάρτηση για διαγραφή επιλεγμένων κελιών
+            function deleteSelectedCells() {
+                let selectedCells = $('td.selected');
+                if (selectedCells.length === 0) {
+                    return;
+                }
+
+                selectedCells.each(function() {
+                    let soldierId = $(this).data('soldier-id');
+                    let day = $(this).data('day');
+                    let previousValue = $(this).text().trim();
+                    let serviceType = ''; // Θέλουμε να καθαρίσουμε το κελί
+
+                    $(this).text('');
+                    $(this).data('previous', serviceType); // Ενημέρωση προηγούμενης τιμής
+
+                    saveCellChange(soldierId, day, serviceType, previousValue);
+                });
+
+                clearSelection();
+            }
+
+            // Event listener για το πλήκτρο "Del"
+            $(document).keydown(function(e) {
+                if (e.key === 'Delete') {
+                    e.preventDefault(); // Αποφυγή προεπιλεγμένης συμπεριφοράς
+                    deleteSelectedCells();
+                }
+            });
+
+            // Event listeners για Undo (Ctrl+Z) και Redo (Ctrl+Y)
+            $(document).keydown(function(e) {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
+                    e.preventDefault();
+                    undo();
+                }
+                if ((e.ctrlKey || e.metaKey) && e.key === 'y') {
+                    e.preventDefault();
+                    redo();
+                }
+            });
+
+            // Εξαγωγή CSV
+            $('#exportCsv').click(function() {
+                let csv = '\uFEFF'; // Προσθήκη BOM για σωστή κωδικοποίηση των ελληνικών χαρακτήρων
+                $('#strdbTable tr').each(function() {
+                    let row = [];
+                    $(this).find('th, td').each(function() {
+                        // Αντικατάσταση διπλών εισαγωγικών με διπλά διπλά εισαγωγικά
+                        let cellText = $(this).text().replace(/"/g, '""');
+                        row.push('"' + cellText + '"');
+                    });
+                    csv += row.join(",") + "\n";
+                });
+
+                let blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                let link = document.createElement("a");
+                if (link.download !== undefined) {
+                    let url = URL.createObjectURL(blob);
+                    link.setAttribute("href", url);
+                    link.setAttribute("download", "strdb.csv");
+                    link.style.visibility = 'hidden';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+            });
+
+            // Φόρτωση αρχικών δεδομένων
+            fetchTableData(selectedMonth, selectedYear);
+
+            // Αλλαγή μήνα ή έτους
+            $('#monthSelect, #yearSelect').change(function() {
+                selectedMonth = $('#monthSelect').val();
+                selectedYear = $('#yearSelect').val();
+                fetchTableData(selectedMonth, selectedYear);
+                // Καθαρισμός Undo/Redo stacks
+                undoStack = [];
+                redoStack = [];
+            });
+        });
+    </script>
+</body>
+</html>

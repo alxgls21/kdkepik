@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.db.models import Sum
 from django.template.loader import render_to_string
-from .models import DidesCategory, HarpCategory, AdmeCategory, OfficerServiceReport, Soldier, AxypKepikServiceReport, OplitiServiceReport, ServiceReportSummary, AxypCodesCategory 
+from .models import DidesCategory, HarpCategory, AdmeCategory, OfficerServiceReport, Soldier, AxypKepikServiceReport, OplitiServiceReport, ServiceReportSummary, AxypCodesCategory, DailyService
 from django.core.files.base import ContentFile
 from django.http import HttpResponse, JsonResponse
 from io import BytesIO
@@ -15,6 +15,10 @@ import platform
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout  # Προσθέστε αυτήν την εισαγωγή στην αρχή του αρχείου
+import json
+from django.views.decorators.csrf import csrf_exempt
+from django.db import transaction
+import calendar
 
 def logout_view(request):
     logout(request)
@@ -1045,3 +1049,84 @@ def test_adeioxarta_view(request):
     # Σε περίπτωση GET, επιστρέφουμε το adeioxarta.html
     soldiers = Soldier.objects.all().order_by('eponymo')
     return render(request, 'adeioxarta.html', {'soldiers': soldiers})
+
+@login_required
+def strdb_view(request):
+    current_year = datetime.now().year
+    years = list(range(2020, current_year + 6))  # Από το 2020 έως το τρέχον +5 έτη
+    context = {
+        'years': years,
+        'current_year': current_year
+    }
+    return render(request, 'strdb.html', context)
+
+@login_required
+def get_table_data(request):
+    month = request.GET.get('month')
+    year = request.GET.get('year')
+    if not month or not year:
+        return JsonResponse({'data': [], 'days': 0})
+    
+    try:
+        month = int(month)
+        year = int(year)
+    except ValueError:
+        return JsonResponse({'data': [], 'days': 0})
+    
+    # Χρήση του calendar.monthrange για υπολογισμό αριθμού ημερών
+    num_days = calendar.monthrange(year, month)[1]
+    days = [datetime(year, month, day) for day in range(1, num_days + 1)]
+    
+    soldiers = Soldier.objects.all().order_by('vathmos', 'eponymo', 'onoma')
+    daily_services = DailyService.objects.filter(
+        date__year=year,
+        date__month=month
+    ).select_related('soldier')
+    
+    data = []
+    for soldier in soldiers:
+        soldier_data = {
+            'id': soldier.id,
+            'details': f"{soldier.vathmos} {soldier.eponymo} {soldier.onoma}",
+            'services': {}
+        }
+        for day in days:
+            service = daily_services.filter(soldier=soldier, date=day).first()
+            soldier_data['services'][day.day] = service.service_type if service else ''
+        data.append(soldier_data)
+    
+    return JsonResponse({'data': data, 'days': num_days})
+
+@csrf_exempt
+@login_required
+def save_daily_service(request):
+    if request.method == 'POST':
+        try:
+            body = json.loads(request.body)
+            print("Received data:", body)  # Προσθήκη logging
+
+            soldier_id = body.get('soldier_id')
+            day = body.get('day')
+            service_type = body.get('service_type')
+            month = body.get('month')
+            year = body.get('year')  # Προσθήκη έτους
+            
+            if not all([soldier_id, day, month, year]):
+                raise ValueError("Missing required fields")
+            
+            date = datetime(int(year), int(month), int(day))
+            
+            soldier = Soldier.objects.get(id=soldier_id)
+            daily_service, created = DailyService.objects.get_or_create(
+                soldier=soldier,
+                date=date
+            )
+            daily_service.service_type = service_type
+            daily_service.save()
+            
+            print("Service saved successfully")  # Προσθήκη logging
+            return JsonResponse({'status': 'success'})
+        except Exception as e:
+            print("Error:", e)  # Προσθήκη logging σφάλματος
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+    return JsonResponse({'status': 'invalid method'}, status=400)

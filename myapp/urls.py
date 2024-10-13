@@ -33,5 +33,9 @@ urlpatterns = [
     path('yphresiaka/', views.yphresiaka_view, name='yphresiaka'),
     path('test-yphresiaka/', views.test_yphresiaka_view, name='test_yphresiaka'),
     path('adeioxarta/', views.adeioxarta_view, name='adeioxarta'),
-    path('test_adeioxarta/', views.adeioxarta_view, name='test_adeioxarta'),
+    path('test_adeioxarta/', views.test_adeioxarta_view, name='test_adeioxarta'),
+
+    path('strdb/', views.strdb_view, name='strdb'),
+    path('api/get_table_data/', views.get_table_data, name='get_table_data'),
+    path('api/save_daily_service/', views.save_daily_service, name='save_daily_service'),
 ]

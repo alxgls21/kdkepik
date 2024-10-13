@@ -404,3 +404,24 @@ class HARPDirectory(models.Model):
     class Meta:
         verbose_name = 'Κατάλογος | HARP'
         verbose_name_plural = 'Κατάλογος | HARP'
+
+class DailyService(models.Model):
+    SERVICE_TYPES = [
+        ('ΕΞ', 'ΕΞ'),          # Έξοδος
+        ('ΤΗΠ', 'ΤΗΠ'),        # Τηλεπικοινωνίες
+        ('ΑΔΕΙΑ', 'ΑΔΕΙΑ'),    # Άδεια
+        ('ΑΝΤΑΠΟΚΡΙΣΗ', 'ΑΝΤΑΠΟΚΡΙΣΗ'),  # Ανταπόκριση
+        # Πρόσθεσε άλλους τύπους υπηρεσιών αν χρειάζεται
+    ]
+
+    soldier = models.ForeignKey(Soldier, on_delete=models.CASCADE)
+    date = models.DateField()
+    service_type = models.CharField(max_length=20, choices=SERVICE_TYPES, blank=True, null=True)
+
+    class Meta:
+        unique_together = ('soldier', 'date')
+        verbose_name = _('Ημερήσια Υπηρεσία')
+        verbose_name_plural = _('Ημερήσιες Υπηρεσίες')
+
+    def __str__(self):
+        return f"{self.soldier} - {self.date}: {self.get_service_type_display()}"
