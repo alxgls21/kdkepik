@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}ΑΔΜΕ Οδηγίες{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/adme.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="video-background">
+    <video autoplay muted loop>
+        <source src="{% static 'img/back_kepik.webm' %}" type="video/webm">
+        Your browser does not support the video tag.
+    </video>
+</div>
+<div class="main-content">
+    <h1>ΑΔΜΕ Οδηγίες</h1>
+
+    <!-- Οδηγίες -->
+    <div class="accordion-item">
+        <!-- Ανοιχτό Accordion: aria-expanded="true" και εικονίδιο "-" -->
+        <button class="accordion-header" aria-expanded="true">
+            Οδηγίες <span class="accordion-icon">-</span>
+        </button>
+        <!-- Περιεχόμενο πάντα ορατό: Αφαιρέθηκε το "hidden" -->
+        <div class="accordion-content">
+            <div class="button-container">
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/adme_neos_komvos.pdf' %}'">Δημιουργία Νέου Κόμβου ΑΔΜΕ</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/adme_aposyndesi.pdf' %}'">Διαδικασία Αποσύνδεσης ΑΔΜΕ</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

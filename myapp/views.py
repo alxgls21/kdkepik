@@ -1130,3 +1130,9 @@ def save_daily_service(request):
             print("Error:", e)  # Προσθήκη logging σφάλματος
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
     return JsonResponse({'status': 'invalid method'}, status=400)
+
+def adme_view(request):
+    return render(request, 'adme.html')
+
+def harp_view(request):
+    return render(request, 'harp.html')
