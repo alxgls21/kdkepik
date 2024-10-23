@@ -14,7 +14,20 @@
     </video>
 </div>
 <div class="main-content">
-    <h1>Οδηγίες Επικοινωνιακών Συστημάτων</h1>
+    <h1>Οδηγίες Επικοινωνιακών Συστημάτων και Λοιπές Οδηγίες</h1>
+
+    <!-- ΟΡΓΑΝΩΣΗ Accordion -->
+    <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false">
+            Οργάνωση ΚΕΠΙΚ και Έντυπα Σημάτων <span class="accordion-icon">+</span>
+        </button>
+        <div class="accordion-content" hidden>
+            <div class="button-container">
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/kepik_organosi.pdf' %}'">Οργάνωση Κέντρου Επικοινωνιών (ΚΕΠΙΚ)</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/katagrafes_readme.pdf' %}'">Έντυπο Ημερήσιων Καταγραφών (προς εκτύπωση)</button>
+            </div>
+        </div>
+    </div>
 
     <!-- CRONOS Accordion -->
     <div class="accordion-item">
@@ -54,6 +67,19 @@
         <div class="accordion-content" hidden>
             <div class="button-container">
                 <button class="button-80" role="button" onclick="location.href='{% static 'docs/sda_pyrseia_readme.pdf' %}'">Οδηγίες ΣΔΑ - ΠΥΡΣΕΙΑ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ΚΛΕΙΔΕΣ Accordion -->
+    <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false">
+            Οδηγίες Αλλαγής Κλειδών <span class="accordion-icon">+</span>
+        </button>
+        <div class="accordion-content" hidden>
+            <div class="button-container">
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/CF_109_SECLINE_MED_PLUS_STU_IIB_KJ_84.pdf' %}'">Αλλαγή Κλείδας CF-109, SECLINE MED-PLUS,STU IIB,KJ-84</button>
+                <button class="button-80" role="button" onclick="location.href='{% static 'docs/STU_IIB.pdf' %}'">Αλλαγή Κλείδας STU IIB</button>
             </div>
         </div>
     </div>
