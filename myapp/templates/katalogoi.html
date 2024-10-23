@@ -22,7 +22,10 @@
             Τηλεφωνικός Κατάλογος HARP <span class="accordion-icon">+</span>
         </button>
         <div class="accordion-content" hidden>
-            <table>
+            <!-- Πεδίο Αναζήτησης -->
+            <input type="search" placeholder="Αναζήτηση..." class="table-search" data-table-id="harp-table">
+
+            <table id="harp-table">
                 <thead>
                     <tr>
                         <th>Επιτελείο - Σχηματισμός</th>
@@ -53,7 +56,10 @@
             Τηλεφωνικός Κατάλογος VoSIP <span class="accordion-icon">+</span>
         </button>
         <div class="accordion-content" hidden>
-            <table>
+            <!-- Πεδίο Αναζήτησης -->
+            <input type="search" placeholder="Αναζήτηση..." class="table-search" data-table-id="vosip-table">
+
+            <table id="vosip-table">
                 <thead>
                     <tr>
                         <th>Επιτελείο - Σχηματισμός</th>
@@ -82,7 +88,10 @@
             Κλειστό Τηλεφωνικό <span class="accordion-icon">+</span>
         </button>
         <div class="accordion-content" hidden>
-            <table>
+            <!-- Πεδίο Αναζήτησης -->
+            <input type="search" placeholder="Αναζήτηση..." class="table-search" data-table-id="klisto-table">
+
+            <table id="klisto-table">
                 <thead>
                     <tr>
                         <th>Κατηγορία</th>
@@ -96,6 +105,160 @@
                         <td>{{ entry.category }}</td>
                         <td>{{ entry.stoixeia }}</td>
                         <td>{{ entry.number }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Κατάλογος ΣΑΖΜ - ΕΡΜΗΣ -->
+    <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false">
+            Τηλεφωνικός Κατάλογος ΣΑΖΜ - ΕΡΜΗΣ <span class="accordion-icon">+</span>
+        </button>
+        <div class="accordion-content" hidden>
+            <!-- Πεδίο Αναζήτησης -->
+            <input type="search" placeholder="Αναζήτηση..." class="table-search" data-table-id="ermis-table">
+
+            <table id="ermis-table">
+                <thead>
+                    <tr>
+                        <th>Επιτελείο - Σχηματισμός</th>
+                        <th>Κατηγορία</th>
+                        <th>Ανταποκριτής</th>
+                        <th>Αριθμός Κλήσεως</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in ermis_entries %}
+                    <tr>
+                        <td>{{ entry.epiteleio_sximatismos }}</td>
+                        <td>{{ entry.katigoria }}</td>
+                        <td>{{ entry.antapokritis }}</td>
+                        <td>{{ entry.arithmos_call }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Κατάλογος FCT -->
+    <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false">
+            Τηλεφωνικός Κατάλογος FCT <span class="accordion-icon">+</span>
+        </button>
+        <div class="accordion-content" hidden>
+            <!-- Πεδίο Αναζήτησης -->
+            <input type="search" placeholder="Αναζήτηση..." class="table-search" data-table-id="fct-table">
+
+            <table id="fct-table">
+                <thead>
+                    <tr>
+                        <th>Τηλεφωνικό Κέντρο</th>
+                        <th>Αριθμός</th>
+                        <th>VPN</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in fct_entries %}
+                    <tr>
+                        <td>{{ entry.fct_call_center }}</td>
+                        <td>{{ entry.arithmos_fct }}</td>
+                        <td>{{ entry.vpn_fct }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Υπασπιστήρια Ιεραρχίας -->
+    <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false">
+            Υπασπιστήρια Ιεραρχίας <span class="accordion-icon">+</span>
+        </button>
+        <div class="accordion-content" hidden>
+            <!-- Πεδίο Αναζήτησης -->
+            <input type="search" placeholder="Αναζήτηση..." class="table-search" data-table-id="ypasp-table">
+
+            <table id="ypasp-table">
+                <thead>
+                    <tr>
+                        <th>Ανταποκριτής</th>
+                        <th>Αριθμός</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in ypasp_entries %}
+                    <tr>
+                        <td>{{ entry.antapokritis }}</td>
+                        <td>{{ entry.arithmos_ypasp }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Κατάλογος Secline Plus-STU II -->
+    <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false">
+            Κατάλογος Secline Plus-STU II <span class="accordion-icon">+</span>
+        </button>
+        <div class="accordion-content" hidden>
+            <!-- Πεδίο Αναζήτησης -->
+            <input type="search" placeholder="Αναζήτηση..." class="table-search" data-table-id="secline-table">
+
+            <table id="secline-table">
+                <thead>
+                    <tr>
+                        <th>Ανταποκριτής</th>
+                        <th>Αριθμός ΟΤΕ</th>
+                        <th>Αριθμός ΕΨΑΔ</th>
+                        <th>Παρατηρήσεις</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in secline_entries %}
+                    <tr>
+                        <td>{{ entry.antapokritis }}</td>
+                        <td>{{ entry.arithmos_ote }}</td>
+                        <td>{{ entry.arithmos_epsad }}</td>
+                        <td>{{ entry.paratiriseis }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Δίκτυο Έκτακτων Αναγκών -->
+    <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false">
+            Δίκτυο Έκτακτων Αναγκών <span class="accordion-icon">+</span>
+        </button>
+        <div class="accordion-content" hidden>
+            <!-- Πεδίο Αναζήτησης -->
+            <input type="search" placeholder="Αναζήτηση..." class="table-search" data-table-id="sos-table">
+
+            <table id="sos-table">
+                <thead>
+                    <tr>
+                        <th>Επιτελείο - Σχηματισμός</th>
+                        <th>Α/Α (ανα σχηματισμό)</th>
+                        <th>Κλάδος - Υπηρεσία</th>
+                        <th>Αριθμός Τηλεφωνικής Σύνδεσης</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in sos_entries %}
+                    <tr>
+                        <td>{{ entry.epiteleio_sximatismos }}</td>
+                        <td>{{ entry.aa_ana_sximatismo }}</td>
+                        <td>{{ entry.klados_ypiresia }}</td>
+                        <td>{{ entry.thl_syndesh }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -135,6 +298,50 @@
             if (event.key === 'Enter' || event.key === ' ') {
                 event.preventDefault();
                 toggleAccordion(button);
+            }
+        });
+    });
+
+    // Λειτουργία Αναζήτησης
+    document.querySelectorAll('.table-search').forEach(input => {
+        input.addEventListener('input', function() {
+            const tableId = this.getAttribute('data-table-id');
+            const filter = this.value.toLowerCase();
+            const table = document.getElementById(tableId);
+            const rows = table.getElementsByTagName('tr');
+
+            // Αφαίρεση τυχόν προηγούμενων μηνυμάτων "Δεν βρέθηκαν αποτελέσματα."
+            const noResults = table.querySelectorAll('.no-results');
+            noResults.forEach(row => row.remove());
+
+            for (let i = 1; i < rows.length; i++) { // Ξεκινάμε από 1 για να παραλείψουμε το header
+                const cells = rows[i].getElementsByTagName('td');
+                let match = false;
+
+                // Αφαιρούμε τυχόν προηγούμενη επισήμανση
+                rows[i].style.display = '';
+                for (let j = 0; j < cells.length; j++) {
+                    cells[j].classList.remove('highlight-cell');
+                    const cellText = cells[j].textContent.toLowerCase();
+                    if (cellText.indexOf(filter) > -1 && filter !== '') {
+                        match = true;
+                        cells[j].classList.add('highlight-cell');
+                    }
+                }
+
+                if (!match && filter !== '') {
+                    rows[i].style.display = 'none';
+                }
+            }
+
+            // Έλεγχος αν όλες οι γραμμές είναι κρυφές
+            const visibleRows = table.querySelectorAll('tbody tr:not([style*="display: none"])');
+            if (visibleRows.length === 0 && filter !== '') {
+                // Αν δεν υπάρχουν ορατές γραμμές, εμφάνισε ένα μήνυμα
+                const noResultRow = document.createElement('tr');
+                noResultRow.classList.add('no-results');
+                noResultRow.innerHTML = `<td colspan="${rows[0].cells.length}" class="no-results">Δεν βρέθηκαν αποτελέσματα.</td>`;
+                table.querySelector('tbody').appendChild(noResultRow);
             }
         });
     });

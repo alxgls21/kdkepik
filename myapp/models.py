@@ -403,8 +403,6 @@ class HARPDirectory(models.Model):
         verbose_name = 'Κατάλογος | HARP'
         verbose_name_plural = 'Κατάλογος | HARP'
 
-from django.db import models
-
 class ErmisDirectory(models.Model):
     # Define the choices for Επιτελείο - Σχηματισμός
     EPITELEIO_CHOICES = [
@@ -472,13 +470,8 @@ class ErmisDirectory(models.Model):
         verbose_name='Επιτελείο - Σχηματισμός'
     )
 
-    # Κατηγορία ως απλό CharField
     katigoria = models.CharField(max_length=255, verbose_name='Κατηγορία')
-
-    # Ανταποκριτής
     antapokritis = models.CharField(max_length=255, verbose_name='Ανταποκριτής')
-
-    # Αριθμός Κλήσεως
     arithmos_call = models.CharField(max_length=255, verbose_name='Αριθμός Κλήσεως')
 
     def __str__(self):
@@ -488,7 +481,68 @@ class ErmisDirectory(models.Model):
         verbose_name = 'Κατάλογος | ΣΑΖΜ - ΕΡΜΗΣ'
         verbose_name_plural = 'Κατάλογος | ΣΑΖΜ - ΕΡΜΗΣ'
 
-        
+class FCTDirectory(models.Model):
+    fct_call_center = models.CharField(max_length=255, verbose_name='Τηλεφωνικό Κέντρο')
+    arithmos_fct = models.CharField(max_length=255, verbose_name='Αριθμός')
+    vpn_fct = models.CharField(max_length=255, verbose_name='VPN')
+
+    def __str__(self):
+        return f"{self.fct_call_center} - {self.arithmos_fct} - {self.vpn_fct}"
+
+    class Meta:
+        verbose_name = 'Κατάλογος | FCT'
+        verbose_name_plural = 'Κατάλογος | FCT'
+
+class YpaspistirioDirectory(models.Model):
+    antapokritis = models.CharField(max_length=255, verbose_name='Ανταποκριτής')
+    arithmos_ypasp = models.CharField(max_length=255, verbose_name='Αριθμός')
+
+    def __str__(self):
+        return f"{self.antapokritis} - {self.arithmos_ypasp}"
+
+    class Meta:
+        verbose_name = 'Κατάλογος | Υπασπιστήρια Ιεραρχίας'
+        verbose_name_plural = 'Κατάλογος | Υπασπιστήρια Ιεραρχίας'
+
+class SeclineDirectory(models.Model):
+    antapokritis = models.CharField(max_length=255, verbose_name='Ανταποκριτής')
+    arithmos_ote = models.CharField(max_length=255, verbose_name='Αριθμός ΟΤΕ')
+    arithmos_epsad = models.CharField(max_length=255, verbose_name='Αριθμός ΕΨΑΔ')
+    paratiriseis = models.CharField(max_length=255, verbose_name='Παρατηρήσεις')
+
+    def __str__(self):
+        return f"{self.antapokritis} - {self.arithmos_ote} - {self.arithmos_epsad} - {self.paratiriseis} "
+
+    class Meta:
+        verbose_name = 'Κατάλογος | Secline Plus-STU II'
+        verbose_name_plural = 'Κατάλογος | Secline Plus-STU II'
+
+class SOSDirectory(models.Model):
+    # Define the choices for Επιτελείο - Σχηματισμός
+    EPITELEIO_CHOICES = [
+        ('Γενικό Επιτελείο Εθνικής Άμυνας', 'Γενικό Επιτελείο Εθνικής Άμυνας'),
+        ('ΔΕΠ', 'ΔΕΠ'),
+        ('Στρατός Ξηράς', 'Στρατός Ξηράς'),
+        ('Πολεμικό Ναυτικό', 'Πολεμικό Ναυτικό'),
+        ('Πολεμική Αεροπορία', 'Πολεμική Αεροπορία'),
+    ]
+
+    epiteleio_sximatismos = models.CharField(
+        max_length=255, 
+        choices=EPITELEIO_CHOICES,
+        verbose_name='Επιτελείο - Σχηματισμός'
+    )
+    aa_ana_sximatismo = models.CharField(max_length=255, verbose_name='Α/Α (ανα σχηματισμό)')
+    klados_ypiresia = models.CharField(max_length=255, verbose_name='Κλάδος - Υπηρεσία')
+    thl_syndesh = models.CharField(max_length=255, verbose_name='Αριθμός Τηλεφωνικής Σύνδεσης')
+
+    def __str__(self):
+        return f"{self.epiteleio_sximatismos} - {self.aa_ana_sximatismo} - {self.klados_ypiresia} - {self.thl_syndesh}"
+
+    class Meta:
+        verbose_name = 'Κατάλογος | Δίκτυο Έκτακτων Αναγκών'
+        verbose_name_plural = 'Κατάλογος | Δίκτυο Έκτακτων Αναγκών'
+
 class DailyService(models.Model):
     SERVICE_TYPES = [
         ('ΕΞ', 'ΕΞ'),          # Έξοδος

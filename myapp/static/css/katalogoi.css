@@ -151,6 +151,10 @@ header nav ul li a:hover {
     outline: 2px solid #af4c4c;
 }
 
+.accordion-header:hover {
+    background-color: #575757;
+}
+
 .accordion-icon {
     font-size: 1em;
 }
@@ -164,12 +168,32 @@ header nav ul li a:hover {
     transition: max-height 0.3s ease, opacity 0.3s ease;
 }
 
-/* Responsive Tables */
-.table-responsive {
-    overflow-x: auto;
-    margin-bottom: 20px;
+/* Στυλ για το πεδίο αναζήτησης */
+.table-search {
+    width: 100%;
+    padding: 12px 40px 12px 15px;
+    margin-bottom: 15px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    background-color: #fff;
+    background-image: url("../img/png_button.png");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 20px 20px;
 }
 
+.table-search::placeholder {
+    color: #999;
+}
+
+.table-search:focus {
+    outline: none;
+    border-color: #af4c4c;
+    box-shadow: 0 0 5px rgba(175, 76, 76, 0.5);
+}
+
+/* Στυλ για τα τραπέζια */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -180,23 +204,35 @@ th, td {
     padding: 12px 15px;
     border: 1px solid #dddddd34;
     text-align: left;
+    color: #fff;
 }
 
 th {
     background-color: #444;
-    color: #fff;
 }
 
 td {
     background-color: rgba(22, 21, 21, 0.425);
 }
 
-/* Styling για τους τίτλους υποκατηγοριών */
-.subcategory-title {
-    margin-top: 20px;
+/* Επισήμανση κελιών που ταιριάζουν */
+.highlight-cell {
+    background-color: #ffff99; /* Μπορείς να αλλάξεις το χρώμα αν θέλεις */
+    color: #000;
+}
+
+/* Στυλ για το μήνυμα "Δεν βρέθηκαν αποτελέσματα." */
+.no-results {
+    text-align: center;
+    color: red;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.no-results td {
+    padding: 20px;
     font-size: 1.2em;
-    color: #c43d3d;
-    text-align: left;
+    color: #ff4d4d;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 /* Responsive Design */
@@ -210,18 +246,13 @@ td {
         padding: 10px 15px;
     }
 
-    .subcategory-title {
-        font-size: 1em;
-    }
-
     th, td {
         padding: 8px 10px;
     }
-}
 
-/* Optional: Hover Effects για τα Accordion Headers */
-.accordion-header:hover {
-    background-color: #575757;
+    .table-search {
+        padding: 10px 15px;
+    }
 }
 
 /* Στυλ για το footer */

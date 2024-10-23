@@ -143,9 +143,6 @@ def anafora_ipiresia_view(request):
     soldiers = Soldier.objects.all()
     return render(request, 'anafora_ipiresia.html', {'officers': officers, 'soldiers': soldiers})
 
-def katalogoi_view(request):
-    return render(request, 'katalogoi.html')
-
 def odigies_sistimaton_view(request):
     return render(request, 'odigies_sistimaton.html')
 
@@ -623,20 +620,31 @@ def passwords_view(request):
     return render(request, 'passwords.html', context)
 
 from django.shortcuts import render
-from myapp.models import HARPDirectory, VOSIPTelephoneDirectory, KlistoTilefoniko
+from myapp.models import HARPDirectory, VOSIPTelephoneDirectory, KlistoTilefoniko, ErmisDirectory, FCTDirectory, YpaspistirioDirectory, SeclineDirectory, SOSDirectory
 
 def katalogoi_view(request):
     harp_entries = HARPDirectory.objects.all()
     vosip_entries = VOSIPTelephoneDirectory.objects.all()
     klisto_entries = KlistoTilefoniko.objects.all()
+    ermis_entries = ErmisDirectory.objects.all()
+    fct_entries = FCTDirectory.objects.all()
+    ypasp_entries = YpaspistirioDirectory.objects.all()
+    secline_entries = SeclineDirectory.objects.all()
+    sos_entries = SOSDirectory.objects.all()
     
     context = {
         'harp_entries': harp_entries,
         'vosip_entries': vosip_entries,
         'klisto_entries': klisto_entries,
+        'ermis_entries': ermis_entries,
+        'fct_entries': fct_entries,
+        'ypasp_entries': ypasp_entries,
+        'secline_entries': secline_entries,
+        'sos_entries': sos_entries,
     }
     
     return render(request, 'katalogoi.html', context)
+
 
 def print_posta_view(request):
     if request.method == 'POST':

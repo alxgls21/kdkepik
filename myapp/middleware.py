@@ -1,4 +1,3 @@
-# myapp/middleware.py
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.conf import settings

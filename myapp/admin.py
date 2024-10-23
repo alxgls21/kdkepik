@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
-from .models import DidesCategory, HarpCategory, AdmeCategory, OfficerServiceReport, Soldier, AxypKepikServiceReport, OplitiServiceReport, AxypCodesCategory, AxypCodesComputers, AxypCodesPyrseia, AxypCodesApplications,  AxypCodesStaff, AxypCodesUsefulPhones, AxypCodesPhoneCodes, KlistoTilefoniko, VOSIPTelephoneDirectory, HARPDirectory, ErmisDirectory
+from .models import DidesCategory, HarpCategory, AdmeCategory, OfficerServiceReport, Soldier, AxypKepikServiceReport, OplitiServiceReport, AxypCodesCategory, AxypCodesComputers, AxypCodesPyrseia, AxypCodesApplications,  AxypCodesStaff, AxypCodesUsefulPhones, AxypCodesPhoneCodes, KlistoTilefoniko, VOSIPTelephoneDirectory, HARPDirectory, ErmisDirectory, FCTDirectory, YpaspistirioDirectory, SeclineDirectory, SOSDirectory
 
 class DidesCategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'category', 'application', 'ip_address', 'supervisory_tool')
@@ -59,8 +59,7 @@ class SoldierAdmin(admin.ModelAdmin):
 class AxypCodesCategoryAdmin(admin.ModelAdmin):
     list_display = ('item_type', 'server_pc', 'username', 'notes')
     search_fields = ('item_type', 'username', 'last_name', 'description', 'phone_code')
-    
-    # Προσθήκη custom JavaScript στο admin για δυναμική εμφάνιση πεδίων
+
     class Media:
         js = ('js/axypcodes.js',)
 
@@ -104,6 +103,22 @@ class ErmisDirectoryAdmin(admin.ModelAdmin):
     list_display = ['epiteleio_sximatismos', 'katigoria', 'antapokritis', 'arithmos_call']
     search_fields = ['epiteleio_sximatismos', 'antapokritis', 'arithmos_call']
 
+class FCTDirectoryAdmin(admin.ModelAdmin):
+    list_display = ['fct_call_center', 'arithmos_fct', 'vpn_fct']
+    search_fields = ['fct_call_center', 'arithmos_fct', 'vpn_fct']
+
+class YpaspistirioDirectoryAdmin(admin.ModelAdmin):
+    list_display = ['antapokritis', 'arithmos_ypasp']
+    search_fields = ['antapokritis', 'arithmos_ypasp']
+
+class SeclineDirectoryAdmin(admin.ModelAdmin):
+    list_display = ['antapokritis', 'arithmos_ote', 'arithmos_epsad', 'paratiriseis']
+    search_fields = ['antapokritis', 'arithmos_ote', 'arithmos_epsad', 'paratiriseis']
+
+class SOSDirectoryAdmin(admin.ModelAdmin):
+    list_display = ['epiteleio_sximatismos', 'aa_ana_sximatismo', 'klados_ypiresia', 'thl_syndesh']
+    search_fields = ['epiteleio_sximatismos', 'aa_ana_sximatismo', 'klados_ypiresia', 'thl_syndesh']
+
 admin.site.register(DidesCategory, DidesCategoryAdmin)
 admin.site.register(HarpCategory, HarpCategoryAdmin)
 admin.site.register(AdmeCategory, AdmeCategoryAdmin)
@@ -122,3 +137,7 @@ admin.site.register(KlistoTilefoniko, KlistoTilefonikoAdmin)
 admin.site.register(VOSIPTelephoneDirectory, VOSIPTelephoneDirectoryAdmin)
 admin.site.register(HARPDirectory, HARPDirectoryAdmin)
 admin.site.register(ErmisDirectory, ErmisDirectoryAdmin)
+admin.site.register(FCTDirectory, FCTDirectoryAdmin)
+admin.site.register(YpaspistirioDirectory, YpaspistirioDirectoryAdmin)
+admin.site.register(SeclineDirectory, SeclineDirectoryAdmin)
+admin.site.register(SOSDirectory, SOSDirectoryAdmin)
